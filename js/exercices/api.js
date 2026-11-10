@@ -2,4 +2,5 @@
 const pasEncore = () => { throw new Error('pas encore fait'); };
 
 export const afficherVoyellesProgressives = pasEncore; // (conteneur, { mots, niveau: 1|2|3 })
-export const lectureRepetee = pasEncore;              // (conteneur, { id, objectif: 5 })
+export { lectureRepetee } from './lecture-repetee.js'; // (conteneur, { id, objectif: 5 }) => { detruire, lecteur }
+export { getLectures } from './lectures.js'; // (id?) => [{ id, cle, secondes, date, sansArret }]

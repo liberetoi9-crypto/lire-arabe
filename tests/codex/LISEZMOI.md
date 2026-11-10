@@ -43,3 +43,30 @@ Le démarrage est directement déclenché par le toucher, sans timer :
 [restriction de geste utilisateur dans WebKit](https://github.com/WebKit/WebKit/blob/main/Source/WebCore/Modules/speech/SpeechSynthesis.cpp).
 La liste des voix est relue sur `voiceschanged`, sans déclencher de parole :
 [documentation de SpeechSynthesis](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis).
+
+Revue du 10/11 : `revue-complements.test.mjs` utilise seulement les API publiques
+pour contrôler les 12472 adresses audio, les ordres des sourates, les comptes de
+mots, le texte inchangé, les boucles 3/5/10 et le remplacement de Dosari.
+Définir `CORAN_REVUE` comme indiqué plus haut. Les deux comparaisons aux sources
+de `revue-coran.test.mjs` utilisent `trim()` des deux côtés ; les espaces
+intérieurs, lettres et voyelles restent comparés exactement. Aucun fichier source
+n'est réécrit. `node tests/codex/anomalies-claude.mjs` reproduit les réserves C4
+notées dans TABLEAU.md (clé inexistante acceptée et ancienne pause de répétition).
+
+X3 : `lecture-repetee.test.mjs` ajoute 8 tests du compteur, du chronomètre,
+des pauses, des 5 lectures, des sauvegardes, des annulations et des échecs de stockage.
+Les données restent dans `exercices.lectures`, via le stockage partagé.
+API : `lectureRepetee(conteneur, { id, objectif: 5 })` renvoie
+`{ detruire, lecteur }` ; appeler `detruire()` si le composant est retiré.
+`getLectures(id?)` expose des copies `{ id, cle, secondes, date, sansArret }`.
+Identifiants utilisés : `coran:<numéro de sourate>` ou `texte:<id du texte>`.
+L'ordre des enregistrements permet à X10 de comparer les lectures 1 et 5,
+avec `sansArret` de la 5e. X3 ne débloque rien lui-même.
+
+Tests WebKit iPhone : `node --test tests/codex/lecture-repetee.ecran.mjs`.
+Playwright doit être installé ; sinon, définir `PLAYWRIGHT_ROOT` avec le chemin
+d'une installation existante de ce module. `CORAN_REVUE` permet d'assembler le
+serveur de test avec les dossiers Coran/mots/data de Claude, sans les modifier.
+Trois tests : cinq lectures avec pause et rechargement, texte personnel et
+signalement, vrais versets officiels et mise en page de 390 px.
+`CAPTURE_X3` permet de sauvegarder une capture d'écran dans le fichier indiqué.

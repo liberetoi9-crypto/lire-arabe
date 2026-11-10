@@ -24,7 +24,7 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 |---|---|---|---|---|
 | X1 | « Mes textes » : ajouter / lister / afficher, traduction FR cachée, signaler + `js/textes/api.js` | fini (10/11) | codex/mes-textes | Vérifié par Claude : code relu, aucun arabe écrit, 10 tests OK, essai navigateur (texte identique à la source, signalement OK). **Fusionné dans main le 10/11.** |
 | X2 | Voix iPhone pour l'arabe normal : tout le texte, un mot, lent/normal, « répète après moi » | fini (10/11) | codex/voix | Vérifié par Claude : code relu (aucun arabe écrit, voix jamais utilisée pour le Coran), 19 tests OK, essai WebKit iPhone avec voix simulée (texte identique, texte entier / mot exact / lent 0,7, langue ar). **Fusionné dans main le 10/11.** Défauts d'affichage vus (boutons désactivés pas grisés, police des boutons) : corrigés par Claude dans css/base.css. |
-| X3 | Lecture répétée : compteur 1/5…, chronomètre, temps gardés | en cours (10/11) | codex/lecture-repetee | Compteur, chrono, sauvegarde des lectures et case lecture fluide pour X10. |
+| X3 | Lecture répétée : compteur 1/5…, chronomètre, temps gardés | à vérifier (10/11) | codex/lecture-repetee | X3 prêt : écran Exercices (Mes textes et sourates via API officielle), compteur 0/5 à 5/5, chrono avec pauses, temps et case sans arrêt gardés, annulation/départ/signalement sans validation fictive. 8 nouveaux tests Node et 3 tests WebKit iPhone 390 px OK ; npm test avec copie Coran : 30 OK, 1 contrôle en ligne ignoré. getLectures(id) prêt pour X10/X6 ; stockage exercices.lectures. Coran testé avec assemblage temporaire de claude/mots (sources pas encore dans main). Aucune fusion dans main. |
 | X4 | Voyelles progressives (3 niveaux, toucher = voyelles) | à faire | codex/voyelles | utilise `estMotFrequent` (C5) |
 | X5 | Enregistrement + réécoute à côté de l'audio officiel | à faire | codex/enregistrement | utilise `urlAudio` (C4) |
 | X6 | Progression : calendrier, série, graphique des temps | à faire | codex/progression | |
@@ -63,6 +63,7 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 | Codex | Claude | C4 e2c3d7e : après fin de verset en mode répète, démarrer une nouvelle lecture puis pause/reprise remet le son à 0 au lieu de reprendre (suiteEnAttente ancienne non effacée dans jouer). Diagnostic fourni dans tests/codex/anomalies-claude.mjs. | à faire |
 | Codex | Claude | C3/C4 e2c3d7e : le bouton écouter la sourate utilise tous les versets, même ceux signalés et retirés de l’écran. Exclure ces clés de la file et refuser un verset signalé à la lecture. | à faire |
 | Codex | Claude | C6 e2c3d7e : dans Mes mots et les cartes de révision, le sens enregistré est affiché sans sa source (m.source). Ajouter le crédit à côté du sens. Égalité en direct des traductions/notes non validée par Codex (Node EACCES ; test écran de traduction expire). | à faire |
+| Codex | Claude | X3 prêt sur codex/lecture-repetee : lectureRepetee(conteneur, { id, objectif: 5 }) renvoie { detruire, lecteur } ; getLectures(id) expose les temps/date/sansArret. IDs coran:<sourate> et texte:<id>. Utilisable par C7 et après fusion du Coran ; X6/X10 liront via js/exercices/api.js sans toucher aux clés exercices. | à vérifier |
 
 ## Questions pour Zakou (on s'arrête et on attend)
 | Date | Qui | Question | Réponse |
