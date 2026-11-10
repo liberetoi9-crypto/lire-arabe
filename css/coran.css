@@ -11,7 +11,7 @@
 .bloc-verset { background: var(--carte); border-radius: var(--rayon); padding: 12px 14px; margin: 10px 0; }
 .bloc-verset.signale { opacity: .55; outline: 2px dashed #c0392b; }
 .actions-verset { display: flex; gap: 8px; justify-content: flex-start; margin-top: 6px; }
-.actions-verset button { font-size: .85rem; min-height: 36px; }
+.actions-verset button { font-size: .85rem; min-height: 44px; }
 .num-verset {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 1.6em; height: 1.6em; padding: 0 .2em;
@@ -36,13 +36,13 @@
 .barre-lecture { position: sticky; top: 0; z-index: 2; background: var(--fond); padding: 8px 0 4px; }
 .reglages-ecoute { display: grid; gap: 10px; }
 .reglages-ecoute[open] { display: grid; }
-.reglages-ecoute summary { min-height: 32px; font-weight: 600; cursor: pointer; }
+.reglages-ecoute summary { min-height: 44px; font-weight: 600; cursor: pointer; }
 .reglages-ecoute:not([open]) > :not(summary) { display: none; }
 .ligne-reglage { display: grid; gap: 4px; font-size: .9rem; color: var(--doux); }
 .ligne-boutons { display: flex; gap: 8px; }
 .ligne-boutons button:first-child { flex: 1; }
 .choix { min-height: 44px; font-size: 1rem; border-radius: 10px; border: 1px solid rgba(0,0,0,.2); padding: 0 8px; background: var(--carte); color: var(--texte); }
-.ligne-case { display: flex; align-items: center; gap: 10px; min-height: 36px; }
+.ligne-case { display: flex; align-items: center; gap: 10px; min-height: 44px; }
 .ligne-case input { width: 22px; height: 22px; }
 .message-lecteur { margin: 0; min-height: 1.2em; font-weight: 600; color: var(--accent); }
 /* Sons à vérifier (Dosari) */
@@ -53,7 +53,7 @@ button.danger { background: #b03a2e; }
 .pastille { grid-row: span 2; font-size: .8rem; padding: 4px 8px; border-radius: 999px; background: #fdebd0; color: #7e5109; }
 .etat-ok .pastille { background: #d5f5e3; color: #1d6b40; }
 .etat-erreur .pastille { background: #fadbd8; color: #922b21; }
-.retour { display: inline-block; margin: 4px 0; color: var(--accent); min-height: 32px; }
+.retour { display: inline-block; margin: 4px 0; color: var(--accent); min-height: 44px; }
 .etat-actuel { font-weight: 600; }
 .reponse-verif { display: grid; gap: 10px; }
 body.sans-frequents .mot.frequent { color: inherit; }
@@ -62,7 +62,7 @@ body.sans-frequents .mot.frequent { color: inherit; }
 .texte-traduction { font-size: 1.1rem; line-height: 1.6; margin: 0 0 6px; }
 .appel-note { color: var(--accent); cursor: pointer; padding: 0 3px; }
 .notes p { font-size: .95rem; color: var(--doux); white-space: pre-line; }
-button.petit { min-height: 36px; font-size: .85rem; }
+button.petit { min-height: 44px; font-size: .85rem; }
 .lien-discret { display: block; margin-top: 8px; font-size: .85rem; color: var(--doux); }
 .bloc-verset.cible { outline: 3px solid var(--accent); }
 .mot-cible { background: var(--surligne); border-radius: 6px; }
@@ -88,3 +88,12 @@ button.petit { min-height: 36px; font-size: .85rem; }
 .mot-revision { text-align: center; font-size: calc(var(--taille-arabe) * 1.8); margin: 16px 0; }
 .dos-carte .verset { font-size: calc(var(--taille-arabe) * .85); }
 .dos-carte .ligne-boutons > * { flex: 1; }
+
+/* iPhone : toute zone touchable fait au moins 44 px (demande de Codex) */
+.actions-verset { flex-wrap: wrap; }
+.retour, .lien-discret { display: inline-flex; align-items: center; min-height: 44px; }
+.reglages-ecoute summary { display: flex; align-items: center; }
+.appel-note { display: inline-block; min-width: 28px; min-height: 28px; text-align: center; }
+.avis-mis-de-cote { border-left: 5px solid #b03a2e; }
+.avis-mis-de-cote p { margin: 0 0 8px; }
+.credit a { display: inline-flex; align-items: center; min-height: 44px; }

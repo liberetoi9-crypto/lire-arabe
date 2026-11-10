@@ -1,7 +1,7 @@
 // Propriétaire : Claude Code (C3). Écrans : #/coran (liste) et #/coran/112 (lecture).
 import { enregistrerEcran } from '../core/routeur.js';
 import { emit, on } from '../core/bus.js';
-import { boutonSignaler, estSignale } from '../core/signalement.js';
+import { boutonSignaler, estSignale, retirerSignalement } from '../core/signalement.js';
 import { getSourate, getVerset, getListeSourates, ordreJuzAmma, SOURCE_TEXTE,
   getRecitateurs, getRecitateurActif, setRecitateurActif, creerLecteur,
   recitateurPourSourate, getSonsAVerifier, noterVerificationSon,
@@ -9,8 +9,12 @@ import { getSourate, getVerset, getListeSourates, ordreJuzAmma, SOURCE_TEXTE,
   getTraduction, getTraductions, getTraductionActive, setTraductionActive, getNoteHamidullah, getSensMots } from './api.js';
 import { ajouterMot, estDansMesMots } from '../mots/api.js';
 
+// props : propriétés ; les noms avec un tiret (aria-label…) deviennent des attributs.
 const el = (tag, props = {}, ...enfants) => {
-  const e = Object.assign(document.createElement(tag), props);
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (k.includes('-')) e.setAttribute(k, v); else e[k] = v;
+  }
   e.append(...enfants);
   return e;
 };
@@ -91,23 +95,29 @@ async function afficherSourate(conteneur, n, versetCible = null, motCible = null
   conteneur.append(el('h2', { className: 'titre-sourate', textContent: `${n}. ${s.nom}${s.nomFr ? ' — ' + s.nomFr : ''}` }));
 
   // Basmala (sauf sourates 1 et 9) : texte pris dans la source (verset 1:1), jamais écrit à la main.
-  if (n !== 1 && n !== 9) {
+  // Si 1:1 est signalé, la basmala (même texte) est aussi mise de côté.
+  if (n !== 1 && n !== 9 && !estSignale('coran', '1:1')) {
     const b = await getVerset('1:1');
-    conteneur.append(el('p', { className: 'arabe coran basmala', lang: 'ar', dir: 'rtl', textContent: b.texte }));
+    const basmala = el('p', { className: 'arabe coran basmala', lang: 'ar', dir: 'rtl', textContent: b.texte });
+    basmala.dataset.cleSource = '1:1';
+    conteneur.append(basmala);
   }
 
   conteneur.append(barreLecture(s));
 
   for (const v of s.versets) {
+    // Verset signalé : son texte n'est plus affiché (mis de côté), seulement un avis à sa place.
+    if (estSignale('coran', v.cle)) { conteneur.append(avisMisDeCote(v.cle)); continue; }
     const zoneTraduction = el('div', { className: 'traduction', hidden: true });
     const boutonTraduction = el('button', { className: 'secondaire', textContent: 'Traduction' });
     boutonTraduction.addEventListener('click', () => basculerTraduction(v.cle, zoneTraduction, boutonTraduction));
-    const bloc = el('div', { className: 'bloc-verset' + (estSignale('coran', v.cle) ? ' signale' : '') }, ligneVerset(v, n),
+    const bloc = el('div', { className: 'bloc-verset' }, ligneVerset(v, n),
       el('div', { className: 'actions-verset' },
         el('button', { className: 'secondaire', textContent: '▶ Écouter', onclick: () => jouer([v.cle]) }),
         boutonTraduction,
         boutonSignaler('coran', v.cle)),
       zoneTraduction);
+    bloc.dataset.cle = v.cle;
     conteneur.append(bloc);
   }
   conteneur.append(credit());
@@ -121,6 +131,26 @@ async function afficherSourate(conteneur, n, versetCible = null, motCible = null
     requestAnimationFrame(() => ligne.scrollIntoView({ block: 'center' }));
   }
 }
+
+// ---- Versets signalés : mis de côté tout de suite (et aux ouvertures suivantes) ----
+function avisMisDeCote(cle) {
+  const avis = el('div', { className: 'carte avis-mis-de-cote' },
+    el('p', { textContent: `Verset ${cle} mis de côté : tu as signalé une erreur. Il ne s'affiche plus tant qu'il n'est pas vérifié.` }),
+    el('button', { className: 'secondaire', textContent: 'Annuler le signalement', onclick: () => {
+      retirerSignalement('coran', cle);
+      // On réaffiche la sourate : le verset revient, lu dans la source.
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+    } }));
+  avis.dataset.cle = cle;
+  return avis;
+}
+
+on('texte:signale', ({ type, id }) => {
+  if (type !== 'coran') return;
+  lecteur?.arreter();
+  document.querySelectorAll(`.bloc-verset[data-cle="${id}"]`).forEach((b) => b.replaceWith(avisMisDeCote(id)));
+  if (id === '1:1') document.querySelectorAll('.basmala[data-cle-source="1:1"]').forEach((b) => b.remove());
+});
 
 // ---- Traduction française du verset (Hamidullah / Rachid Maach) ----
 async function basculerTraduction(cle, zone, bouton) {
@@ -256,6 +286,7 @@ async function afficherVerificationSourate(conteneur, n) {
       el('p', { id: 'message-lecteur', className: 'message-lecteur', role: 'status' })),
   );
   for (const v of s.versets) {
+    if (estSignale('coran', v.cle)) { conteneur.append(avisMisDeCote(v.cle)); continue; }
     conteneur.append(el('div', { className: 'bloc-verset' }, ligneVerset(v, n),
       el('div', { className: 'actions-verset' },
         el('button', { className: 'secondaire', textContent: `▶ ${x.nom.split(' ').pop()}`, onclick: () => jouer([v.cle], x.recitateur) }))));

@@ -2,16 +2,22 @@
 // Le mot arabe est toujours relu dans le texte officiel (sourate + verset + position) : jamais recopié à la main.
 import { enregistrerEcran } from '../core/routeur.js';
 import { getVerset, chargerMotsFrequents } from '../coran/api.js';
+import { estSignale } from '../core/signalement.js';
 import { getMesMots, getMotsAReviser, retirerMot, reviserMot } from './api.js';
 
+// props : propriétés ; les noms avec un tiret (aria-label…) deviennent des attributs.
 const el = (tag, props = {}, ...enfants) => {
-  const e = Object.assign(document.createElement(tag), props);
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (k.includes('-')) e.setAttribute(k, v); else e[k] = v;
+  }
   e.append(...enfants);
   return e;
 };
 
 // Le mot et son verset, depuis la source officielle. Contrôle : la position doit exister dans ce verset.
 async function depuisLaSource(m) {
+  if (estSignale('coran', m.cle)) throw new Error(`Verset ${m.cle} mis de côté (tu as signalé une erreur).`);
   const v = await getVerset(m.cle);
   const mot = v.mots.find((x) => x.position === m.position);
   if (!mot) throw new Error(`Mot n° ${m.position} introuvable dans le verset ${m.cle}`);
@@ -59,7 +65,7 @@ async function afficherListe(conteneur) {
 }
 
 async function afficherRevision(conteneur) {
-  const file = getMotsAReviser();
+  const file = getMotsAReviser().filter((m) => !estSignale('coran', m.cle));
   let i = 0;
   const zone = el('div');
   conteneur.append(el('a', { href: '#/mots', className: 'retour', textContent: '← Mes mots' }), zone);

@@ -2,8 +2,9 @@
 // Télécharge le texte officiel du Coran (uthmani, Hafs) depuis l'API quran.com,
 // le contrôle verset par verset avec Tanzil.net, puis l'enregistre dans data/coran/.
 // AUCUN texte arabe n'est écrit à la main : tout vient des sources.
-// Lancer : npm run donnees
-import { mkdir, writeFile } from 'node:fs/promises';
+// Lancer : npm run donnees            → télécharge, contrôle TOUT, et seulement ensuite remplace data/coran/
+//         npm run verifier:coran     → retélécharge et compare avec data/coran/ SANS rien écrire
+import { mkdir, writeFile, readFile, rm, rename } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 
 const API = 'https://api.quran.com/api/v4';
@@ -40,7 +41,8 @@ if (tanzil.size !== 6236) arreter(`Tanzil : ${tanzil.size} versets au lieu de 62
 const { chapters } = await json(`${API}/chapters?language=fr`);
 if (chapters.length !== 114) arreter('quran.com : pas 114 sourates');
 
-await mkdir(new URL('sourates/', DOSSIER), { recursive: true });
+const VERIFIER = process.argv.includes('--verifier');
+const aEcrire = []; // rien n'est écrit tant que tout n'est pas contrôlé
 const manifeste = {
   source: 'API quran.com v4 (text_uthmani, Hafs)',
   controle: 'Tanzil.net, Uthmani 1.1 (CC BY 3.0, https://tanzil.net) — comparé verset par verset',
@@ -118,12 +120,36 @@ for (const ch of chapters) {
   };
   const contenu = JSON.stringify(donnees);
   const fichier = `sourates/${String(n).padStart(3, '0')}.json`;
-  await writeFile(new URL(fichier, DOSSIER), contenu);
+  aEcrire.push({ fichier, contenu });
   manifeste.sourates.push({ numero: n, nomArabe: donnees.nomArabe, nom: donnees.nom, nomFr: donnees.nomFr, fichier, nbVersets: ch.verses_count, nbMots: donnees.nbMots, sha256: empreinte(contenu) });
   process.stdout.write(`${n} `);
 }
 console.log();
 manifeste.differencesTanzil = differences;
-await writeFile(new URL('manifeste.json', DOSSIER), JSON.stringify(manifeste, null, 1));
-console.log(`Fini : 114 sourates, ${manifeste.sourates.reduce((s, x) => s + x.nbVersets, 0)} versets, différences avec Tanzil : ${differences}`);
-if (differences) arreter('des versets diffèrent de Tanzil : NE PAS UTILISER, demander à Zakou');
+const total = manifeste.sourates.reduce((s, x) => s + x.nbVersets, 0);
+console.log(`Contrôle : 114 sourates, ${total} versets, différences avec Tanzil : ${differences}`);
+// 1. Rien n'est publié si un seul verset diffère.
+if (differences || total !== 6236) arreter('des versets diffèrent de Tanzil : AUCUNE donnée écrite, demander à Zakou');
+
+if (VERIFIER) {
+  // 2a. Vérification en direct : comparer avec les fichiers déjà enregistrés, sans rien écrire.
+  let pareils = 0;
+  for (const { fichier, contenu } of aEcrire) {
+    const disque = await readFile(new URL(fichier, DOSSIER), 'utf8').catch(() => null);
+    if (disque === contenu) pareils++; else console.error(`DIFFÉRENT : ${fichier}`);
+  }
+  console.log(`Vérification : ${pareils} fichiers sur 114 identiques aux sources d'aujourd'hui.`);
+  if (pareils !== 114) arreter('les fichiers enregistrés ne correspondent plus aux sources : demander à Zakou');
+} else {
+  // 2b. Écriture dans un dossier à part, puis remplacement d'un coup (jamais de données à moitié écrites).
+  const NOUVEAU = new URL('../data/coran.nouveau/', import.meta.url);
+  await rm(NOUVEAU, { recursive: true, force: true });
+  await mkdir(new URL('sourates/', NOUVEAU), { recursive: true });
+  for (const { fichier, contenu } of aEcrire) await writeFile(new URL(fichier, NOUVEAU), contenu);
+  await writeFile(new URL('manifeste.json', NOUVEAU), JSON.stringify(manifeste, null, 1));
+  await rm(new URL('sourates/', DOSSIER), { recursive: true, force: true });
+  await rename(new URL('sourates/', NOUVEAU), new URL('sourates/', DOSSIER));
+  await rename(new URL('manifeste.json', NOUVEAU), new URL('manifeste.json', DOSSIER));
+  await rm(NOUVEAU, { recursive: true, force: true });
+  console.log('Données écrites dans data/coran/.');
+}

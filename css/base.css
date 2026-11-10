@@ -45,3 +45,7 @@ button.secondaire { background: transparent; color: var(--accent); border: 1px s
 }
 .menu a { flex: 0 0 auto; padding: 10px 12px; color: var(--texte); text-decoration: none; border-radius: 10px; font-size: .9rem; }
 .menu a.actif { background: var(--accent); color: #fff; }
+
+/* Liens seuls dans un écran (ex. « Retour ») : zone touchable de 44 px sur iPhone */
+.ecran > a:not(.carte):not(.bouton) { display: inline-flex; align-items: center; min-height: 44px; }
+.menu a { min-height: 44px; display: inline-flex; align-items: center; }
