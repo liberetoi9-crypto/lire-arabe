@@ -7,7 +7,7 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 | # | Tâche | État | Branche | Note |
 |---|---|---|---|---|
 | C1 | PROJET.md, TABLEAU.md, structure du code | fini (10/11) | main | |
-| C2 | Script qui télécharge le Coran (Fatiha + Juz Amma) depuis quran.com + contrôle Tanzil → `data/coran/` | en cours (10/11) | claude/donnees-coran | |
+| C2 | Script qui télécharge le Coran (Fatiha + Juz Amma) depuis quran.com + contrôle Tanzil → `data/coran/` | à vérifier (10/11) | claude/donnees-coran | 6236 versets = Tanzil, 0 différence. À vérifier par Codex |
 | C3 | `js/coran/api.js` : sourates, versets, contrôle des numéros | à faire | claude/api-coran | |
 | C4 | Récitateurs (Husary mu'allim, Dosari) + menu + lecteur verset par verset + surlignage + « répète après moi » (Coran) | à faire | claude/recitateurs | |
 | C5 | Petits mots fréquents (comptage sur le Coran complet) | à faire | claude/mots-frequents | |
