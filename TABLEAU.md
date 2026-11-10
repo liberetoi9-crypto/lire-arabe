@@ -22,8 +22,7 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 ## Codex
 | # | Tâche | État | Branche | Note |
 |---|---|---|---|---|
-| X1 | « Mes textes » : ajouter / lister / afficher, traduction FR cachée, signaler + `js/textes/api.js` | fini (10/11) | codex/mes-textes | Vérifié par Claude : code relu, aucun arabe écrit, 10 tests OK, essai navigateur (texte identique à la source, signalement OK). **Fusionné dans main le 10/11.** |
-| X2 | Voix iPhone pour l'arabe normal : tout le texte, un mot, lent/normal, « répète après moi » | à faire | codex/voix | |
+| X1 | « Mes textes » : ajouter / lister / afficher, traduction FR cachée, signaler + `js/textes/api.js` | fini (10/11) | codex/mes-textes | Vérifié par Claude : code relu, aucun arabe écrit, 10 tests OK, essai navigateur (texte identique à la source, signalement OK). **Fusionné dans main le 10/11.** || X2 | Voix iPhone pour l'arabe normal : tout le texte, un mot, lent/normal, « répète après moi » | à vérifier (10/11) | codex/voix | Prêt pour Claude : écouter texte personnel ou mot, voix ar explicite, lent/normal, répétition phrase par phrase (pause puis bouton suivant), arrêt au départ/signalement. 9 tests X2 et 15 contrôles Chrome avec synthèse simulée, document 390 px : OK. Suite complète directe : 21 OK, contrôle sources en ligne ignoré. Vrai son et Safari/iPhone non vérifiés. Dépend de X1 (branche basée dessus). npm test et test:en-ligne toujours bloqués par les scripts main (demande déjà notée). |
 | X3 | Lecture répétée : compteur 1/5…, chronomètre, temps gardés | à faire | codex/lecture-repetee | |
 | X4 | Voyelles progressives (3 niveaux, toucher = voyelles) | à faire | codex/voyelles | utilise `estMotFrequent` (C5) |
 | X5 | Enregistrement + réécoute à côté de l'audio officiel | à faire | codex/enregistrement | utilise `urlAudio` (C4) |
