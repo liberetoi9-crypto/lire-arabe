@@ -14,6 +14,7 @@ Ce fichier est la consigne unique pour **Claude Code** et **Codex**. Les deux le
 - **Personne ne modifie les fichiers de l'autre** (voir « Qui possède quoi »). Besoin d'un changement chez l'autre → l'écrire dans `TABLEAU.md`, rubrique « Demandes ».
 - Chaque partie finie passe à « à vérifier » : l'autre la relit et la teste, puis Claude Code fusionne.
 - `TABLEAU.md` est mis à jour à **chaque** tâche commencée ou finie.
+- `PROJET.md` et `TABLEAU.md` vivent sur **`main`** seulement (jamais modifiés dans une branche de tâche). Avant de commencer une tâche : `git merge main` dans sa branche pour avoir les dernières consignes.
 - Commits en français, courts. Aucune donnée perso dans le dépôt (il est public).
 
 ## 2. Règle absolue « ZÉRO ERREUR »
@@ -59,7 +60,7 @@ Ce fichier est la consigne unique pour **Claude Code** et **Codex**. Les deux le
 8. **Comprendre les mots**
    - Toucher un mot du Coran → sens mot à mot depuis quran.com (**en anglais** : quran.com n'a pas de mot à mot en français, vérifié le 10/11/2026).
    - Traduction française du verset entier, au choix (menu) :
-     - **Hamidullah** : depuis quran.com (traduction n° 31). Hamidullah n'existe PAS sur QuranEnc.
+     - **Hamidullah** : depuis quran.com (traduction n° 31), avec ses notes. Vérifié le 10/11 : QuranEnc a aussi `french_hameedullah` (même texte), mais il est **retiré de sa liste officielle** (pas de numéro de version, plus suivi). On garde donc quran.com, la source suivie.
      - **Rachid Maach** : depuis l'API QuranEnc.com (clé `french_rashid`), prise en direct.
    - Conditions QuranEnc à respecter (lues le 10/11/2026) :
      1. rien changer, ajouter ni enlever : traduction affichée telle quelle, **avec ses notes** (bouton « Notes ») ;
@@ -70,6 +71,16 @@ Ce fichier est la consigne unique pour **Claude Code** et **Codex**. Les deux le
      6. toujours la dernière version : prise en direct + un test vérifie la version ;
      7. aucune publicité.
    - Bouton « Ajouter à mes mots » + révision en mode cartes.
+9. **Choisir n'importe quelle sourate** (ajout du 10/11)
+   - En plus du Juz Amma, on peut ouvrir n'importe laquelle des **114 sourates** pour la lire et l'écouter.
+10. **Parcours de mémorisation** (ajout du 10/11 — tâche Codex)
+   - **Déblocage** : verrouillé au début. Se débloque quand la phase lecture est finie : toutes les sourates du Juz Amma lues au moins 5 fois chacune (lecture répétée), avec un chrono de plus en plus rapide = **la 5e lecture est plus rapide que la 1re ET l'élève coche « j'ai lu sans m'arrêter sur les mots »** (réponse de Zakou, 10/11). Ou bouton « Je suis prêt ».
+   - **Ordre** (réponse de Zakou, 10/11) : **la Fatiha en premier**, puis **le Juz Amma** de la plus courte à la plus longue, puis **le reste des sourates** de la plus courte à la plus longue. Mots comptés dans le texte officiel : `ordreMemorisation()` du module Coran (pas de liste inventée). La sourate suivante se débloque seulement quand la précédente est VALIDÉE. Les longues sourates sont coupées en morceaux de **5 versets par défaut**, avec un **réglage** pour changer ce nombre (ex. longs versets d'Al-Baqara) ; chaque morceau est validé avant le suivant.
+   - **Apprendre** : écouter un verset en boucle avec le récitateur (3, 5 ou 10 fois, au choix). Le texte se cache petit à petit : d'abord la fin du verset, puis tout le verset. Enchaîner : verset 1, puis 1+2, puis 1+2+3, etc.
+   - **Valider vraiment** : test du jour = réciter toute la sourate de mémoire, texte caché, en s'enregistrant. Ensuite l'appli montre le texte et fait réécouter l'enregistrement à côté du récitateur. L'élève coche chaque verset : « parfait » ou « erreur / hésitation ». Il faut réussir le test **sans aucune erreur 3 jours différents** (ex. jour 1, jour 3, jour 7). Une erreur = compteur à zéro. Bouton facultatif « Validé par quelqu'un » (une personne a écouté sans erreur).
+   - **Aucune correction automatique de la récitation par intelligence artificielle** (règle zéro erreur) : c'est l'élève qui coche.
+   - **Révision** : chaque jour, révision des sourates validées (les plus anciennes et celles avec des erreurs en premier). Révision ratée = la sourate repasse « à revoir ».
+   - **Suivi** : page « Ma mémorisation » : gris = pas commencée, orange = en cours, vert = validée, rouge = à revoir. Pour chaque sourate : versets appris, date de validation, dernière révision. Total : sourates et versets validés, pourcentage du Coran appris (en versets, sur 6 236).
 
 ## 5. Affichage — FACILE À LIRE (demande de Zakou)
 - Tout doit être facile à lire : gros texte par défaut, bon contraste, de l'espace entre les mots et les lignes, peu de choses par écran, phrases françaises très simples.
@@ -79,7 +90,7 @@ Ce fichier est la consigne unique pour **Claude Code** et **Codex**. Les deux le
 - Pensé d'abord pour l'iPhone (boutons ≥ 44 px, rien qui dépend du survol).
 
 ## 6. Mise en ligne
-- L'appli est **pour Zakou seul**. Choix de Zakou (10/11) : B = dépôt GitHub **public** + GitHub Pages (https://liberetoi9-crypto.github.io/lire-arabe/). Ajout d'un code d'accès : à confirmer par Zakou.
+- L'appli est **pour Zakou seul**. Choix de Zakou (10/11) : B = dépôt GitHub **public** + GitHub Pages (https://liberetoi9-crypto.github.io/lire-arabe/), plus un **code d'accès** à l'ouverture (oui de Zakou, 10/11, tâche C9). Ajout d'un code d'accès : à confirmer par Zakou.
 - Aucune donnée perso dans le dépôt.
 - Zakou fait lui-même le test final sur son iPhone.
 
@@ -110,15 +121,16 @@ Le résultat des tests + la liste de ce qui a été vérifié par Claude Code ET
 | `js/core/` (bus, stockage, routeur, signalement, arabe), `js/main.js`, `css/base.css` | Claude Code |
 | `js/coran/`, `js/mots/`, `js/seance/`, `css/coran.css`, `fonts/` | Claude Code |
 | `data/`, `scripts/`, `tests/claude/`, `.github/` | Claude Code |
-| `js/textes/`, `js/exercices/`, `js/enregistrement/`, `js/progression/`, `js/affichage/` | Codex |
+| `js/textes/`, `js/exercices/`, `js/enregistrement/`, `js/progression/`, `js/affichage/`, `js/memorisation/` | Codex |
 | `css/affichage.css`, `tests/codex/` | Codex |
 
 `TABLEAU.md` : les deux y écrivent, chacun **seulement ses lignes** + la rubrique « Demandes ».
 
 ## Comment les parties se parlent
-1. **Écrans** : chaque module appelle `enregistrerEcran(nom, { titre, afficher(conteneur, params) })` (`js/core/routeur.js`). Adresses : `#/seance`, `#/coran`, `#/coran/112`, `#/mots`, `#/textes`, `#/exercices`, `#/progression`, `#/reglages`.
+1. **Écrans** : chaque module appelle `enregistrerEcran(nom, { titre, afficher(conteneur, params) })` (`js/core/routeur.js`). Adresses : `#/memorisation`, `#/seance`, `#/coran`, `#/coran/112`, `#/mots`, `#/textes`, `#/exercices`, `#/progression`, `#/reglages`.
 2. **Fonctions publiques** : chaque module expose ses fonctions dans son `api.js`. On importe **seulement** l'`api.js` d'un autre module, jamais ses fichiers internes.
    - `js/coran/api.js` (Claude) : `getSourate(n)`, `getVerset(cle)`, `ordreJuzAmma()`, `getTraduction(cle)`, `getSensMots(cle)`, `getRecitateurs()`, `getRecitateurActif()`, `setRecitateurActif(id)`, `urlAudio(cle, id?)`, `creerLecteur()`, `estMotFrequent(texteMot)`.
+   - Ajouts Coran (10/11) : `getListeSourates()` (les 114 : numéro, nb de versets, nb de mots), `ordreParMots()` (les 114, de la plus courte à la plus longue), `ordreMemorisation()` (Fatiha, puis Juz Amma court → long, puis le reste court → long), `JUZ_AMMA`, et dans le lecteur `boucle(cle, fois)` pour écouter un verset 3, 5 ou 10 fois.
    - `js/textes/api.js` (Codex) : `getTextes()`, `getTexte(id)`, `getTexteDuJour()`.
    - `js/progression/api.js` (Codex) : `noterSeance({ secondes, type })`, `noterTemps({ id, secondes })`.
    - `js/exercices/api.js` (Codex) : `afficherVoyellesProgressives(conteneur, { mots, niveau })`, `lectureRepetee(conteneur, { objectif })`.
@@ -130,7 +142,7 @@ Le résultat des tests + la liste de ce qui a été vérifié par Claude Code ET
    - `texte:signale` `{ type, id }`
    - `seance:finie` `{ secondes }`
    - `affichage:change` `{ theme, taille }`
-4. **Stockage** : clés préfixées par module (`coran.*`, `mots.*`, `seance.*`, `textes.*`, `exercices.*`, `progression.*`, `enregistrement.*`, `affichage.*`). Chacun ne touche que ses clés. `signalements` est géré par `js/core/signalement.js`.
+4. **Stockage** : clés préfixées par module (`memorisation.*`, `coran.*`, `mots.*`, `seance.*`, `textes.*`, `exercices.*`, `progression.*`, `enregistrement.*`, `affichage.*`). Chacun ne touche que ses clés. `signalements` est géré par `js/core/signalement.js`.
 5. **Texte arabe** : pour cacher des voyelles à l'affichage, utiliser `js/core/arabe.js` (`sansVoyelles(texte)`, `estVoyelle(caractere)`). Ces fonctions renvoient une **copie** ; l'original n'est jamais modifié.
 6. **Affichage** : variables CSS dans `css/base.css` (`--fond`, `--texte`, `--accent`, `--frequent`, `--surligne`, `--taille-arabe`). Codex les redéfinit dans `css/affichage.css` pour le mode sombre et la taille ; il ne refait pas la mise en page.
 
