@@ -87,3 +87,28 @@ test('WebKit : sourate exacte, zones de 44 px, aucun débordement et retrait apr
   assert.equal(await page.$('#ecran .arabe'), null);
   assert.equal(await page.evaluate(async () => (await import('/js/exercices/api.js')).getLectures('coran:112').length), 0);
 });
+
+test('WebKit : les 13 contrôles Mes textes dans un téléphone de test vide', async () => {
+  const contexte = await navigateur.newContext({ ...devices['iPhone 13'] });
+  try {
+    const p = await contexte.newPage();
+    await p.goto(adresse + '#/textes');
+    await p.waitForSelector('#ecran a');
+    const arabe = revue
+      ? JSON.parse(await readFile(new URL('data/coran/sourates/001.json', revue), 'utf8')).versets.map(v => v.texte).join('\n')
+      : 'Charge technique de test.';
+    const points = await p.evaluate(async texte => (await import('/tests/codex/verifier-ecran-textes.js')).verifierEcranTextes(texte), arabe);
+    assert.equal(points.length, 13);
+  } finally { await contexte.close(); }
+});
+
+test('WebKit : les 15 contrôles voix simulée dans un téléphone de test vide', async () => {
+  const contexte = await navigateur.newContext({ ...devices['iPhone 13'] });
+  try {
+    const p = await contexte.newPage();
+    await p.goto(adresse + '#/textes');
+    await p.waitForSelector('#ecran a');
+    const points = await p.evaluate(async () => (await import('/tests/codex/verifier-ecran-voix.js')).verifierEcranVoix());
+    assert.equal(points.length, 15);
+  } finally { await contexte.close(); }
+});

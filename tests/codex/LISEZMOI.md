@@ -67,6 +67,10 @@ Tests WebKit iPhone : `node --test tests/codex/lecture-repetee.ecran.mjs`.
 Playwright doit être installé ; sinon, définir `PLAYWRIGHT_ROOT` avec le chemin
 d'une installation existante de ce module. `CORAN_REVUE` permet d'assembler le
 serveur de test avec les dossiers Coran/mots/data de Claude, sans les modifier.
-Trois tests : cinq lectures avec pause et rechargement, texte personnel et
-signalement, vrais versets officiels et mise en page de 390 px.
+Cinq tests : cinq lectures avec pause et rechargement, texte personnel et
+signalement, vrais versets officiels et mise en page de 390 px, puis les 13
+contrôles X1 et les 15 contrôles X2 dans des contextes WebKit vides.
 `CAPTURE_X3` permet de sauvegarder une capture d'écran dans le fichier indiqué.
+
+`deploiement.test.mjs` contrôle les ressources C9 de la copie `CORAN_REVUE`.
+Le résultat détaillé de la vérification complète est dans `VERIFICATION.md`.
