@@ -33,3 +33,15 @@
 .credit { color: var(--doux); font-size: .8rem; margin-top: 24px; }
 .credit a { color: var(--accent); }
 .titre-section { font-size: 1.15rem; margin: 20px 0 2px; }
+.barre-lecture { position: sticky; top: 0; z-index: 2; background: var(--fond); padding: 8px 0 4px; }
+.reglages-ecoute { display: grid; gap: 10px; }
+.reglages-ecoute[open] { display: grid; }
+.reglages-ecoute summary { min-height: 32px; font-weight: 600; cursor: pointer; }
+.reglages-ecoute:not([open]) > :not(summary) { display: none; }
+.ligne-reglage { display: grid; gap: 4px; font-size: .9rem; color: var(--doux); }
+.ligne-boutons { display: flex; gap: 8px; }
+.ligne-boutons button:first-child { flex: 1; }
+.choix { min-height: 44px; font-size: 1rem; border-radius: 10px; border: 1px solid rgba(0,0,0,.2); padding: 0 8px; background: var(--carte); color: var(--texte); }
+.ligne-case { display: flex; align-items: center; gap: 10px; min-height: 36px; }
+.ligne-case input { width: 22px; height: 22px; }
+.message-lecteur { margin: 0; min-height: 1.2em; font-weight: 600; color: var(--accent); }

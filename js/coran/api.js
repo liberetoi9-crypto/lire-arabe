@@ -1,6 +1,9 @@
 // Propriétaire : Claude Code. SEUL fichier du module Coran que les autres modules ont le droit d'importer.
 // Contrat (détails dans PROJET.md).
 import { chargerSourate, getManifeste } from './donnees.js';
+import { recitateursDisponibles, trouverRecitateur, construireUrl } from './recitateurs.js';
+import { fabriquerLecteur } from './lecteur.js';
+import { lire, ecrire } from '../core/stockage.js';
 
 const pasEncore = () => { throw new Error('pas encore fait'); };
 
@@ -61,11 +64,34 @@ export const SOURCE_TEXTE = {
 
 export const getTraduction = pasEncore;     // ('112:1') => Promise<{ texte, notes, source, version }> (C6)
 export const getSensMots = pasEncore;       // ('112:1') => Promise<[{ position, sens, langue: 'en', source }]> (C6)
-export const getRecitateurs = pasEncore;    // () => [{ id, nom, riwaya: 'hafs', actif }] (C4)
-export const getRecitateurActif = pasEncore;
-export const setRecitateurActif = pasEncore;
-export const urlAudio = pasEncore;          // ('112:1', id?) => URL everyayah (C4)
-export const creerLecteur = pasEncore;      // (C4)
+// ---- Récitateurs et sons (C4) ----
+// () => [{ id, nom, riwaya, principal }] : seulement les récitateurs autorisés (liste fermée, Hafs).
+export function getRecitateurs() {
+  return recitateursDisponibles().map(({ id, nom, riwaya, principal }) => ({ id, nom, riwaya, principal }));
+}
+
+// () => id du récitateur choisi (Husary mu'allim par défaut).
+export function getRecitateurActif() {
+  const id = lire('coran.recitateur', null);
+  const ok = recitateursDisponibles().some((r) => r.id === id);
+  return ok ? id : recitateursDisponibles().find((r) => r.principal).id;
+}
+
+export function setRecitateurActif(id) {
+  trouverRecitateur(id); // refuse un récitateur non autorisé
+  ecrire('coran.recitateur', id);
+}
+
+// ('112:1', id?) => URL everyayah du verset, pour le récitateur demandé (ou celui choisi).
+export function urlAudio(cle, id = getRecitateurActif()) {
+  return construireUrl(cle, trouverRecitateur(id));
+}
+
+// () => lecteur : jouer(cles, { fois, repeteApresMoi }), boucle(cle, fois), pause(), reprendre(), arreter(),
+//       vitesse('lent'|'normal'). Émet verset:debut, verset:fin, lecteur:a-toi, lecteur:fin, lecteur:erreur.
+export function creerLecteur() {
+  return fabriquerLecteur({ urlPour: (cle) => urlAudio(cle), recitateurPour: getRecitateurActif });
+}
 export const estMotFrequent = pasEncore;    // (texteMot) => boolean (C5)
 
 function gelerProfond(o) {
