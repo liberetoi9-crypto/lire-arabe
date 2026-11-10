@@ -54,3 +54,31 @@ test('clés de verset invalides refusées', () => {
     assert.throws(() => construireUrl(cle, RECITATEURS[0]), undefined, cle);
   }
 });
+
+// ---- Sons de Dosari à vérifier par Zakou (10/11) ----
+import { SOURATES_A_VERIFIER, etatVerification, recitateurEffectif } from '../../js/coran/recitateurs.js';
+
+test('les 11 sourates de Dosari à vérifier sont bien listées', () => {
+  assert.deepEqual([...SOURATES_A_VERIFIER.dosari], [72, 76, 88, 92, 93, 94, 96, 102, 104, 107, 109]);
+  assert.equal(SOURATES_A_VERIFIER.husary_muallim, undefined);
+});
+
+test('pas encore vérifié → Husary joue à la place de Dosari', () => {
+  for (const s of SOURATES_A_VERIFIER.dosari) {
+    assert.equal(etatVerification('dosari', s, {}), 'a-verifier');
+    assert.equal(recitateurEffectif('dosari', s, {}), 'husary_muallim', `sourate ${s}`);
+  }
+});
+
+test('« Vérifié, c\'est bon » → Dosari joue ; « Erreur » → Husary reste', () => {
+  assert.equal(recitateurEffectif('dosari', 93, { 'dosari:93': { etat: 'ok' } }), 'dosari');
+  assert.equal(recitateurEffectif('dosari', 94, { 'dosari:93': { etat: 'ok' } }), 'husary_muallim');
+  assert.equal(recitateurEffectif('dosari', 93, { 'dosari:93': { etat: 'erreur' } }), 'husary_muallim');
+});
+
+test('les autres sourates : le récitateur choisi joue normalement', () => {
+  assert.equal(recitateurEffectif('dosari', 112, {}), 'dosari');
+  assert.equal(recitateurEffectif('dosari', 1, {}), 'dosari');
+  assert.equal(recitateurEffectif('husary_muallim', 93, {}), 'husary_muallim');
+  assert.equal(etatVerification('dosari', 112, {}), 'sans-objet');
+});

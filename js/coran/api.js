@@ -1,7 +1,8 @@
 // Propriétaire : Claude Code. SEUL fichier du module Coran que les autres modules ont le droit d'importer.
 // Contrat (détails dans PROJET.md).
 import { chargerSourate, getManifeste } from './donnees.js';
-import { recitateursDisponibles, trouverRecitateur, construireUrl } from './recitateurs.js';
+import { recitateursDisponibles, trouverRecitateur, construireUrl,
+  SOURATES_A_VERIFIER, etatVerification, recitateurEffectif } from './recitateurs.js';
 import { fabriquerLecteur } from './lecteur.js';
 import { lire, ecrire } from '../core/stockage.js';
 
@@ -82,15 +83,53 @@ export function setRecitateurActif(id) {
   ecrire('coran.recitateur', id);
 }
 
-// ('112:1', id?) => URL everyayah du verset, pour le récitateur demandé (ou celui choisi).
-export function urlAudio(cle, id = getRecitateurActif()) {
-  return construireUrl(cle, trouverRecitateur(id));
+// ---- Sons à vérifier par Zakou ----
+const lireEtats = () => lire('coran.verifSons', {});
+const sourateDe = (cle) => Number(String(cle).split(':')[0]);
+
+// (n) => id du récitateur qui joue vraiment sur cette sourate (Husary tant que Dosari n'est pas vérifié ici).
+export function recitateurPourSourate(n) {
+  return recitateurEffectif(getRecitateurActif(), Number(n), lireEtats());
 }
 
-// () => lecteur : jouer(cles, { fois, repeteApresMoi }), boucle(cle, fois), pause(), reprendre(), arreter(),
-//       vitesse('lent'|'normal'). Émet verset:debut, verset:fin, lecteur:a-toi, lecteur:fin, lecteur:erreur.
-export function creerLecteur() {
-  return fabriquerLecteur({ urlPour: (cle) => urlAudio(cle), recitateurPour: getRecitateurActif });
+// () => [{ recitateur, nom, sourate, etat: 'a-verifier' | 'ok' | 'erreur', date }]
+export function getSonsAVerifier() {
+  const etats = lireEtats();
+  return Object.entries(SOURATES_A_VERIFIER).flatMap(([id, sourates]) => sourates.map((s) => ({
+    recitateur: id,
+    nom: trouverRecitateur(id).nom,
+    sourate: s,
+    etat: etatVerification(id, s, etats),
+    date: etats[`${id}:${s}`]?.date ?? null,
+  })));
+}
+
+// (id, sourate, 'ok' | 'erreur' | null) : réponse de Zakou après écoute (null = remettre « à vérifier »).
+export function noterVerificationSon(id, sourate, etat) {
+  if (etatVerification(id, sourate) === 'sans-objet') throw new Error('Rien à vérifier ici');
+  if (![null, 'ok', 'erreur'].includes(etat)) throw new Error('État inconnu');
+  const etats = lireEtats();
+  if (etat === null) delete etats[`${id}:${sourate}`];
+  else etats[`${id}:${sourate}`] = { etat, date: new Date().toISOString() };
+  ecrire('coran.verifSons', etats);
+}
+
+// ('112:1', id?) => URL everyayah du verset.
+//  - sans id : le récitateur qui joue vraiment sur cette sourate (choix de Zakou, sauf son pas encore vérifié) ;
+//  - avec id : exactement ce récitateur (sert à l'écran de vérification).
+export function urlAudio(cle, id = null) {
+  const choisi = id ?? recitateurPourSourate(sourateDe(cle));
+  return construireUrl(cle, trouverRecitateur(choisi));
+}
+
+// ({ recitateur? }) => lecteur : jouer(cles, { fois, repeteApresMoi }), boucle(cle, fois), pause(), reprendre(),
+//   arreter(), vitesse('lent'|'normal'). Émet verset:debut, verset:fin, lecteur:a-toi, lecteur:fin, lecteur:erreur.
+//   recitateur : forcer un récitateur (écran de vérification). Sinon : celui qui joue vraiment sur la sourate.
+export function creerLecteur({ recitateur = null } = {}) {
+  return fabriquerLecteur({
+    urlPour: (cle) => urlAudio(cle, recitateur),
+    recitateurPour: (cle) => recitateur ?? recitateurPourSourate(sourateDe(cle)),
+  });
 }
 export const estMotFrequent = pasEncore;    // (texteMot) => boolean (C5)
 

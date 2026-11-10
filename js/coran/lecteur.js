@@ -30,7 +30,7 @@ export function fabriquerLecteur({ urlPour, recitateurPour }) {
     if (!cle) return finir();
     audio.src = urlPour(cle);
     audio.playbackRate = VITESSES[vitesse];
-    emit('verset:debut', { cle, recitateur: recitateurPour() });
+    emit('verset:debut', { cle, recitateur: recitateurPour(cle) });
     const suivante = file[index + 1];
     if (suivante) prechargement.src = urlPour(suivante);
     audio.play().catch((e) => {

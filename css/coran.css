@@ -45,3 +45,14 @@
 .ligne-case { display: flex; align-items: center; gap: 10px; min-height: 36px; }
 .ligne-case input { width: 22px; height: 22px; }
 .message-lecteur { margin: 0; min-height: 1.2em; font-weight: 600; color: var(--accent); }
+/* Sons à vérifier (Dosari) */
+button.danger { background: #b03a2e; }
+.lien-verif { display: block; color: var(--texte); text-decoration: none; font-weight: 600; border-left: 5px solid #d68910; }
+.note-recitateur { margin: 4px 0; color: #9a5b00; font-weight: 600; }
+.note-recitateur:empty { display: none; }
+.pastille { grid-row: span 2; font-size: .8rem; padding: 4px 8px; border-radius: 999px; background: #fdebd0; color: #7e5109; }
+.etat-ok .pastille { background: #d5f5e3; color: #1d6b40; }
+.etat-erreur .pastille { background: #fadbd8; color: #922b21; }
+.retour { display: inline-block; margin: 4px 0; color: var(--accent); min-height: 32px; }
+.etat-actuel { font-weight: 600; }
+.reponse-verif { display: grid; gap: 10px; }

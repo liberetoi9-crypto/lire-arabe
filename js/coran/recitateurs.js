@@ -52,3 +52,24 @@ export function construireUrl(cle, recitateur) {
   if (recitateur.riwaya !== RIWAYA_TEXTE) throw new Error('Riwaya du son différente du texte : refusé');
   return `${BASE_AUDIO}${recitateur.dossier}/${String(s).padStart(3, '0')}${String(v).padStart(3, '0')}.mp3`;
 }
+
+// ---- Sons à vérifier à l'oreille par Zakou (10/11) ----
+// Sourates où les tests automatiques ne peuvent pas prouver que chaque son de Dosari est le bon verset
+// (versets de longueur trop égale, ou preuve faible : 93). Tant que Zakou n'a pas dit « Vérifié, c'est bon »,
+// c'est Husary qui joue à la place sur ces sourates.
+export const SOURATES_A_VERIFIER = Object.freeze({
+  dosari: Object.freeze([72, 76, 88, 92, 93, 94, 96, 102, 104, 107, 109]),
+});
+
+// etats : { 'dosari:93': { etat: 'ok' | 'erreur', date } }
+export function etatVerification(id, sourate, etats = {}) {
+  if (!SOURATES_A_VERIFIER[id]?.includes(sourate)) return 'sans-objet';
+  return etats[`${id}:${sourate}`]?.etat ?? 'a-verifier';
+}
+
+// Récitateur qui joue VRAIMENT pour cette sourate : le choisi, sauf s'il n'est pas confirmé ici → le principal.
+export function recitateurEffectif(idChoisi, sourate, etats = {}) {
+  const e = etatVerification(idChoisi, sourate, etats);
+  if (e === 'sans-objet' || e === 'ok') return idChoisi;
+  return RECITATEURS.find((r) => r.principal).id;
+}
