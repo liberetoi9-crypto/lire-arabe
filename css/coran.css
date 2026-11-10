@@ -1,2 +1,34 @@
-/* Propriétaire : Claude Code. Police uthmani officielle ajoutée à la tâche C3. */
+/* Propriétaire : Claude Code (C3). Police officielle KFGQPC Uthmanic Script HAFS v18 (servie par quran.com). */
+@font-face {
+  font-family: "UthmanicHafs";
+  src: url("https://verses.quran.foundation/fonts/quran/hafs/uthmanic_hafs/UthmanicHafs1Ver18.woff2") format("woff2");
+  font-display: swap;
+}
 .coran { font-family: "UthmanicHafs", "Geeza Pro", serif; }
+.verset { line-height: 2.3; word-spacing: .12em; margin: 0; }
+.basmala { text-align: center; margin: 8px 0 16px; }
+.titre-sourate { font-size: 1.2rem; margin: 8px 0; }
+.bloc-verset { background: var(--carte); border-radius: var(--rayon); padding: 12px 14px; margin: 10px 0; }
+.bloc-verset.signale { opacity: .55; outline: 2px dashed #c0392b; }
+.actions-verset { display: flex; gap: 8px; justify-content: flex-start; margin-top: 6px; }
+.actions-verset button { font-size: .85rem; min-height: 36px; }
+.num-verset {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 1.6em; height: 1.6em; padding: 0 .2em;
+  border: 1.5px solid var(--accent); border-radius: 50%;
+  font-size: .6em; color: var(--accent); vertical-align: middle;
+  font-family: -apple-system, sans-serif;
+}
+.mot:active { background: var(--surligne); }
+.liste-sourates { display: grid; gap: 8px; }
+.sourate-lien {
+  display: grid; grid-template-columns: 2.5em 1fr auto; grid-template-rows: auto auto;
+  align-items: center; gap: 2px 10px; margin: 0; color: var(--texte); text-decoration: none;
+}
+.sourate-lien .num { grid-row: span 2; font-weight: 700; color: var(--accent); font-size: 1.1rem; text-align: center; }
+.sourate-lien .nom { font-weight: 600; }
+.sourate-lien .nom-arabe { grid-row: span 2; font-size: 1.6rem; line-height: 1.4; }
+.sourate-lien .infos { color: var(--doux); font-size: .85rem; }
+.aide { color: var(--doux); }
+.credit { color: var(--doux); font-size: .8rem; margin-top: 24px; }
+.credit a { color: var(--accent); }
