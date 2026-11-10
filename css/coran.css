@@ -32,3 +32,4 @@
 .aide { color: var(--doux); }
 .credit { color: var(--doux); font-size: .8rem; margin-top: 24px; }
 .credit a { color: var(--accent); }
+.titre-section { font-size: 1.15rem; margin: 20px 0 2px; }

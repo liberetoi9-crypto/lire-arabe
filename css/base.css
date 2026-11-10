@@ -7,7 +7,7 @@
   --accent: #1f6f5c;
   --frequent: #b5651d;   /* couleur des petits mots fréquents */
   --surligne: #fbe7a1;   /* verset en cours de récitation */
-  --taille-arabe: 2rem;
+  --taille-arabe: 2.3rem;
   --rayon: 14px;
 }
 * { box-sizing: border-box; }

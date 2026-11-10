@@ -1,10 +1,13 @@
 {
  "source": "API quran.com v4 (text_uthmani, Hafs)",
  "controle": "Tanzil.net, Uthmani 1.1 (CC BY 3.0, https://tanzil.net) — comparé verset par verset",
- "date": "2026-11-10T09:18:24.820Z",
+ "date": "2026-11-10T09:32:32.205Z",
  "sourates": [
   {
    "numero": 1,
+   "nomArabe": "الفاتحة",
+   "nom": "Al-Fatihah",
+   "nomFr": "L'ouverture",
    "fichier": "sourates/001.json",
    "nbVersets": 7,
    "nbMots": 29,
@@ -12,6 +15,9 @@
   },
   {
    "numero": 2,
+   "nomArabe": "البقرة",
+   "nom": "Al-Baqarah",
+   "nomFr": "La vache",
    "fichier": "sourates/002.json",
    "nbVersets": 286,
    "nbMots": 6116,
@@ -19,6 +25,9 @@
   },
   {
    "numero": 3,
+   "nomArabe": "آل عمران",
+   "nom": "Ali 'Imran",
+   "nomFr": "La famille de 'imran",
    "fichier": "sourates/003.json",
    "nbVersets": 200,
    "nbMots": 3481,
@@ -26,6 +35,9 @@
   },
   {
    "numero": 4,
+   "nomArabe": "النساء",
+   "nom": "An-Nisa",
+   "nomFr": "Les femmes",
    "fichier": "sourates/004.json",
    "nbVersets": 176,
    "nbMots": 3747,
@@ -33,6 +45,9 @@
   },
   {
    "numero": 5,
+   "nomArabe": "المائدة",
+   "nom": "Al-Ma'idah",
+   "nomFr": "La table servie",
    "fichier": "sourates/005.json",
    "nbVersets": 120,
    "nbMots": 2804,
@@ -40,6 +55,9 @@
   },
   {
    "numero": 6,
+   "nomArabe": "الأنعام",
+   "nom": "Al-An'am",
+   "nomFr": "Les bestiaux",
    "fichier": "sourates/006.json",
    "nbVersets": 165,
    "nbMots": 3050,
@@ -47,6 +65,9 @@
   },
   {
    "numero": 7,
+   "nomArabe": "الأعراف",
+   "nom": "Al-A'raf",
+   "nomFr": "Al-A'raf",
    "fichier": "sourates/007.json",
    "nbVersets": 206,
    "nbMots": 3320,
@@ -54,6 +75,9 @@
   },
   {
    "numero": 8,
+   "nomArabe": "الأنفال",
+   "nom": "Al-Anfal",
+   "nomFr": "Le butin",
    "fichier": "sourates/008.json",
    "nbVersets": 75,
    "nbMots": 1233,
@@ -61,6 +85,9 @@
   },
   {
    "numero": 9,
+   "nomArabe": "التوبة",
+   "nom": "At-Tawbah",
+   "nomFr": "Le repentir",
    "fichier": "sourates/009.json",
    "nbVersets": 129,
    "nbMots": 2498,
@@ -68,6 +95,9 @@
   },
   {
    "numero": 10,
+   "nomArabe": "يونس",
+   "nom": "Yunus",
+   "nomFr": "Jonas",
    "fichier": "sourates/010.json",
    "nbVersets": 109,
    "nbMots": 1833,
@@ -75,6 +105,9 @@
   },
   {
    "numero": 11,
+   "nomArabe": "هود",
+   "nom": "Hud",
+   "nomFr": "Houd",
    "fichier": "sourates/011.json",
    "nbVersets": 123,
    "nbMots": 1917,
@@ -82,6 +115,9 @@
   },
   {
    "numero": 12,
+   "nomArabe": "يوسف",
+   "nom": "Yusuf",
+   "nomFr": "Joseph",
    "fichier": "sourates/012.json",
    "nbVersets": 111,
    "nbMots": 1777,
@@ -89,6 +125,9 @@
   },
   {
    "numero": 13,
+   "nomArabe": "الرعد",
+   "nom": "Ar-Ra'd",
+   "nomFr": "Le tonnerre",
    "fichier": "sourates/013.json",
    "nbVersets": 43,
    "nbMots": 853,
@@ -96,6 +135,9 @@
   },
   {
    "numero": 14,
+   "nomArabe": "ابراهيم",
+   "nom": "Ibrahim",
+   "nomFr": "Abraham",
    "fichier": "sourates/014.json",
    "nbVersets": 52,
    "nbMots": 830,
@@ -103,6 +145,9 @@
   },
   {
    "numero": 15,
+   "nomArabe": "الحجر",
+   "nom": "Al-Hijr",
+   "nomFr": "Al-Hijr",
    "fichier": "sourates/015.json",
    "nbVersets": 99,
    "nbMots": 655,
@@ -110,6 +155,9 @@
   },
   {
    "numero": 16,
+   "nomArabe": "النحل",
+   "nom": "An-Nahl",
+   "nomFr": "Les abeilles",
    "fichier": "sourates/016.json",
    "nbVersets": 128,
    "nbMots": 1844,
@@ -117,6 +165,9 @@
   },
   {
    "numero": 17,
+   "nomArabe": "الإسراء",
+   "nom": "Al-Isra",
+   "nomFr": "Le voyage nocturne",
    "fichier": "sourates/017.json",
    "nbVersets": 111,
    "nbMots": 1556,
@@ -124,6 +175,9 @@
   },
   {
    "numero": 18,
+   "nomArabe": "الكهف",
+   "nom": "Al-Kahf",
+   "nomFr": "La caverne",
    "fichier": "sourates/018.json",
    "nbVersets": 110,
    "nbMots": 1579,
@@ -131,6 +185,9 @@
   },
   {
    "numero": 19,
+   "nomArabe": "مريم",
+   "nom": "Maryam",
+   "nomFr": "Marie",
    "fichier": "sourates/019.json",
    "nbVersets": 98,
    "nbMots": 961,
@@ -138,6 +195,9 @@
   },
   {
    "numero": 20,
+   "nomArabe": "طه",
+   "nom": "Taha",
+   "nomFr": "Ta-Ha",
    "fichier": "sourates/020.json",
    "nbVersets": 135,
    "nbMots": 1335,
@@ -145,6 +205,9 @@
   },
   {
    "numero": 21,
+   "nomArabe": "الأنبياء",
+   "nom": "Al-Anbya",
+   "nomFr": "Les prophètes",
    "fichier": "sourates/021.json",
    "nbVersets": 112,
    "nbMots": 1169,
@@ -152,6 +215,9 @@
   },
   {
    "numero": 22,
+   "nomArabe": "الحج",
+   "nom": "Al-Hajj",
+   "nomFr": "Le pèlerinage",
    "fichier": "sourates/022.json",
    "nbVersets": 78,
    "nbMots": 1274,
@@ -159,6 +225,9 @@
   },
   {
    "numero": 23,
+   "nomArabe": "المؤمنون",
+   "nom": "Al-Mu'minun",
+   "nomFr": "Les croyants",
    "fichier": "sourates/023.json",
    "nbVersets": 118,
    "nbMots": 1050,
@@ -166,6 +235,9 @@
   },
   {
    "numero": 24,
+   "nomArabe": "النور",
+   "nom": "An-Nur",
+   "nomFr": "La lumière",
    "fichier": "sourates/024.json",
    "nbVersets": 64,
    "nbMots": 1316,
@@ -173,6 +245,9 @@
   },
   {
    "numero": 25,
+   "nomArabe": "الفرقان",
+   "nom": "Al-Furqan",
+   "nomFr": "Le discernement",
    "fichier": "sourates/025.json",
    "nbVersets": 77,
    "nbMots": 893,
@@ -180,6 +255,9 @@
   },
   {
    "numero": 26,
+   "nomArabe": "الشعراء",
+   "nom": "Ash-Shu'ara",
+   "nomFr": "Les poètes",
    "fichier": "sourates/026.json",
    "nbVersets": 227,
    "nbMots": 1318,
@@ -187,6 +265,9 @@
   },
   {
    "numero": 27,
+   "nomArabe": "النمل",
+   "nom": "An-Naml",
+   "nomFr": "Les fourmis",
    "fichier": "sourates/027.json",
    "nbVersets": 93,
    "nbMots": 1151,
@@ -194,6 +275,9 @@
   },
   {
    "numero": 28,
+   "nomArabe": "القصص",
+   "nom": "Al-Qasas",
+   "nomFr": "Le récit",
    "fichier": "sourates/028.json",
    "nbVersets": 88,
    "nbMots": 1430,
@@ -201,6 +285,9 @@
   },
   {
    "numero": 29,
+   "nomArabe": "العنكبوت",
+   "nom": "Al-'Ankabut",
+   "nomFr": "L'araignée",
    "fichier": "sourates/029.json",
    "nbVersets": 69,
    "nbMots": 976,
@@ -208,6 +295,9 @@
   },
   {
    "numero": 30,
+   "nomArabe": "الروم",
+   "nom": "Ar-Rum",
+   "nomFr": "Les romains",
    "fichier": "sourates/030.json",
    "nbVersets": 60,
    "nbMots": 817,
@@ -215,6 +305,9 @@
   },
   {
    "numero": 31,
+   "nomArabe": "لقمان",
+   "nom": "Luqman",
+   "nomFr": "Louqman",
    "fichier": "sourates/031.json",
    "nbVersets": 34,
    "nbMots": 546,
@@ -222,6 +315,9 @@
   },
   {
    "numero": 32,
+   "nomArabe": "السجدة",
+   "nom": "As-Sajdah",
+   "nomFr": "La prosternation",
    "fichier": "sourates/032.json",
    "nbVersets": 30,
    "nbMots": 372,
@@ -229,6 +325,9 @@
   },
   {
    "numero": 33,
+   "nomArabe": "الأحزاب",
+   "nom": "Al-Ahzab",
+   "nomFr": "Les coalisés",
    "fichier": "sourates/033.json",
    "nbVersets": 73,
    "nbMots": 1287,
@@ -236,6 +335,9 @@
   },
   {
    "numero": 34,
+   "nomArabe": "سبإ",
+   "nom": "Saba",
+   "nomFr": "Saba'",
    "fichier": "sourates/034.json",
    "nbVersets": 54,
    "nbMots": 883,
@@ -243,6 +345,9 @@
   },
   {
    "numero": 35,
+   "nomArabe": "فاطر",
+   "nom": "Fatir",
+   "nomFr": "Le Créateur",
    "fichier": "sourates/035.json",
    "nbVersets": 45,
    "nbMots": 775,
@@ -250,6 +355,9 @@
   },
   {
    "numero": 36,
+   "nomArabe": "يس",
+   "nom": "Ya-Sin",
+   "nomFr": "Ya-Sin",
    "fichier": "sourates/036.json",
    "nbVersets": 83,
    "nbMots": 725,
@@ -257,6 +365,9 @@
   },
   {
    "numero": 37,
+   "nomArabe": "الصافات",
+   "nom": "As-Saffat",
+   "nomFr": "Les rangés",
    "fichier": "sourates/037.json",
    "nbVersets": 182,
    "nbMots": 860,
@@ -264,6 +375,9 @@
   },
   {
    "numero": 38,
+   "nomArabe": "ص",
+   "nom": "Sad",
+   "nomFr": "Sad",
    "fichier": "sourates/038.json",
    "nbVersets": 88,
    "nbMots": 733,
@@ -271,6 +385,9 @@
   },
   {
    "numero": 39,
+   "nomArabe": "الزمر",
+   "nom": "Az-Zumar",
+   "nomFr": "Les groupes",
    "fichier": "sourates/039.json",
    "nbVersets": 75,
    "nbMots": 1172,
@@ -278,6 +395,9 @@
   },
   {
    "numero": 40,
+   "nomArabe": "غافر",
+   "nom": "Ghafir",
+   "nomFr": "Le Pardonneur",
    "fichier": "sourates/040.json",
    "nbVersets": 85,
    "nbMots": 1219,
@@ -285,6 +405,9 @@
   },
   {
    "numero": 41,
+   "nomArabe": "فصلت",
+   "nom": "Fussilat",
+   "nomFr": "Les versets explicites",
    "fichier": "sourates/041.json",
    "nbVersets": 54,
    "nbMots": 794,
@@ -292,6 +415,9 @@
   },
   {
    "numero": 42,
+   "nomArabe": "الشورى",
+   "nom": "Ash-Shuraa",
+   "nomFr": "La concertation",
    "fichier": "sourates/042.json",
    "nbVersets": 53,
    "nbMots": 860,
@@ -299,6 +425,9 @@
   },
   {
    "numero": 43,
+   "nomArabe": "الزخرف",
+   "nom": "Az-Zukhruf",
+   "nomFr": "L'ornement",
    "fichier": "sourates/043.json",
    "nbVersets": 89,
    "nbMots": 830,
@@ -306,6 +435,9 @@
   },
   {
    "numero": 44,
+   "nomArabe": "الدخان",
+   "nom": "Ad-Dukhan",
+   "nomFr": "La fumée",
    "fichier": "sourates/044.json",
    "nbVersets": 59,
    "nbMots": 346,
@@ -313,6 +445,9 @@
   },
   {
    "numero": 45,
+   "nomArabe": "الجاثية",
+   "nom": "Al-Jathiyah",
+   "nomFr": "L'agenouillée",
    "fichier": "sourates/045.json",
    "nbVersets": 37,
    "nbMots": 488,
@@ -320,6 +455,9 @@
   },
   {
    "numero": 46,
+   "nomArabe": "الأحقاف",
+   "nom": "Al-Ahqaf",
+   "nomFr": "Al-Ahqaf",
    "fichier": "sourates/046.json",
    "nbVersets": 35,
    "nbMots": 643,
@@ -327,6 +465,9 @@
   },
   {
    "numero": 47,
+   "nomArabe": "محمد",
+   "nom": "Muhammad",
+   "nomFr": "Mouhammad",
    "fichier": "sourates/047.json",
    "nbVersets": 38,
    "nbMots": 539,
@@ -334,6 +475,9 @@
   },
   {
    "numero": 48,
+   "nomArabe": "الفتح",
+   "nom": "Al-Fath",
+   "nomFr": "La victoire éclatante",
    "fichier": "sourates/048.json",
    "nbVersets": 29,
    "nbMots": 560,
@@ -341,6 +485,9 @@
   },
   {
    "numero": 49,
+   "nomArabe": "الحجرات",
+   "nom": "Al-Hujurat",
+   "nomFr": "Les appartements",
    "fichier": "sourates/049.json",
    "nbVersets": 18,
    "nbMots": 347,
@@ -348,6 +495,9 @@
   },
   {
    "numero": 50,
+   "nomArabe": "ق",
+   "nom": "Qaf",
+   "nomFr": "Qaf",
    "fichier": "sourates/050.json",
    "nbVersets": 45,
    "nbMots": 373,
@@ -355,6 +505,9 @@
   },
   {
    "numero": 51,
+   "nomArabe": "الذاريات",
+   "nom": "Adh-Dhariyat",
+   "nomFr": "Qui éparpillent",
    "fichier": "sourates/051.json",
    "nbVersets": 60,
    "nbMots": 360,
@@ -362,6 +515,9 @@
   },
   {
    "numero": 52,
+   "nomArabe": "الطور",
+   "nom": "At-Tur",
+   "nomFr": "Le mont At-Tour",
    "fichier": "sourates/052.json",
    "nbVersets": 49,
    "nbMots": 312,
@@ -369,6 +525,9 @@
   },
   {
    "numero": 53,
+   "nomArabe": "النجم",
+   "nom": "An-Najm",
+   "nomFr": "L'étoile",
    "fichier": "sourates/053.json",
    "nbVersets": 62,
    "nbMots": 360,
@@ -376,6 +535,9 @@
   },
   {
    "numero": 54,
+   "nomArabe": "القمر",
+   "nom": "Al-Qamar",
+   "nomFr": "La lune",
    "fichier": "sourates/054.json",
    "nbVersets": 55,
    "nbMots": 342,
@@ -383,6 +545,9 @@
   },
   {
    "numero": 55,
+   "nomArabe": "الرحمن",
+   "nom": "Ar-Rahman",
+   "nomFr": "Le Tout Miséricordieux",
    "fichier": "sourates/055.json",
    "nbVersets": 78,
    "nbMots": 351,
@@ -390,6 +555,9 @@
   },
   {
    "numero": 56,
+   "nomArabe": "الواقعة",
+   "nom": "Al-Waqi'ah",
+   "nomFr": "L'inévitable",
    "fichier": "sourates/056.json",
    "nbVersets": 96,
    "nbMots": 379,
@@ -397,6 +565,9 @@
   },
   {
    "numero": 57,
+   "nomArabe": "الحديد",
+   "nom": "Al-Hadid",
+   "nomFr": "Le fer",
    "fichier": "sourates/057.json",
    "nbVersets": 29,
    "nbMots": 574,
@@ -404,6 +575,9 @@
   },
   {
    "numero": 58,
+   "nomArabe": "المجادلة",
+   "nom": "Al-Mujadila",
+   "nomFr": "La discussion",
    "fichier": "sourates/058.json",
    "nbVersets": 22,
    "nbMots": 472,
@@ -411,6 +585,9 @@
   },
   {
    "numero": 59,
+   "nomArabe": "الحشر",
+   "nom": "Al-Hashr",
+   "nomFr": "L'exode",
    "fichier": "sourates/059.json",
    "nbVersets": 24,
    "nbMots": 445,
@@ -418,6 +595,9 @@
   },
   {
    "numero": 60,
+   "nomArabe": "الممتحنة",
+   "nom": "Al-Mumtahanah",
+   "nomFr": "L'éprouvée",
    "fichier": "sourates/060.json",
    "nbVersets": 13,
    "nbMots": 348,
@@ -425,6 +605,9 @@
   },
   {
    "numero": 61,
+   "nomArabe": "الصف",
+   "nom": "As-Saf",
+   "nomFr": "Le rang",
    "fichier": "sourates/061.json",
    "nbVersets": 14,
    "nbMots": 221,
@@ -432,6 +615,9 @@
   },
   {
    "numero": 62,
+   "nomArabe": "الجمعة",
+   "nom": "Al-Jumu'ah",
+   "nomFr": "Le vendredi",
    "fichier": "sourates/062.json",
    "nbVersets": 11,
    "nbMots": 175,
@@ -439,6 +625,9 @@
   },
   {
    "numero": 63,
+   "nomArabe": "المنافقون",
+   "nom": "Al-Munafiqun",
+   "nomFr": "Les hypocrites",
    "fichier": "sourates/063.json",
    "nbVersets": 11,
    "nbMots": 180,
@@ -446,6 +635,9 @@
   },
   {
    "numero": 64,
+   "nomArabe": "التغابن",
+   "nom": "At-Taghabun",
+   "nomFr": "La grande perte",
    "fichier": "sourates/064.json",
    "nbVersets": 18,
    "nbMots": 241,
@@ -453,6 +645,9 @@
   },
   {
    "numero": 65,
+   "nomArabe": "الطلاق",
+   "nom": "At-Talaq",
+   "nomFr": "Le divorce",
    "fichier": "sourates/065.json",
    "nbVersets": 12,
    "nbMots": 287,
@@ -460,6 +655,9 @@
   },
   {
    "numero": 66,
+   "nomArabe": "التحريم",
+   "nom": "At-Tahrim",
+   "nomFr": "L'interdiction",
    "fichier": "sourates/066.json",
    "nbVersets": 12,
    "nbMots": 249,
@@ -467,6 +665,9 @@
   },
   {
    "numero": 67,
+   "nomArabe": "الملك",
+   "nom": "Al-Mulk",
+   "nomFr": "La royauté",
    "fichier": "sourates/067.json",
    "nbVersets": 30,
    "nbMots": 333,
@@ -474,6 +675,9 @@
   },
   {
    "numero": 68,
+   "nomArabe": "القلم",
+   "nom": "Al-Qalam",
+   "nomFr": "La plume",
    "fichier": "sourates/068.json",
    "nbVersets": 52,
    "nbMots": 300,
@@ -481,6 +685,9 @@
   },
   {
    "numero": 69,
+   "nomArabe": "الحاقة",
+   "nom": "Al-Haqqah",
+   "nomFr": "L'inéluctable",
    "fichier": "sourates/069.json",
    "nbVersets": 52,
    "nbMots": 258,
@@ -488,6 +695,9 @@
   },
   {
    "numero": 70,
+   "nomArabe": "المعارج",
+   "nom": "Al-Ma'arij",
+   "nomFr": "Les voies d'ascension",
    "fichier": "sourates/070.json",
    "nbVersets": 44,
    "nbMots": 217,
@@ -495,6 +705,9 @@
   },
   {
    "numero": 71,
+   "nomArabe": "نوح",
+   "nom": "Nuh",
+   "nomFr": "Noé",
    "fichier": "sourates/071.json",
    "nbVersets": 28,
    "nbMots": 226,
@@ -502,6 +715,9 @@
   },
   {
    "numero": 72,
+   "nomArabe": "الجن",
+   "nom": "Al-Jinn",
+   "nomFr": "Les djinns",
    "fichier": "sourates/072.json",
    "nbVersets": 28,
    "nbMots": 285,
@@ -509,6 +725,9 @@
   },
   {
    "numero": 73,
+   "nomArabe": "المزمل",
+   "nom": "Al-Muzzammil",
+   "nomFr": "L'enveloppé",
    "fichier": "sourates/073.json",
    "nbVersets": 20,
    "nbMots": 199,
@@ -516,6 +735,9 @@
   },
   {
    "numero": 74,
+   "nomArabe": "المدثر",
+   "nom": "Al-Muddaththir",
+   "nomFr": "Celui qui se couvre",
    "fichier": "sourates/074.json",
    "nbVersets": 56,
    "nbMots": 255,
@@ -523,6 +745,9 @@
   },
   {
    "numero": 75,
+   "nomArabe": "القيامة",
+   "nom": "Al-Qiyamah",
+   "nomFr": "La résurrection",
    "fichier": "sourates/075.json",
    "nbVersets": 40,
    "nbMots": 164,
@@ -530,6 +755,9 @@
   },
   {
    "numero": 76,
+   "nomArabe": "الانسان",
+   "nom": "Al-Insan",
+   "nomFr": "L'homme",
    "fichier": "sourates/076.json",
    "nbVersets": 31,
    "nbMots": 243,
@@ -537,6 +765,9 @@
   },
   {
    "numero": 77,
+   "nomArabe": "المرسلات",
+   "nom": "Al-Mursalat",
+   "nomFr": "Les envoyés",
    "fichier": "sourates/077.json",
    "nbVersets": 50,
    "nbMots": 181,
@@ -544,6 +775,9 @@
   },
   {
    "numero": 78,
+   "nomArabe": "النبإ",
+   "nom": "An-Naba",
+   "nomFr": "La nouvelle",
    "fichier": "sourates/078.json",
    "nbVersets": 40,
    "nbMots": 173,
@@ -551,6 +785,9 @@
   },
   {
    "numero": 79,
+   "nomArabe": "النازعات",
+   "nom": "An-Nazi'at",
+   "nomFr": "Ceux qui arrachent",
    "fichier": "sourates/079.json",
    "nbVersets": 46,
    "nbMots": 179,
@@ -558,6 +795,9 @@
   },
   {
    "numero": 80,
+   "nomArabe": "عبس",
+   "nom": "'Abasa",
+   "nomFr": "Il s'est renfrogné",
    "fichier": "sourates/080.json",
    "nbVersets": 42,
    "nbMots": 133,
@@ -565,6 +805,9 @@
   },
   {
    "numero": 81,
+   "nomArabe": "التكوير",
+   "nom": "At-Takwir",
+   "nomFr": "L'obscurcissement",
    "fichier": "sourates/081.json",
    "nbVersets": 29,
    "nbMots": 104,
@@ -572,6 +815,9 @@
   },
   {
    "numero": 82,
+   "nomArabe": "الإنفطار",
+   "nom": "Al-Infitar",
+   "nomFr": "La rupture",
    "fichier": "sourates/082.json",
    "nbVersets": 19,
    "nbMots": 80,
@@ -579,6 +825,9 @@
   },
   {
    "numero": 83,
+   "nomArabe": "المطففين",
+   "nom": "Al-Mutaffifin",
+   "nomFr": "Les fraudeurs",
    "fichier": "sourates/083.json",
    "nbVersets": 36,
    "nbMots": 169,
@@ -586,6 +835,9 @@
   },
   {
    "numero": 84,
+   "nomArabe": "الإنشقاق",
+   "nom": "Al-Inshiqaq",
+   "nomFr": "La déchirure",
    "fichier": "sourates/084.json",
    "nbVersets": 25,
    "nbMots": 107,
@@ -593,6 +845,9 @@
   },
   {
    "numero": 85,
+   "nomArabe": "البروج",
+   "nom": "Al-Buruj",
+   "nomFr": "Les constellations",
    "fichier": "sourates/085.json",
    "nbVersets": 22,
    "nbMots": 109,
@@ -600,6 +855,9 @@
   },
   {
    "numero": 86,
+   "nomArabe": "الطارق",
+   "nom": "At-Tariq",
+   "nomFr": "L'astre nocturne",
    "fichier": "sourates/086.json",
    "nbVersets": 17,
    "nbMots": 61,
@@ -607,6 +865,9 @@
   },
   {
    "numero": 87,
+   "nomArabe": "الأعلى",
+   "nom": "Al-A'la",
+   "nomFr": "Le Très-Haut",
    "fichier": "sourates/087.json",
    "nbVersets": 19,
    "nbMots": 72,
@@ -614,6 +875,9 @@
   },
   {
    "numero": 88,
+   "nomArabe": "الغاشية",
+   "nom": "Al-Ghashiyah",
+   "nomFr": "L'enveloppante",
    "fichier": "sourates/088.json",
    "nbVersets": 26,
    "nbMots": 92,
@@ -621,6 +885,9 @@
   },
   {
    "numero": 89,
+   "nomArabe": "الفجر",
+   "nom": "Al-Fajr",
+   "nomFr": "L'aube",
    "fichier": "sourates/089.json",
    "nbVersets": 30,
    "nbMots": 137,
@@ -628,6 +895,9 @@
   },
   {
    "numero": 90,
+   "nomArabe": "البلد",
+   "nom": "Al-Balad",
+   "nomFr": "La cité",
    "fichier": "sourates/090.json",
    "nbVersets": 20,
    "nbMots": 82,
@@ -635,6 +905,9 @@
   },
   {
    "numero": 91,
+   "nomArabe": "الشمس",
+   "nom": "Ash-Shams",
+   "nomFr": "Le soleil",
    "fichier": "sourates/091.json",
    "nbVersets": 15,
    "nbMots": 54,
@@ -642,6 +915,9 @@
   },
   {
    "numero": 92,
+   "nomArabe": "الليل",
+   "nom": "Al-Layl",
+   "nomFr": "La nuit",
    "fichier": "sourates/092.json",
    "nbVersets": 21,
    "nbMots": 71,
@@ -649,6 +925,9 @@
   },
   {
    "numero": 93,
+   "nomArabe": "الضحى",
+   "nom": "Ad-Duhaa",
+   "nomFr": "Le jour montant",
    "fichier": "sourates/093.json",
    "nbVersets": 11,
    "nbMots": 40,
@@ -656,6 +935,9 @@
   },
   {
    "numero": 94,
+   "nomArabe": "الشرح",
+   "nom": "Ash-Sharh",
+   "nomFr": "L'ouverture",
    "fichier": "sourates/094.json",
    "nbVersets": 8,
    "nbMots": 27,
@@ -663,6 +945,9 @@
   },
   {
    "numero": 95,
+   "nomArabe": "التين",
+   "nom": "At-Tin",
+   "nomFr": "Les figues",
    "fichier": "sourates/095.json",
    "nbVersets": 8,
    "nbMots": 34,
@@ -670,6 +955,9 @@
   },
   {
    "numero": 96,
+   "nomArabe": "العلق",
+   "nom": "Al-'Alaq",
+   "nomFr": "L'adhérence",
    "fichier": "sourates/096.json",
    "nbVersets": 19,
    "nbMots": 72,
@@ -677,6 +965,9 @@
   },
   {
    "numero": 97,
+   "nomArabe": "القدر",
+   "nom": "Al-Qadr",
+   "nomFr": "La destinée",
    "fichier": "sourates/097.json",
    "nbVersets": 5,
    "nbMots": 30,
@@ -684,6 +975,9 @@
   },
   {
    "numero": 98,
+   "nomArabe": "البينة",
+   "nom": "Al-Bayyinah",
+   "nomFr": "La preuve",
    "fichier": "sourates/098.json",
    "nbVersets": 8,
    "nbMots": 94,
@@ -691,6 +985,9 @@
   },
   {
    "numero": 99,
+   "nomArabe": "الزلزلة",
+   "nom": "Az-Zalzalah",
+   "nomFr": "Le séisme",
    "fichier": "sourates/099.json",
    "nbVersets": 8,
    "nbMots": 36,
@@ -698,6 +995,9 @@
   },
   {
    "numero": 100,
+   "nomArabe": "العاديات",
+   "nom": "Al-'Adiyat",
+   "nomFr": "Les coursiers",
    "fichier": "sourates/100.json",
    "nbVersets": 11,
    "nbMots": 40,
@@ -705,6 +1005,9 @@
   },
   {
    "numero": 101,
+   "nomArabe": "القارعة",
+   "nom": "Al-Qari'ah",
+   "nomFr": "Le fracas",
    "fichier": "sourates/101.json",
    "nbVersets": 11,
    "nbMots": 36,
@@ -712,6 +1015,9 @@
   },
   {
    "numero": 102,
+   "nomArabe": "التكاثر",
+   "nom": "At-Takathur",
+   "nomFr": "La course aux richesses",
    "fichier": "sourates/102.json",
    "nbVersets": 8,
    "nbMots": 28,
@@ -719,6 +1025,9 @@
   },
   {
    "numero": 103,
+   "nomArabe": "العصر",
+   "nom": "Al-'Asr",
+   "nomFr": "Le temps",
    "fichier": "sourates/103.json",
    "nbVersets": 3,
    "nbMots": 14,
@@ -726,6 +1035,9 @@
   },
   {
    "numero": 104,
+   "nomArabe": "الهمزة",
+   "nom": "Al-Humazah",
+   "nomFr": "Les calomniateurs",
    "fichier": "sourates/104.json",
    "nbVersets": 9,
    "nbMots": 33,
@@ -733,6 +1045,9 @@
   },
   {
    "numero": 105,
+   "nomArabe": "الفيل",
+   "nom": "Al-Fil",
+   "nomFr": "L'éléphant",
    "fichier": "sourates/105.json",
    "nbVersets": 5,
    "nbMots": 23,
@@ -740,6 +1055,9 @@
   },
   {
    "numero": 106,
+   "nomArabe": "قريش",
+   "nom": "Quraysh",
+   "nomFr": "Les Quraysh",
    "fichier": "sourates/106.json",
    "nbVersets": 4,
    "nbMots": 17,
@@ -747,6 +1065,9 @@
   },
   {
    "numero": 107,
+   "nomArabe": "الماعون",
+   "nom": "Al-Ma'un",
+   "nomFr": "L'entraide",
    "fichier": "sourates/107.json",
    "nbVersets": 7,
    "nbMots": 25,
@@ -754,6 +1075,9 @@
   },
   {
    "numero": 108,
+   "nomArabe": "الكوثر",
+   "nom": "Al-Kawthar",
+   "nomFr": "L'abondance",
    "fichier": "sourates/108.json",
    "nbVersets": 3,
    "nbMots": 10,
@@ -761,6 +1085,9 @@
   },
   {
    "numero": 109,
+   "nomArabe": "الكافرون",
+   "nom": "Al-Kafirun",
+   "nomFr": "Les mécréants",
    "fichier": "sourates/109.json",
    "nbVersets": 6,
    "nbMots": 26,
@@ -768,6 +1095,9 @@
   },
   {
    "numero": 110,
+   "nomArabe": "النصر",
+   "nom": "An-Nasr",
+   "nomFr": "Le secours",
    "fichier": "sourates/110.json",
    "nbVersets": 3,
    "nbMots": 19,
@@ -775,6 +1105,9 @@
   },
   {
    "numero": 111,
+   "nomArabe": "المسد",
+   "nom": "Al-Masad",
+   "nomFr": "Les fibres",
    "fichier": "sourates/111.json",
    "nbVersets": 5,
    "nbMots": 23,
@@ -782,6 +1115,9 @@
   },
   {
    "numero": 112,
+   "nomArabe": "الإخلاص",
+   "nom": "Al-Ikhlas",
+   "nomFr": "La sincérité",
    "fichier": "sourates/112.json",
    "nbVersets": 4,
    "nbMots": 15,
@@ -789,6 +1125,9 @@
   },
   {
    "numero": 113,
+   "nomArabe": "الفلق",
+   "nom": "Al-Falaq",
+   "nomFr": "L'aube naissante",
    "fichier": "sourates/113.json",
    "nbVersets": 5,
    "nbMots": 23,
@@ -796,6 +1135,9 @@
   },
   {
    "numero": 114,
+   "nomArabe": "الناس",
+   "nom": "An-Nas",
+   "nomFr": "Les humains",
    "fichier": "sourates/114.json",
    "nbVersets": 6,
    "nbMots": 20,

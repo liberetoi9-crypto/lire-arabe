@@ -119,7 +119,7 @@ for (const ch of chapters) {
   const contenu = JSON.stringify(donnees);
   const fichier = `sourates/${String(n).padStart(3, '0')}.json`;
   await writeFile(new URL(fichier, DOSSIER), contenu);
-  manifeste.sourates.push({ numero: n, fichier, nbVersets: ch.verses_count, nbMots: donnees.nbMots, sha256: empreinte(contenu) });
+  manifeste.sourates.push({ numero: n, nomArabe: donnees.nomArabe, nom: donnees.nom, nomFr: donnees.nomFr, fichier, nbVersets: ch.verses_count, nbMots: donnees.nbMots, sha256: empreinte(contenu) });
   process.stdout.write(`${n} `);
 }
 console.log();

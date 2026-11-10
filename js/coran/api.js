@@ -22,18 +22,36 @@ export async function getVerset(cle) {
   return v;
 }
 
-// () => Promise<[numéros]> : sourates du Juz Amma, de la plus courte à la plus longue (nombre de mots).
+// Tri « de la plus courte à la plus longue » : nombre de mots du texte officiel,
+// puis nombre de versets, puis numéro (égalités : la sourate de numéro le plus grand d'abord, comme dans le mushaf lu à l'envers).
+const parTaille = (a, b) => a.nbMots - b.nbMots || a.nbVersets - b.nbVersets || b.numero - a.numero;
+
+// () => Promise<[numéros]> : sourates du Juz Amma, de la plus courte à la plus longue.
 export async function ordreJuzAmma() {
   const { sourates } = await getManifeste();
-  return sourates
-    .filter((s) => JUZ_AMMA.includes(s.numero))
-    .sort((a, b) => a.nbMots - b.nbMots || a.nbVersets - b.nbVersets || b.numero - a.numero)
-    .map((s) => s.numero);
+  return sourates.filter((s) => JUZ_AMMA.includes(s.numero)).sort(parTaille).map((s) => s.numero);
+}
+
+// () => Promise<[numéros]> : les 114 sourates, de la plus courte à la plus longue.
+export async function ordreParMots() {
+  const { sourates } = await getManifeste();
+  return [...sourates].sort(parTaille).map((s) => s.numero);
+}
+
+// () => Promise<[numéros]> : ordre du parcours de mémorisation (choix de Zakou, 10/11) :
+// Fatiha, puis Juz Amma court → long, puis le reste court → long.
+export async function ordreMemorisation() {
+  const juz = await ordreJuzAmma();
+  const reste = (await ordreParMots()).filter((n) => n !== 1 && !JUZ_AMMA.includes(n));
+  const ordre = [1, ...juz, ...reste];
+  if (ordre.length !== 114 || new Set(ordre).size !== 114) throw new Error('Contrôle : ordre de mémorisation incomplet');
+  return ordre;
 }
 
 // Infos légères de toutes les sourates (sans le texte), pour les listes.
 export async function getListeSourates() {
-  return (await getManifeste()).sourates.map(({ numero, nbVersets, nbMots }) => ({ numero, nbVersets, nbMots }));
+  return (await getManifeste()).sourates.map(({ numero, nomArabe, nom, nomFr, nbVersets, nbMots }) => (
+    { numero, nomArabe, nom, nomFr, nbVersets, nbMots }));
 }
 
 export const SOURCE_TEXTE = {

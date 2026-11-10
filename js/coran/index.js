@@ -2,7 +2,7 @@
 import { enregistrerEcran } from '../core/routeur.js';
 import { emit } from '../core/bus.js';
 import { boutonSignaler, estSignale } from '../core/signalement.js';
-import { getSourate, getVerset, ordreJuzAmma, SOURCE_TEXTE } from './api.js';
+import { getSourate, getVerset, getListeSourates, ordreJuzAmma, SOURCE_TEXTE } from './api.js';
 
 const el = (tag, props = {}, ...enfants) => {
   const e = Object.assign(document.createElement(tag), props);
@@ -21,18 +21,31 @@ enregistrerEcran('coran', {
 });
 
 async function afficherListe(conteneur) {
-  conteneur.append(el('p', { className: 'aide', textContent: 'Choisis une sourate. Elles sont rangées de la plus courte à la plus longue.' }));
+  const juz = await ordreJuzAmma();
+  const toutes = Array.from({ length: 114 }, (_, i) => i + 1);
+  conteneur.append(
+    el('h2', { className: 'titre-section', textContent: 'Juz Amma' }),
+    el('p', { className: 'aide', textContent: 'De la plus courte à la plus longue.' }),
+    await listeSourates([1, ...juz]),
+    el('h2', { className: 'titre-section', textContent: 'Les 114 sourates' }),
+    el('p', { className: 'aide', textContent: "Dans l'ordre du Coran." }),
+    await listeSourates(toutes),
+    credit(),
+  );
+}
+
+async function listeSourates(numeros) {
   const liste = el('div', { className: 'liste-sourates' });
-  for (const n of [1, ...(await ordreJuzAmma())]) {
-    const s = await getSourate(n);
-    liste.append(el('a', { className: 'carte sourate-lien', href: `#/coran/${n}` },
-      el('span', { className: 'num', textContent: n }),
-      el('span', { className: 'nom', textContent: `${s.nom}${s.nomFr ? ' — ' + s.nomFr : ''}` }),
+  const infos = new Map((await getListeSourates()).map((s) => [s.numero, s]));
+  for (const s of numeros.map((n) => infos.get(n))) {
+    liste.append(el('a', { className: 'carte sourate-lien', href: `#/coran/${s.numero}` },
+      el('span', { className: 'num', textContent: s.numero }),
+      el('span', { className: 'nom', textContent: s.nom }),
       el('span', { className: 'arabe coran nom-arabe', lang: 'ar', dir: 'rtl', textContent: s.nomArabe }),
-      el('span', { className: 'infos', textContent: `${s.nbVersets} versets` }),
+      el('span', { className: 'infos', textContent: `${s.nomFr ? s.nomFr + ' · ' : ''}${s.nbVersets} versets` }),
     ));
   }
-  conteneur.append(liste, credit());
+  return liste;
 }
 
 async function afficherSourate(conteneur, n) {
