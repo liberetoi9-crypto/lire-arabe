@@ -1,7 +1,12 @@
-// Propriétaire : Claude Code (C3). Écrans : #/coran (liste) et #/coran/112 (lecture).
-import { enregistrerEcran } from '../core/routeur.js';
+// Propriétaire : Claude Code (C3, C4, C6, C12 ; nouvelle mise en page C14).
+// Écrans : #/coran (liste) · #/coran/toutes (114) · #/coran/112[/verset[/mot]] (lecture)
+//          #/coran/verifier · #/coran/verifier/93 (sons à vérifier)
+// Le texte arabe vient TOUJOURS des fichiers officiels : ici on ne fait que l'afficher.
+import { enregistrerEcran, changerTitre, rafraichir } from '../core/routeur.js';
 import { emit, on } from '../core/bus.js';
-import { boutonSignaler, estSignale, retirerSignalement } from '../core/signalement.js';
+import { lire, ecrire } from '../core/stockage.js';
+import { signaler, estSignale, retirerSignalement } from '../core/signalement.js';
+import { el, icone, grosBouton, lienBouton, boutonSecondaire, ouvrirFeuille, ligneChoix, barreActions, message, enregistrerEntreePlus } from '../core/ui.js';
 import { getSourate, getVerset, getListeSourates, ordreJuzAmma, SOURCE_TEXTE,
   getRecitateurs, getRecitateurActif, setRecitateurActif, creerLecteur,
   recitateurPourSourate, getSonsAVerifier, noterVerificationSon,
@@ -9,140 +14,268 @@ import { getSourate, getVerset, getListeSourates, ordreJuzAmma, SOURCE_TEXTE,
   getTraduction, getTraductions, getTraductionActive, setTraductionActive, getNoteHamidullah, getSensMots } from './api.js';
 import { ajouterMot, estDansMesMots } from '../mots/api.js';
 
-// props : propriétés ; les noms avec un tiret (aria-label…) deviennent des attributs.
-const el = (tag, props = {}, ...enfants) => {
-  const e = document.createElement(tag);
-  for (const [k, v] of Object.entries(props)) {
-    if (k.includes('-')) e.setAttribute(k, v); else e[k] = v;
-  }
-  e.append(...enfants);
-  return e;
-};
 // Numéro de verset en chiffres arabes (généré par le navigateur, pas écrit à la main).
 const chiffres = (n) => n.toLocaleString('ar-EG');
+const estNombre = (x) => /^\d+$/.test(x ?? '');
 
-// Un seul lecteur pour tout l'écran Coran ; il s'arrête quand on change d'écran.
+// ---- Réglages de l'écoute (gardés dans le téléphone) ----
+const ECOUTE_DEFAUT = { fois: 1, lent: false };
+const getEcoute = () => ({ ...ECOUTE_DEFAUT, ...lire('coran.ecoute', {}) });
+const setEcoute = (x) => ecrire('coran.ecoute', { ...getEcoute(), ...x });
+const getVoirTraduction = () => lire('coran.voirTraduction', false);
+
+// « Continuer : sourate, verset » (écran Coran)
+const getDerniere = () => lire('coran.derniere', null);
+const noterDerniere = (sourate, verset) => ecrire('coran.derniere', { sourate, verset });
+
+// ---- Un seul lecteur ; il s'arrête quand on change d'écran ----
 let lecteur = null;
-const reglages = { fois: 1, repeteApresMoi: false, lent: false };
+let lecteurForce = null;
+let modeRepeter = false;
 window.addEventListener('hashchange', () => lecteur?.arreter());
 
-// Surlignage du verset récité (et défilement jusqu'à lui).
+function jouer(cles, { recitateur = null, repeter = false } = {}) {
+  if (lecteur && lecteurForce !== recitateur) { lecteur.arreter(); lecteur = null; }
+  lecteurForce = recitateur;
+  lecteur ??= creerLecteur({ recitateur });
+  const r = getEcoute();
+  lecteur.vitesse(r.lent ? 'lent' : 'normal');
+  modeRepeter = repeter;
+  lecteur.jouer(cles, { fois: r.fois, repeteApresMoi: repeter });
+  majBarre();
+}
+
 on('verset:debut', ({ cle }) => {
   document.querySelectorAll('.verset.en-cours').forEach((e) => e.classList.remove('en-cours'));
   const v = document.querySelector(`.verset[data-cle="${cle}"]`);
-  if (v) { v.classList.add('en-cours'); v.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-  message('');
+  if (v) {
+    v.classList.add('en-cours');
+    v.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const [s, n] = cle.split(':').map(Number);
+    if (!lecteurForce) noterDerniere(s, n);
+  }
+  bandeau('');
+  majBarre();
 });
-on('lecteur:a-toi', ({ secondes }) => message(`À toi ! Répète le verset (${secondes} s)`));
+on('lecteur:a-toi', () => bandeau('À toi ! Répète le verset.'));
 on('lecteur:fin', () => {
   document.querySelectorAll('.verset.en-cours').forEach((e) => e.classList.remove('en-cours'));
-  majBoutonLecture();
-  message('');
+  modeRepeter = false;
+  bandeau('');
+  majBarre();
 });
-on('lecteur:erreur', ({ cle }) => message(`Le son du verset ${cle} ne se charge pas. Vérifie Internet.`));
+on('lecteur:erreur', () => bandeau('Le son ne se charge pas. Vérifie Internet.'));
 
-function message(texte) {
-  const m = document.getElementById('message-lecteur');
-  if (m) m.textContent = texte;
+// Petit message au-dessus de la barre du bas.
+function bandeau(texte) {
+  const b = document.getElementById('bandeau-lecture');
+  if (b) { b.textContent = texte; b.hidden = !texte; }
 }
 
+// ---- Écrans ----
 enregistrerEcran('coran', {
-  titre: 'Coran',
-  async afficher(conteneur, [numero, sous, pos]) {
-    if (numero === 'verifier') return sous ? afficherVerificationSourate(conteneur, Number(sous)) : afficherVerifications(conteneur);
-    if (numero) return afficherSourate(conteneur, Number(numero), Number(sous) || null, Number(pos) || null);
+  titre: (p) => (p[0] === 'verifier' ? 'Sons à vérifier' : p[0] === 'toutes' ? 'Les 114 sourates' : 'Coran'),
+  onglet: 'coran',
+  retour: (p) => {
+    if (!p[0]) return null;
+    if (p[0] === 'verifier') return p[1] ? '#/coran/verifier' : '#/plus';
+    return '#/coran';
+  },
+  reglages: () => ouvrirReglages(),
+  reglagesSi: (p) => estNombre(p[0]),
+  async afficher(conteneur, [a, b, c]) {
+    document.body.classList.remove('avec-barre');
+    if (a === 'verifier') return b ? afficherVerificationSourate(conteneur, Number(b)) : afficherVerifications(conteneur);
+    if (a === 'toutes') return afficherToutes(conteneur);
+    if (estNombre(a)) return afficherSourate(conteneur, Number(a), Number(b) || null, Number(c) || null);
     return afficherListe(conteneur);
   },
 });
 
+// « Sons à vérifier » est rangé dans « Plus », avec le nombre restant.
+enregistrerEntreePlus({
+  id: 'sons-a-verifier', icone: 'sons', titre: 'Sons à vérifier', adresse: '#/coran/verifier', ordre: 40,
+  badge: () => getSonsAVerifier().filter((x) => x.etat === 'a-verifier').length || null,
+});
+
+// ---- Écran Coran : « Continuer » + Juz Amma ----
 async function afficherListe(conteneur) {
-  const juz = await ordreJuzAmma();
-  const toutes = Array.from({ length: 114 }, (_, i) => i + 1);
-  const aVerifier = getSonsAVerifier().filter((x) => x.etat === 'a-verifier').length;
-  if (aVerifier) {
-    conteneur.append(el('a', { className: 'carte lien-verif', href: '#/coran/verifier' },
-      `🎧 Sons de Dosari à vérifier : ${aVerifier} sourate${aVerifier > 1 ? 's' : ''}`));
+  const infos = new Map((await getListeSourates()).map((s) => [s.numero, s]));
+  const d = getDerniere();
+  if (d && infos.has(d.sourate)) {
+    conteneur.append(lienBouton(`Continuer : ${infos.get(d.sourate).nom}`, `#/coran/${d.sourate}/${d.verset}`, { gros: true, sousTexte: `verset ${d.verset}` }));
+  } else {
+    conteneur.append(lienBouton('Commencer : Al-Fatiha', '#/coran/1', { gros: true }));
   }
   conteneur.append(
-    el('h2', { className: 'titre-section', textContent: 'Juz Amma' }),
-    el('p', { className: 'aide', textContent: 'De la plus courte à la plus longue.' }),
-    await listeSourates([1, ...juz]),
-    el('h2', { className: 'titre-section', textContent: 'Les 114 sourates' }),
-    el('p', { className: 'aide', textContent: "Dans l'ordre du Coran." }),
-    await listeSourates(toutes),
-    credit(),
+    el('p', { className: 'sous-titre', textContent: 'Juz Amma · du plus court au plus long' }),
+    listeSourates([1, ...(await ordreJuzAmma())], infos),
+    lienBouton('Voir les 114 sourates', '#/coran/toutes'),
   );
 }
 
-async function listeSourates(numeros) {
-  const liste = el('div', { className: 'liste-sourates' });
+async function afficherToutes(conteneur) {
   const infos = new Map((await getListeSourates()).map((s) => [s.numero, s]));
-  for (const s of numeros.map((n) => infos.get(n))) {
-    liste.append(el('a', { className: 'carte sourate-lien', href: `#/coran/${s.numero}` },
-      el('span', { className: 'num', textContent: s.numero }),
-      el('span', { className: 'nom', textContent: s.nom }),
-      el('span', { className: 'arabe coran nom-arabe', lang: 'ar', dir: 'rtl', textContent: s.nomArabe }),
-      el('span', { className: 'infos', textContent: `${s.nomFr ? s.nomFr + ' · ' : ''}${s.nbVersets} versets` }),
-    ));
-  }
-  return liste;
+  conteneur.append(listeSourates(Array.from({ length: 114 }, (_, i) => i + 1), infos));
 }
+
+function listeSourates(numeros, infos) {
+  return el('div', { className: 'liste-sourates' }, ...numeros.map((n) => {
+    const s = infos.get(n);
+    return el('a', { className: 'ligne-sourate', href: `#/coran/${n}` },
+      el('span', { className: 'num', textContent: n }),
+      el('span', { className: 'nom' }, s.nom, el('small', { textContent: `${s.nomFr ? s.nomFr + ' · ' : ''}${s.nbVersets} versets` })),
+      el('span', { className: 'arabe coran nom-arabe', lang: 'ar', dir: 'rtl', textContent: s.nomArabe }));
+  }));
+}
+
+// ---- Lecture d'une sourate : le texte prend tout l'écran, barre en bas ----
+let sourateAffichee = null;
+let versetChoisi = null;
 
 async function afficherSourate(conteneur, n, versetCible = null, motCible = null) {
   const s = await getSourate(n);
+  sourateAffichee = s;
+  versetChoisi = null;
+  lecteurForce = null;
   await chargerMotsFrequents();
   document.body.classList.toggle('sans-frequents', !getColorerFrequents());
-  conteneur.append(el('h2', { className: 'titre-sourate', textContent: `${n}. ${s.nom}${s.nomFr ? ' — ' + s.nomFr : ''}` }));
+  changerTitre(s.nom);
 
-  // Basmala (sauf sourates 1 et 9) : texte pris dans la source (verset 1:1), jamais écrit à la main.
-  // Si 1:1 est signalé, la basmala (même texte) est aussi mise de côté.
+  const texte = el('div', { className: 'texte-sourate' });
+  // Basmala (sauf sourates 1 et 9), prise dans la source (verset 1:1) ; retirée si 1:1 est signalé.
   if (n !== 1 && n !== 9 && !estSignale('coran', '1:1')) {
     const b = await getVerset('1:1');
-    const basmala = el('p', { className: 'arabe coran basmala', lang: 'ar', dir: 'rtl', textContent: b.texte });
-    basmala.dataset.cleSource = '1:1';
-    conteneur.append(basmala);
+    texte.append(el('p', { className: 'arabe coran basmala', lang: 'ar', dir: 'rtl', textContent: b.texte, 'data-cle-source': '1:1' }));
   }
-
-  conteneur.append(barreLecture(s));
-
   for (const v of s.versets) {
-    // Verset signalé : son texte n'est plus affiché (mis de côté), seulement un avis à sa place.
-    if (estSignale('coran', v.cle)) { conteneur.append(avisMisDeCote(v.cle)); continue; }
-    const zoneTraduction = el('div', { className: 'traduction', hidden: true });
-    const boutonTraduction = el('button', { className: 'secondaire', textContent: 'Traduction' });
-    boutonTraduction.addEventListener('click', () => basculerTraduction(v.cle, zoneTraduction, boutonTraduction));
-    const bloc = el('div', { className: 'bloc-verset' }, ligneVerset(v, n),
-      el('div', { className: 'actions-verset' },
-        el('button', { className: 'secondaire', textContent: '▶ Écouter', onclick: () => jouer([v.cle]) }),
-        boutonTraduction,
-        boutonSignaler('coran', v.cle)),
-      zoneTraduction);
-    bloc.dataset.cle = v.cle;
-    conteneur.append(bloc);
+    texte.append(estSignale('coran', v.cle) ? avisMisDeCote(v.cle) : blocVerset(v, n));
   }
-  conteneur.append(credit());
+  conteneur.append(texte, creditTexte());
+  if (getVoirTraduction()) afficherTraductions();
 
-  // Arrivée depuis « Mes mots » : #/coran/112/3/2 → aller au verset 3 et montrer le mot n° 2.
+  // Avis : Dosari pas encore vérifié sur cette sourate → Husary récite.
+  if (recitateurPourSourate(n) !== getRecitateurActif()) {
+    conteneur.prepend(el('p', { className: 'avis-doux' }, "Dosari n'est pas encore vérifié sur cette sourate : c'est Husary qui récite. ",
+      el('a', { href: `#/coran/verifier/${n}`, textContent: 'Vérifier' })));
+  }
+
+  document.body.classList.add('avec-barre');
+  conteneur.append(el('p', { id: 'bandeau-lecture', className: 'bandeau-lecture', role: 'status', hidden: true }),
+    barreActions([
+      { id: 'action-ecouter', icone: 'ecouter', texte: 'Écouter', principal: true, action: () => basculerEcoute() },
+      { id: 'action-repeter', icone: 'repeter', texte: 'Répéter', action: () => lancerRepeter() },
+      { id: 'action-traduction', icone: 'traduction', texte: 'Traduction', action: () => basculerTraductions() },
+    ]));
+  majBarre();
+
+  // Arrivée depuis « Mes mots » ou « Continuer » : aller au verset (et montrer le mot).
   if (versetCible) {
     const ligne = conteneur.querySelector(`.verset[data-cle="${n}:${versetCible}"]`);
-    if (!ligne) throw new Error(`Verset ${n}:${versetCible} inexistant`);
-    ligne.closest('.bloc-verset').classList.add('cible');
-    if (motCible) ligne.querySelector(`.mot[data-position="${motCible}"]`)?.classList.add('mot-cible');
-    requestAnimationFrame(() => ligne.scrollIntoView({ block: 'center' }));
+    if (ligne) {
+      choisirVerset(`${n}:${versetCible}`);
+      if (motCible) ligne.querySelector(`.mot[data-position="${motCible}"]`)?.classList.add('mot-cible');
+      requestAnimationFrame(() => ligne.scrollIntoView({ block: 'center' }));
+    }
+  } else {
+    noterDerniere(n, getDerniere()?.sourate === n ? getDerniere().verset : 1);
   }
+}
+
+// Un verset : mots touchables, numéro touchable (= choisir le verset), appui long (= menu du verset).
+function blocVerset(v, n) {
+  if (v.cle !== `${n}:${v.verset}`) throw new Error(`Contrôle : verset ${v.cle} au mauvais endroit`);
+  const ligne = el('p', { className: 'arabe coran verset', lang: 'ar', dir: 'rtl', 'data-cle': v.cle });
+  v.mots.forEach((m, i) => {
+    // Couleur seulement : le texte du mot reste exactement celui de la source.
+    const mot = el('span', { className: estMotFrequent(m.texte) ? 'mot frequent' : 'mot', textContent: m.texte, 'data-position': m.position });
+    mot.addEventListener('click', () => {
+      if (appuiLongFait) return;
+      emit('mot:touche', { source: 'coran', cle: v.cle, position: m.position, texte: m.texte });
+    });
+    ligne.append(mot, i < v.mots.length - 1 ? ' ' : '');
+  });
+  const num = el('button', { type: 'button', className: 'num-verset', textContent: chiffres(v.verset), 'aria-label': `Choisir le verset ${v.verset}` });
+  num.addEventListener('click', () => choisirVerset(v.cle));
+  ligne.append(' ', num);
+  const bloc = el('div', { className: 'bloc-verset', 'data-cle': v.cle }, ligne, el('div', { className: 'traduction', hidden: true }));
+  appuiLong(bloc, () => menuVerset(v.cle));
+  return bloc;
+}
+
+function choisirVerset(cle) {
+  versetChoisi = cle;
+  document.querySelectorAll('.bloc-verset.choisi').forEach((b) => b.classList.remove('choisi'));
+  document.querySelector(`.bloc-verset[data-cle="${cle}"]`)?.classList.add('choisi');
+  const [s, n] = cle.split(':').map(Number);
+  if (!lecteurForce) noterDerniere(s, n);
+}
+
+// Appui long (iPhone : on évite la loupe et le menu « Copier »).
+let appuiLongFait = false;
+function appuiLong(element, action) {
+  let minuteur = null;
+  let depart = null;
+  const annuler = () => clearTimeout(minuteur);
+  element.addEventListener('pointerdown', (e) => {
+    appuiLongFait = false;
+    depart = [e.clientX, e.clientY];
+    minuteur = setTimeout(() => { appuiLongFait = true; action(); }, 550);
+  });
+  element.addEventListener('pointermove', (e) => {
+    if (depart && Math.hypot(e.clientX - depart[0], e.clientY - depart[1]) > 10) annuler();
+  });
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach((t) => element.addEventListener(t, annuler));
+  element.addEventListener('contextmenu', (e) => { e.preventDefault(); });
+}
+
+function menuVerset(cle) {
+  const [, n] = cle.split(':');
+  const f = ouvrirFeuille({ titre: `Verset ${n}`, contenu: [
+    grosBouton('Écouter ce verset', () => { f.fermer(); choisirVerset(cle); jouer([cle], { recitateur: lecteurForce }); }, { icone: 'ecouter' }),
+    boutonSecondaire('Signaler une erreur', () => { f.fermer(); signaler('coran', cle); }),
+  ] });
+}
+
+// Clés à jouer : à partir du verset choisi (ou du début), versets signalés exclus.
+function clesAJouer() {
+  const toutes = sourateAffichee.versets.map((v) => v.cle).filter((k) => !estSignale('coran', k));
+  const i = versetChoisi ? toutes.indexOf(versetChoisi) : 0;
+  return toutes.slice(Math.max(0, i));
+}
+
+function basculerEcoute(recitateur = lecteurForce) {
+  if (lecteur?.enLecture && !modeRepeter) lecteur.pause();
+  else if (lecteur?.cleCourante && !modeRepeter) lecteur.reprendre();
+  else jouer(clesAJouer(), { recitateur });
+  majBarre();
+}
+
+// « Répéter » = répète après moi : un verset, une pause pour le redire, puis le suivant.
+function lancerRepeter() {
+  if (modeRepeter && lecteur?.cleCourante) { lecteur.arreter(); return; }
+  lecteur?.arreter();
+  jouer(clesAJouer(), { recitateur: lecteurForce, repeter: true });
+  bandeau('Écoute, puis répète pendant la pause.');
+}
+
+function majBarre() {
+  const b = document.getElementById('action-ecouter');
+  if (b) {
+    const enLecture = lecteur?.enLecture && !modeRepeter;
+    b.dataset.texte ??= b.textContent;
+    const texte = enLecture ? 'Pause' : (lecteur?.cleCourante && !modeRepeter ? 'Reprendre' : b.dataset.texte);
+    b.replaceChildren(icone(enLecture ? 'pause' : 'ecouter', 24), el('span', { textContent: texte }));
+  }
+  document.getElementById('action-repeter')?.classList.toggle('actif', modeRepeter && Boolean(lecteur?.cleCourante));
+  document.getElementById('action-traduction')?.classList.toggle('actif', getVoirTraduction());
 }
 
 // ---- Versets signalés : mis de côté tout de suite (et aux ouvertures suivantes) ----
 function avisMisDeCote(cle) {
-  const avis = el('div', { className: 'carte avis-mis-de-cote' },
-    el('p', { textContent: `Verset ${cle} mis de côté : tu as signalé une erreur. Il ne s'affiche plus tant qu'il n'est pas vérifié.` }),
-    el('button', { className: 'secondaire', textContent: 'Annuler le signalement', onclick: () => {
-      retirerSignalement('coran', cle);
-      // On réaffiche la sourate : le verset revient, lu dans la source.
-      window.dispatchEvent(new HashChangeEvent('hashchange'));
-    } }));
-  avis.dataset.cle = cle;
-  return avis;
+  return el('div', { className: 'avis-mis-de-cote', 'data-cle': cle },
+    el('p', { textContent: `Verset ${cle.split(':')[1]} mis de côté : tu as signalé une erreur.` }),
+    boutonSecondaire('Annuler le signalement', () => { retirerSignalement('coran', cle); rafraichir(); }));
 }
 
 on('texte:signale', ({ type, id }) => {
@@ -152,238 +285,164 @@ on('texte:signale', ({ type, id }) => {
   if (id === '1:1') document.querySelectorAll('.basmala[data-cle-source="1:1"]').forEach((b) => b.remove());
 });
 
-// ---- Traduction française du verset (Hamidullah / Rachid Maach) ----
-async function basculerTraduction(cle, zone, bouton) {
-  if (!zone.hidden) { zone.hidden = true; bouton.textContent = 'Traduction'; return; }
-  zone.hidden = false;
-  bouton.textContent = 'Cacher la traduction';
-  zone.replaceChildren(el('p', { className: 'aide', textContent: 'Chargement…' }));
-  try {
-    const t = await getTraduction(cle);
-    const texte = el('p', { className: 'texte-traduction', lang: 'fr' });
-    const notes = el('div', { className: 'notes', hidden: true });
-    for (const m of t.morceaux) {
-      if (m.texte !== undefined) texte.append(m.texte);
-      else {
-        // Appel de note Hamidullah : on l'affiche en petit ; toucher = lire la note (quran.com).
-        const sup = el('sup', { className: 'appel-note', textContent: m.numero });
-        sup.addEventListener('click', async () => {
-          notes.hidden = false;
-          notes.append(el('p', { textContent: `[${m.numero}] ${await getNoteHamidullah(m.note)}` }));
-        }, { once: true });
-        texte.append(sup);
-      }
-    }
-    const infos = el('p', { className: 'credit' }, t.credit);
-    if (t.version) infos.append(` — version ${t.version}`);
-    if (t.traducteur) infos.append(el('br'), t.traducteur);
-    zone.replaceChildren(texte, notes, infos);
-    if (t.notes) {
-      // Notes de Rachid Maach : affichées telles quelles (condition QuranEnc n° 1).
-      notes.append(el('p', { className: 'notes-texte', textContent: t.notes }));
-      zone.append(el('button', { className: 'secondaire petit', textContent: 'Notes', onclick: () => { notes.hidden = !notes.hidden; } }));
-    }
-    if (t.lienSignaler) {
-      zone.append(el('a', { className: 'lien-discret', href: t.lienSignaler, target: '_blank', rel: 'noopener', textContent: 'Prévenir QuranEnc d\'une erreur de traduction' }));
-    }
-  } catch (e) {
-    zone.replaceChildren(el('p', { className: 'erreur', textContent: e.message }));
-  }
+// ---- Traduction : sous chaque verset, bouton « Traduction » de la barre ----
+function basculerTraductions() {
+  ecrire('coran.voirTraduction', !getVoirTraduction());
+  if (getVoirTraduction()) afficherTraductions();
+  else document.querySelectorAll('.traduction').forEach((z) => { z.hidden = true; });
+  majBarre();
 }
 
-// ---- Toucher un mot : son sens (anglais, quran.com) + « Ajouter à mes mots » ----
+async function afficherTraductions() {
+  let infos = null;
+  for (const bloc of [...document.querySelectorAll('.bloc-verset')]) {
+    const zone = bloc.querySelector('.traduction');
+    zone.hidden = false;
+    if (zone.dataset.traduction === getTraductionActive()) continue;
+    zone.replaceChildren(el('p', { className: 'message-doux', textContent: 'Chargement…' }));
+    try {
+      const t = await getTraduction(bloc.dataset.cle);
+      zone.replaceChildren(texteTraduction(t));
+      zone.dataset.traduction = t.id;
+      infos = t;
+    } catch (e) {
+      zone.replaceChildren(el('p', { className: 'erreur', textContent: e.message }));
+      return;
+    }
+  }
+  if (infos) majCreditTraduction(infos);
+}
+
+// Le texte de la traduction, tel quel ; les appels de note ([2] ou ¹) s'ouvrent en les touchant.
+function texteTraduction(t) {
+  const p = el('p', { className: 'texte-traduction', lang: 'fr' });
+  for (const m of t.morceaux) {
+    if (m.texte === undefined) {
+      p.append(appelNote(m.numero, () => getNoteHamidullah(m.note)));
+      continue;
+    }
+    // Rachid Maach : le texte contient « [2] » ; on garde ces caractères, on les rend seulement touchables.
+    m.texte.split(/(\[\d+\])/).forEach((bout) => {
+      const num = /^\[(\d+)\]$/.exec(bout);
+      if (num && t.notes) p.append(appelNote(bout, async () => noteRachid(t.notes, num[1]) ?? t.notes));
+      else if (bout) p.append(bout);
+    });
+  }
+  return p;
+}
+function noteRachid(notes, numero) {
+  return notes.split('\n').find((l) => l.startsWith(`[${numero}]`)) ?? null;
+}
+function appelNote(texte, charger) {
+  return el('button', { type: 'button', className: 'appel-note', textContent: texte, onclick: async () => {
+    const zone = el('p', { className: 'message-doux', textContent: 'Chargement…' });
+    ouvrirFeuille({ titre: 'Note', contenu: [zone] });
+    try {
+      zone.replaceWith(el('p', { className: 'texte-note', textContent: await charger() }));
+    } catch (e) { zone.replaceWith(el('p', { className: 'erreur', textContent: e.message })); }
+  } });
+}
+
+function majCreditTraduction(t) {
+  const c = document.getElementById('credit-traduction') ?? el('p', { id: 'credit-traduction', className: 'credit' });
+  c.replaceChildren(`Traduction : ${t.credit}`);
+  if (t.version) c.append(` — version ${t.version}`);
+  if (t.traducteur) c.append(` — ${t.traducteur}`);
+  if (t.lienSignaler) c.append(el('br'), el('a', { href: t.lienSignaler, target: '_blank', rel: 'noopener', textContent: 'Prévenir QuranEnc d\'une erreur de traduction' }));
+  document.querySelector('.texte-sourate')?.after(c);
+}
+
+function creditTexte() {
+  return el('p', { className: 'credit' }, SOURCE_TEXTE.texte + ' — ',
+    el('a', { href: SOURCE_TEXTE.lien, target: '_blank', rel: 'noopener', textContent: 'tanzil.net' }));
+}
+
+// ---- ⚙️ Réglages (cachés, feuille du bas) ----
+async function ouvrirReglages() {
+  const e = getEcoute();
+  const contenu = [
+    ligneChoix('Récitateur', getRecitateurs().map((r) => [r.id, r.nom.replace(/^Mahmoud Khalil /, '')]), getRecitateurActif(), (v) => { lecteur?.arreter(); setRecitateurActif(v); rafraichir(); }),
+    ligneChoix('Vitesse', [['normal', 'Normale'], ['lent', 'Lente']], e.lent ? 'lent' : 'normal', (v) => { setEcoute({ lent: v === 'lent' }); lecteur?.vitesse(v); }),
+    ligneChoix('Répéter chaque verset', [1, 3, 5, 10].map((x) => [String(x), x === 1 ? '1 fois' : `${x} fois`]), String(e.fois), (v) => setEcoute({ fois: Number(v) })),
+    ligneChoix('Traduction', getTraductions().map((t) => [t.id, t.nom.replace('Muhammad ', '')]), getTraductionActive(), (v) => {
+      setTraductionActive(v);
+      document.querySelectorAll('.traduction').forEach((z) => { delete z.dataset.traduction; });
+      if (getVoirTraduction()) afficherTraductions();
+    }),
+    ligneChoix('Petits mots en couleur', [['oui', 'Oui'], ['non', 'Non']], getColorerFrequents() ? 'oui' : 'non', (v) => {
+      setColorerFrequents(v === 'oui');
+      document.body.classList.toggle('sans-frequents', v !== 'oui');
+    }),
+  ];
+  // Taille du texte : réglage de Codex (X18), affiché seulement quand il est prêt.
+  try {
+    const affichage = await import('../affichage/api.js');
+    const taille = affichage.getTaille();
+    contenu.push(ligneChoix('Taille du texte', [['petit', 'Petite'], ['normal', 'Normale'], ['grand', 'Grande']], taille, (v) => affichage.setTaille(v)));
+  } catch { /* pas encore prêt */ }
+  ouvrirFeuille({ titre: 'Réglages', contenu });
+}
+
+// ---- Toucher un mot : son sens + « Ajouter à mes mots » (une seule action) ----
 on('mot:touche', async ({ source, cle, position, texte }) => {
   if (source !== 'coran') return;
-  const panneau = panneauMot();
-  const motArabe = el('p', { className: 'arabe coran mot-panneau', lang: 'ar', dir: 'rtl', textContent: texte });
-  const zoneSens = el('p', { className: 'sens', textContent: 'Chargement du sens…' });
+  const dejaGarde = estDansMesMots(cle, position);
+  const sens = el('p', { className: 'sens', textContent: 'Chargement…' });
+  const bouton = grosBouton(dejaGarde ? 'Déjà dans mes mots' : 'Ajouter à mes mots', null, { icone: dejaGarde ? 'ok' : 'mots' });
+  bouton.disabled = dejaGarde;
   const [s, v] = cle.split(':');
-  const boutonAjout = el('button', { textContent: estDansMesMots(cle, position) ? '✔ Dans mes mots' : '+ Ajouter à mes mots', disabled: estDansMesMots(cle, position) });
-  panneau.contenu.replaceChildren(motArabe, zoneSens,
-    el('p', { className: 'credit', textContent: `Sourate ${s}, verset ${v} — sens mot à mot en anglais (quran.com)` }),
-    el('div', { className: 'ligne-boutons' }, boutonAjout, el('button', { className: 'secondaire', textContent: 'Fermer', onclick: panneau.fermer })));
-  panneau.ouvrir();
-  let sens = null;
+  ouvrirFeuille({ contenu: [
+    el('p', { className: 'arabe coran mot-panneau', lang: 'ar', dir: 'rtl', textContent: texte }),
+    sens,
+    el('p', { className: 'credit centre', textContent: `Sourate ${s}, verset ${v} · sens en anglais · quran.com` }),
+    bouton,
+  ] });
+  let infos = null;
   try {
-    sens = (await getSensMots(cle)).find((x) => x.position === position);
-    zoneSens.textContent = sens?.sens ?? 'Sens non disponible pour ce mot.';
-  } catch (e) {
-    zoneSens.textContent = e.message;
-  }
-  boutonAjout.addEventListener('click', () => {
-    ajouterMot({ cle, position, sens: sens?.sens ?? null, langue: sens?.langue ?? null, source: sens?.source ?? null });
-    boutonAjout.textContent = '✔ Dans mes mots';
-    boutonAjout.disabled = true;
-  });
+    infos = (await getSensMots(cle)).find((x) => x.position === position);
+    sens.textContent = infos?.sens ? `« ${infos.sens} »` : 'Sens pas disponible pour ce mot.';
+  } catch (e) { sens.textContent = e.message; }
+  bouton.onclick = () => {
+    ajouterMot({ cle, position, sens: infos?.sens ?? null, langue: infos?.langue ?? null, source: infos?.source ?? null });
+    bouton.replaceChildren(icone('ok', 26), el('span', { textContent: 'Ajouté à mes mots' }));
+    bouton.disabled = true;
+  };
 });
 
-let panneauExistant = null;
-function panneauMot() {
-  if (panneauExistant) return panneauExistant;
-  const contenu = el('div', { className: 'panneau-contenu' });
-  const fond = el('div', { className: 'panneau-fond', hidden: true });
-  const boite = el('div', { className: 'panneau', hidden: true, role: 'dialog' }, contenu);
-  const fermer = () => { fond.hidden = true; boite.hidden = true; };
-  fond.addEventListener('click', fermer);
-  window.addEventListener('hashchange', fermer);
-  document.body.append(fond, boite);
-  panneauExistant = { contenu, fermer, ouvrir: () => { fond.hidden = false; boite.hidden = false; } };
-  return panneauExistant;
-}
-
-// Un verset : chaque mot est touchable. Contrôle automatique du numéro.
-function ligneVerset(v, n) {
-  if (v.cle !== `${n}:${v.verset}`) throw new Error(`Contrôle : verset ${v.cle} au mauvais endroit`);
-  const ligne = el('p', { className: 'arabe coran verset', lang: 'ar', dir: 'rtl' });
-  ligne.dataset.cle = v.cle;
-  v.mots.forEach((m, i) => {
-    // Couleur seulement : le texte du mot reste exactement celui de la source.
-    const mot = el('span', { className: estMotFrequent(m.texte) ? 'mot frequent' : 'mot', textContent: m.texte });
-    mot.dataset.position = m.position;
-    mot.addEventListener('click', () => emit('mot:touche', { source: 'coran', cle: v.cle, position: m.position, texte: m.texte }));
-    ligne.append(mot, i < v.mots.length - 1 ? ' ' : '');
-  });
-  ligne.append(' ', el('span', { className: 'num-verset', textContent: chiffres(v.verset) }));
-  return ligne;
-}
-
-// ---- Écran « Sons à vérifier » (#/coran/verifier et #/coran/verifier/93) ----
-const NOMS_ETAT = { 'a-verifier': 'À vérifier', ok: 'Vérifié, c\'est bon', erreur: 'Erreur signalée' };
+// ---- Sons à vérifier (Dosari) ----
+const NOMS_ETAT = { 'a-verifier': 'À vérifier', ok: 'Vérifié', erreur: 'Erreur' };
 
 async function afficherVerifications(conteneur) {
   const infos = new Map((await getListeSourates()).map((s) => [s.numero, s]));
-  conteneur.append(
-    el('h2', { className: 'titre-section', textContent: 'Sons à vérifier' }),
-    el('p', { className: 'aide', textContent: "Sur ces sourates, l'ordinateur ne peut pas prouver que chaque son de Dosari est le bon verset. Écoute-les. Tant que ce n'est pas vérifié, c'est Husary qui récite à la place." }),
-  );
-  const liste = el('div', { className: 'liste-sourates' });
-  for (const x of getSonsAVerifier()) {
-    const s = infos.get(x.sourate);
-    liste.append(el('a', { className: `carte sourate-lien etat-${x.etat}`, href: `#/coran/verifier/${x.sourate}` },
-      el('span', { className: 'num', textContent: x.sourate }),
-      el('span', { className: 'nom', textContent: `${s.nom} — ${x.nom}` }),
-      el('span', { className: 'pastille', textContent: NOMS_ETAT[x.etat] }),
-      el('span', { className: 'infos', textContent: `${s.nbVersets} versets` }),
-    ));
-  }
-  conteneur.append(liste);
+  conteneur.append(message("Sur ces sourates, l'ordinateur ne peut pas prouver que chaque son de Dosari est le bon. Écoute-les. En attendant, c'est Husary qui récite."));
+  conteneur.append(el('div', { className: 'liste-sourates' }, ...getSonsAVerifier().map((x) => el('a', { className: `ligne-sourate etat-${x.etat}`, href: `#/coran/verifier/${x.sourate}` },
+    el('span', { className: 'num', textContent: x.sourate }),
+    el('span', { className: 'nom' }, infos.get(x.sourate).nom, el('small', { textContent: `${infos.get(x.sourate).nbVersets} versets` })),
+    el('span', { className: 'pastille', textContent: NOMS_ETAT[x.etat] })))));
 }
 
 async function afficherVerificationSourate(conteneur, n) {
   const x = getSonsAVerifier().find((y) => y.sourate === n);
   if (!x) throw new Error(`Rien à vérifier sur la sourate ${n}`);
   const s = await getSourate(n);
+  sourateAffichee = s;
+  versetChoisi = null;
   await chargerMotsFrequents();
-  conteneur.append(
-    el('a', { href: '#/coran/verifier', className: 'retour', textContent: '← Sons à vérifier' }),
-    el('h2', { className: 'titre-sourate', textContent: `${n}. ${s.nom} — ${x.nom}` }),
-    el('p', { className: 'aide', textContent: "Écoute chaque verset en lisant le texte. Le son doit dire exactement le verset surligné, ni celui d'avant, ni celui d'après." }),
-    el('p', { className: 'etat-actuel', textContent: `État : ${NOMS_ETAT[x.etat]}` }),
-    el('div', { className: 'barre-lecture' },
-      el('div', { className: 'ligne-boutons' },
-        el('button', { id: 'bouton-lecture', textContent: '▶ Écouter la sourate', onclick: () => basculerLecture(s, x.recitateur) }),
-        el('button', { className: 'secondaire', textContent: '■ Stop', onclick: () => lecteur?.arreter() })),
-      el('p', { id: 'message-lecteur', className: 'message-lecteur', role: 'status' })),
-  );
-  for (const v of s.versets) {
-    if (estSignale('coran', v.cle)) { conteneur.append(avisMisDeCote(v.cle)); continue; }
-    conteneur.append(el('div', { className: 'bloc-verset' }, ligneVerset(v, n),
-      el('div', { className: 'actions-verset' },
-        el('button', { className: 'secondaire', textContent: `▶ ${x.nom.split(' ').pop()}`, onclick: () => jouer([v.cle], x.recitateur) }))));
-  }
+  changerTitre(`${s.nom} · Dosari`);
+  const texte = el('div', { className: 'texte-sourate' });
+  for (const v of s.versets) texte.append(estSignale('coran', v.cle) ? avisMisDeCote(v.cle) : blocVerset(v, n));
   const repondre = (etat) => { lecteur?.arreter(); noterVerificationSon(x.recitateur, n, etat); location.hash = '#/coran/verifier'; };
-  conteneur.append(el('div', { className: 'carte reponse-verif' },
-    el('button', { textContent: '✔ Vérifié, c\'est bon', onclick: () => repondre('ok') }),
-    el('button', { className: 'danger', textContent: '✖ Erreur', onclick: () => repondre('erreur') }),
-    x.etat !== 'a-verifier' ? el('button', { className: 'secondaire', textContent: 'Remettre « à vérifier »', onclick: () => repondre(null) }) : ''));
-}
-
-function basculerLecture(s, recitateur = null) {
-  if (lecteur?.enLecture) lecteur.pause();
-  else if (lecteur?.cleCourante) lecteur.reprendre();
-  else jouer(s.versets.map((v) => v.cle), recitateur);
-  majBoutonLecture();
-}
-
-let lecteurForce = null;
-function jouer(cles, recitateurForce = null) {
-  if (lecteur && lecteurForce !== recitateurForce) { lecteur.arreter(); lecteur = null; }
-  lecteurForce = recitateurForce;
-  lecteur ??= creerLecteur({ recitateur: recitateurForce });
-  lecteur.vitesse(reglages.lent ? 'lent' : 'normal');
-  lecteur.jouer(cles, { fois: reglages.fois, repeteApresMoi: reglages.repeteApresMoi });
-  majBoutonLecture();
-}
-
-function majBoutonLecture() {
-  const b = document.getElementById('bouton-lecture');
-  if (!b) return;
-  b.textContent = lecteur?.enLecture ? '⏸ Pause' : (lecteur?.cleCourante ? '▶ Reprendre' : '▶ Écouter la sourate');
-}
-
-function barreLecture(s) {
-  const choixRecitateur = el('select', { className: 'choix', 'aria-label': 'Récitateur' },
-    ...getRecitateurs().map((r) => el('option', { value: r.id, textContent: r.nom, selected: r.id === getRecitateurActif() })));
-  const note = el('p', { className: 'note-recitateur' });
-  const majNote = () => {
-    const joue = recitateurPourSourate(s.numero);
-    note.replaceChildren();
-    if (joue !== getRecitateurActif()) {
-      note.append("Dosari n'est pas encore vérifié sur cette sourate : c'est Husary qui récite. ",
-        el('a', { href: `#/coran/verifier/${s.numero}`, textContent: 'Vérifier maintenant' }));
-    }
-  };
-  majNote();
-  choixRecitateur.addEventListener('change', () => { lecteur?.arreter(); setRecitateurActif(choixRecitateur.value); majNote(); });
-
-  const choixFois = el('select', { className: 'choix', 'aria-label': 'Répéter chaque verset' },
-    ...[1, 3, 5, 10].map((n) => el('option', { value: n, textContent: n === 1 ? 'Chaque verset 1 fois' : `Chaque verset ${n} fois`, selected: n === reglages.fois })));
-  choixFois.addEventListener('change', () => { reglages.fois = Number(choixFois.value); });
-
-  const caseRepete = el('input', { type: 'checkbox', checked: reglages.repeteApresMoi });
-  caseRepete.addEventListener('change', () => { reglages.repeteApresMoi = caseRepete.checked; });
-  const caseFrequents = el('input', { type: 'checkbox', checked: getColorerFrequents() });
-  caseFrequents.addEventListener('change', () => { setColorerFrequents(caseFrequents.checked); document.body.classList.toggle('sans-frequents', !caseFrequents.checked); });
-  const choixTraduction = el('select', { className: 'choix', 'aria-label': 'Traduction française' },
-    ...getTraductions().map((t) => el('option', { value: t.id, textContent: t.nom, selected: t.id === getTraductionActive() })));
-  choixTraduction.addEventListener('change', () => {
-    setTraductionActive(choixTraduction.value);
-    document.querySelectorAll('.traduction').forEach((z) => { z.hidden = true; });
-    document.querySelectorAll('.actions-verset button').forEach((b) => { if (b.textContent === 'Cacher la traduction') b.textContent = 'Traduction'; });
-  });
-  const caseLent = el('input', { type: 'checkbox', checked: reglages.lent });
-  caseLent.addEventListener('change', () => { reglages.lent = caseLent.checked; lecteur?.vitesse(reglages.lent ? 'lent' : 'normal'); });
-
-  const boutonLecture = el('button', { id: 'bouton-lecture', textContent: '▶ Écouter la sourate' });
-  boutonLecture.addEventListener('click', () => {
-    if (lecteur?.enLecture) lecteur.pause();
-    else if (lecteur?.cleCourante) lecteur.reprendre();
-    else jouer(s.versets.map((v) => v.cle));
-    majBoutonLecture();
-  });
-  const boutonStop = el('button', { className: 'secondaire', textContent: '■ Stop', onclick: () => lecteur?.arreter() });
-
-  const fragment = document.createDocumentFragment();
-  fragment.append(
-    el('details', { className: 'carte reglages-ecoute' },
-      el('summary', { textContent: 'Réglages (récitateur, traduction…)' }),
-      el('label', { className: 'ligne-reglage' }, 'Récitateur', choixRecitateur),
-      choixFois,
-      el('label', { className: 'ligne-case' }, caseRepete, ' Répète après moi (une pause après chaque verset)'),
-      el('label', { className: 'ligne-case' }, caseLent, ' Lent'),
-      el('label', { className: 'ligne-case' }, caseFrequents, ' Colorer les petits mots fréquents'),
-      el('label', { className: 'ligne-reglage' }, 'Traduction française du verset', choixTraduction),
-    ),
-    note,
-    el('div', { className: 'barre-lecture' },
-      el('div', { className: 'ligne-boutons' }, boutonLecture, boutonStop),
-      el('p', { id: 'message-lecteur', className: 'message-lecteur', role: 'status' }),
-    ),
+  conteneur.append(
+    message('Écoute en suivant le texte. Le son doit dire exactement le verset surligné.'),
+    texte,
+    el('div', { className: 'reponse-verif' },
+      grosBouton("Vérifié, c'est bon", () => repondre('ok'), { icone: 'ok' }),
+      boutonSecondaire('Il y a une erreur', () => repondre('erreur')),
+      x.etat !== 'a-verifier' ? boutonSecondaire('Remettre « à vérifier »', () => repondre(null)) : null),
+    el('p', { id: 'bandeau-lecture', className: 'bandeau-lecture', role: 'status', hidden: true }),
+    barreActions([{ id: 'action-ecouter', icone: 'ecouter', texte: 'Écouter Dosari', principal: true, action: () => basculerEcoute(x.recitateur) }]),
   );
-  return fragment;
-}
-
-function credit() {
-  return el('p', { className: 'credit' }, SOURCE_TEXTE.texte + ' — ',
-    el('a', { href: SOURCE_TEXTE.lien, target: '_blank', rel: 'noopener', textContent: 'tanzil.net' }));
+  document.querySelector('.barre-actions').classList.add('une-action');
+  document.body.classList.add('avec-barre');
+  lecteurForce = x.recitateur;
 }

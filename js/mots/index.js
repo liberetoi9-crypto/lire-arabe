@@ -1,33 +1,27 @@
-// Propriétaire : Claude Code (C6). Écrans #/mots (ma liste) et #/mots/revision (cartes).
+// Propriétaire : Claude Code (C6 ; nouvelle mise en page C14). Écrans #/mots et #/mots/revision.
 // Le mot arabe est toujours relu dans le texte officiel (sourate + verset + position) : jamais recopié à la main.
 import { enregistrerEcran } from '../core/routeur.js';
-import { getVerset, chargerMotsFrequents } from '../coran/api.js';
+import { el, grosBouton, lienBouton, boutonSecondaire, ouvrirFeuille, message } from '../core/ui.js';
+import { getVerset, getListeSourates, chargerMotsFrequents } from '../coran/api.js';
 import { estSignale } from '../core/signalement.js';
 import { getMesMots, getMotsAReviser, retirerMot, reviserMot } from './api.js';
 
-// props : propriétés ; les noms avec un tiret (aria-label…) deviennent des attributs.
-const el = (tag, props = {}, ...enfants) => {
-  const e = document.createElement(tag);
-  for (const [k, v] of Object.entries(props)) {
-    if (k.includes('-')) e.setAttribute(k, v); else e[k] = v;
-  }
-  e.append(...enfants);
-  return e;
-};
-
 // Le mot et son verset, depuis la source officielle. Contrôle : la position doit exister dans ce verset.
 async function depuisLaSource(m) {
-  if (estSignale('coran', m.cle)) throw new Error(`Verset ${m.cle} mis de côté (tu as signalé une erreur).`);
+  if (estSignale('coran', m.cle)) throw new Error('Verset mis de côté (tu as signalé une erreur).');
   const v = await getVerset(m.cle);
   const mot = v.mots.find((x) => x.position === m.position);
-  if (!mot) throw new Error(`Mot n° ${m.position} introuvable dans le verset ${m.cle}`);
+  if (!mot) throw new Error(`Mot introuvable dans le verset ${m.cle}`);
   return { verset: v, mot };
 }
 
 const lienVerset = (m) => `#/coran/${m.sourate}/${m.verset}/${m.position}`;
+const pluriel = (n, mot) => `${n} ${mot}${n > 1 ? 's' : ''}`;
 
 enregistrerEcran('mots', {
-  titre: 'Mes mots',
+  titre: (p) => (p[0] === 'revision' ? 'Révision' : 'Mes mots'),
+  onglet: 'mots',
+  retour: (p) => (p[0] === 'revision' ? '#/mots' : null),
   async afficher(conteneur, [mode]) {
     await chargerMotsFrequents();
     if (mode === 'revision') return afficherRevision(conteneur);
@@ -38,41 +32,50 @@ enregistrerEcran('mots', {
 async function afficherListe(conteneur) {
   const mots = getMesMots();
   if (!mots.length) {
-    conteneur.append(el('p', { className: 'carte aide', textContent: 'Aucun mot pour l\'instant. Dans le Coran, touche un mot puis « Ajouter à mes mots ».' }));
+    conteneur.append(el('div', { className: 'vide' },
+      el('p', { textContent: 'Pas encore de mots.' }),
+      message('Dans le Coran, touche un mot, puis « Ajouter à mes mots ».'),
+      lienBouton('Ouvrir le Coran', '#/coran', { gros: true })));
     return;
   }
-  const aReviser = getMotsAReviser().length;
-  conteneur.append(el('a', { className: 'bouton bouton-large', href: '#/mots/revision',
-    textContent: aReviser ? `Réviser (${aReviser} carte${aReviser > 1 ? 's' : ''})` : 'Rien à réviser aujourd\'hui' }));
-  conteneur.append(el('p', { className: 'aide', textContent: `${mots.length} mot${mots.length > 1 ? 's' : ''}` }));
+  const aReviser = getMotsAReviser().filter((m) => !estSignale('coran', m.cle)).length;
+  conteneur.append(aReviser
+    ? lienBouton(`Réviser ${pluriel(aReviser, 'mot')}`, '#/mots/revision', { gros: true })
+    : el('p', { className: 'carte centre', textContent: 'Rien à réviser aujourd\'hui. Bravo !' }));
+  conteneur.append(el('p', { className: 'sous-titre', textContent: `${pluriel(mots.length, 'mot gardé')} · touche un mot pour le revoir dans son verset` }));
+  const noms = new Map((await getListeSourates()).map((s) => [s.numero, s.nom]));
+  const liste = el('div', { className: 'liste-sourates' });
   for (const m of [...mots].reverse()) {
-    const ligne = el('div', { className: 'carte mot-liste' });
+    const ligne = el('a', { className: 'ligne-mot', href: lienVerset(m) });
     try {
       const { mot } = await depuisLaSource(m);
       ligne.append(
-        el('p', { className: 'arabe coran', lang: 'ar', dir: 'rtl', textContent: mot.texte }),
-        el('p', { className: 'sens', textContent: m.sens ?? 'Sens non disponible' }),
-        el('p', { className: 'credit', textContent: `Sourate ${m.sourate}, verset ${m.verset}` }),
-        el('div', { className: 'ligne-boutons' },
-          el('a', { className: 'bouton secondaire', href: lienVerset(m), textContent: 'Voir dans le verset' }),
-          el('button', { className: 'secondaire', textContent: 'Retirer', onclick: () => { retirerMot(m.id); ligne.remove(); } })),
-      );
+        el('span', { className: 'ligne-mot-texte' }, el('b', { textContent: m.sens ?? 'Sens pas disponible' }), el('small', { textContent: `${noms.get(m.sourate)} · verset ${m.verset}${m.source ? ' · ' + m.source : ''}` })),
+        el('span', { className: 'arabe coran', lang: 'ar', dir: 'rtl', textContent: mot.texte }));
     } catch (e) {
-      ligne.append(el('p', { className: 'erreur', textContent: e.message }));
+      ligne.append(el('span', { className: 'ligne-mot-texte' }, el('small', { textContent: e.message })));
     }
-    conteneur.append(ligne);
+    // Appui long : retirer le mot (rare, donc caché).
+    let minuteur;
+    ligne.addEventListener('pointerdown', () => { minuteur = setTimeout(() => {
+      const f = ouvrirFeuille({ titre: 'Ce mot', contenu: [boutonSecondaire('Retirer de mes mots', () => { retirerMot(m.id); ligne.remove(); f.fermer(); })] });
+    }, 550); });
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach((t) => ligne.addEventListener(t, () => clearTimeout(minuteur)));
+    ligne.addEventListener('contextmenu', (e) => e.preventDefault());
+    liste.append(ligne);
   }
+  conteneur.append(liste);
 }
 
 async function afficherRevision(conteneur) {
   const file = getMotsAReviser().filter((m) => !estSignale('coran', m.cle));
   let i = 0;
-  const zone = el('div');
-  conteneur.append(el('a', { href: '#/mots', className: 'retour', textContent: '← Mes mots' }), zone);
+  const zone = el('div', { className: 'zone-revision' });
+  conteneur.append(zone);
 
   async function carte() {
     if (i >= file.length) {
-      zone.replaceChildren(el('p', { className: 'carte', textContent: 'Bravo, révision finie pour aujourd\'hui !' }));
+      zone.replaceChildren(el('div', { className: 'vide' }, el('p', { textContent: 'Bravo, révision finie pour aujourd\'hui !' }), lienBouton('Retour à mes mots', '#/mots', { gros: true })));
       return;
     }
     const m = file[i];
@@ -84,19 +87,18 @@ async function afficherRevision(conteneur) {
       ligneVerset.append(el('span', { className: x.position === m.position ? 'mot mot-cible' : 'mot', textContent: x.texte }), k < verset.mots.length - 1 ? ' ' : '');
     });
     dos.append(
-      el('p', { className: 'sens grand', textContent: m.sens ?? 'Sens non disponible' }),
+      el('p', { className: 'sens', textContent: m.sens ?? 'Sens pas disponible' }),
+      ...(m.source ? [el('p', { className: 'credit centre', textContent: `Sens : ${m.source}` })] : []),
       ligneVerset,
-      el('p', { className: 'credit' }, `Sourate ${m.sourate}, verset ${m.verset} — `, el('a', { href: lienVerset(m), textContent: 'ouvrir le verset' })),
-      el('div', { className: 'ligne-boutons' },
-        el('button', { textContent: '✔ Je savais', onclick: () => { reviserMot(m.id, true); i++; carte(); } }),
-        el('button', { className: 'danger', textContent: '✖ À revoir', onclick: () => { reviserMot(m.id, false); i++; carte(); } })),
-    );
-    const voir = el('button', { className: 'bouton-large', textContent: 'Voir le sens', onclick: () => { dos.hidden = false; voir.remove(); } });
-    zone.replaceChildren(el('div', { className: 'carte carte-revision' },
-      el('p', { className: 'aide', textContent: `Carte ${i + 1} sur ${file.length}` }),
-      el('p', { className: 'arabe coran mot-revision', lang: 'ar', dir: 'rtl', textContent: mot.texte }),
-      voir, dos));
+      el('div', { className: 'deux-boutons' },
+        grosBouton('Je savais', () => { reviserMot(m.id, true); i++; carte(); }, { icone: 'ok' }),
+        boutonSecondaire('À revoir', () => { reviserMot(m.id, false); i++; carte(); })));
+    const voir = grosBouton('Voir le sens', () => { dos.hidden = false; voir.remove(); });
+    zone.replaceChildren(
+      el('p', { className: 'message-doux', textContent: `Carte ${i + 1} sur ${file.length}` }),
+      el('div', { className: 'carte carte-revision' }, el('p', { className: 'arabe coran mot-revision', lang: 'ar', dir: 'rtl', textContent: mot.texte })),
+      voir, dos);
   }
-  if (!file.length) zone.append(el('p', { className: 'carte', textContent: 'Rien à réviser aujourd\'hui.' }));
+  if (!file.length) zone.append(message('Rien à réviser aujourd\'hui.'));
   else await carte();
 }

@@ -1,59 +1,152 @@
-/* Propriétaire : Claude Code. Codex redéfinit les variables dans css/affichage.css. */
+/* Propriétaire : Claude Code (C13). Style commun : calme, aéré, grands textes, couleurs douces.
+   Codex redéfinit seulement les variables (mode sombre, taille) dans css/affichage.css. */
 :root {
-  --fond: #f7f4ec;
+  --fond: #f6f3ec;
   --carte: #ffffff;
-  --texte: #1d1b16;
-  --doux: #6b665c;
-  --accent: #1f6f5c;
-  --frequent: #b5651d;   /* couleur des petits mots fréquents */
-  --surligne: #fbe7a1;   /* verset en cours de récitation */
+  --texte: #22201b;
+  --doux: #77726a;
+  --trait: #e6e1d6;
+  --accent: #2f7a64;
+  --accent-clair: #e3efe9;
+  --frequent: #c0702a;   /* couleur des petits mots fréquents */
+  --surligne: #fbecb4;   /* verset en cours de récitation */
+  --danger: #b4483a;
   --taille-arabe: 2.3rem;
-  --rayon: 14px;
+  --rayon: 18px;
+  --ombre: 0 6px 18px rgba(47, 122, 100, .22);
+  --hauteur-menu: 64px;
 }
-* { box-sizing: border-box; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; }
 body {
   background: var(--fond);
   color: var(--texte);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  font-size: 17px;
+  line-height: 1.45;
+  padding-bottom: calc(var(--hauteur-menu) + env(safe-area-inset-bottom) + 12px);
   -webkit-text-size-adjust: 100%;
 }
-.entete { padding: calc(12px + env(safe-area-inset-top)) 16px 8px; }
-.entete h1 { margin: 0; font-size: 1.3rem; }
-.ecran { padding: 8px 16px 24px; max-width: 720px; margin: 0 auto; }
-.carte { background: var(--carte); border-radius: var(--rayon); padding: 16px; margin: 12px 0; }
+body.sans-menu { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+button, select, input, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+a { color: var(--accent); }
+
+/* ---- En-tête : ‹ retour · titre · ⚙️ ---- */
+.entete {
+  position: sticky; top: 0; z-index: 10;
+  display: grid; grid-template-columns: 48px 1fr 48px; align-items: center;
+  padding: calc(8px + env(safe-area-inset-top)) 12px 8px;
+  background: var(--fond);
+}
+.entete h1 { grid-column: 2; margin: 0; font-size: 1.15rem; text-align: center; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#bouton-retour { grid-column: 1; grid-row: 1; }
+#bouton-reglages { grid-column: 3; grid-row: 1; justify-self: end; }
+.bouton-rond {
+  display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; min-width: 44px;
+  border: 0; border-radius: 50%; background: var(--carte); color: var(--texte); text-decoration: none; cursor: pointer;
+}
+.bouton-rond[hidden] { display: none; }
+
+.ecran { padding: 4px 20px 24px; max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+
+/* ---- Menu du bas : 4 onglets fixes, icône + mot, ne défile pas ---- */
+.menu {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+  background: var(--carte); border-top: 1px solid var(--trait);
+}
+.menu a {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  min-height: 52px; color: var(--doux); text-decoration: none; font-size: .78rem; border-radius: 12px;
+}
+.menu a.actif { color: var(--accent); font-weight: 700; }
+body.sans-menu .menu { display: none; }
+
+/* ---- Boutons ---- */
+.gros-bouton {
+  display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%;
+  min-height: 64px; padding: 18px 20px; border: 0; border-radius: 22px;
+  background: var(--accent); color: #fff; box-shadow: var(--ombre);
+  font-size: 1.25rem; font-weight: 700; text-align: center; text-decoration: none; cursor: pointer;
+}
+.gros-bouton small { display: block; font-size: .85rem; font-weight: 400; opacity: .9; margin-top: 2px; }
+.gros-bouton:disabled { opacity: .45; box-shadow: none; }
+.bouton-secondaire {
+  display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+  min-height: 52px; padding: 12px 16px; border: 2px solid var(--accent); border-radius: 16px;
+  background: transparent; color: var(--accent); font-weight: 600; text-decoration: none; cursor: pointer;
+}
+/* Boutons simples (déjà utilisés par plusieurs écrans) */
 button, .bouton {
-  min-height: 44px; min-width: 44px; padding: 8px 14px;
-  border: 0; border-radius: 10px; background: var(--accent); color: #fff;
-  font-size: 1rem; cursor: pointer;
+  min-height: 44px; min-width: 44px; padding: 10px 16px;
+  border: 0; border-radius: 14px; background: var(--accent); color: #fff;
+  cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
 }
-button.secondaire { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
-.arabe {
-  direction: rtl; text-align: right; unicode-bidi: isolate;
-  font-size: var(--taille-arabe); line-height: 2.1;
-}
+button.secondaire, .bouton.secondaire { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
+button.danger { background: var(--danger); }
+button:disabled { opacity: .45; cursor: default; }
+/* Liens seuls dans un écran (ex. « Retour ») : zone touchable de 44 px */
+.ecran > a:not([class]) { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* ---- Cartes, textes ---- */
+.carte { background: var(--carte); border-radius: var(--rayon); padding: 16px; }
+.message-doux, .aide { color: var(--doux); margin: 0; text-align: center; }
+.erreur { background: #fbe4e0; color: #8a2a1e; padding: 14px; border-radius: 14px; margin: 0; }
+.arabe { direction: rtl; text-align: right; unicode-bidi: isolate; font-size: var(--taille-arabe); line-height: 2.1; }
 .mot { cursor: pointer; border-radius: 6px; }
 .mot.frequent { color: var(--frequent); }
-.verset.en-cours { background: var(--surligne); border-radius: 8px; }
-.erreur { background: #fde2e1; color: #8a1c1c; padding: 12px; border-radius: 10px; }
-.menu {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  display: flex; overflow-x: auto; gap: 4px;
-  padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
-  background: var(--carte); border-top: 1px solid rgba(0,0,0,.08);
+.verset.en-cours { background: var(--surligne); border-radius: 10px; }
+
+/* ---- Feuille qui monte du bas ---- */
+.voile { position: fixed; inset: 0; z-index: 30; background: rgba(0, 0, 0, .3); }
+.feuille {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 31; max-width: 640px; margin: 0 auto;
+  max-height: 85vh; overflow-y: auto;
+  background: var(--carte); border-radius: 24px 24px 0 0;
+  padding: 10px 20px calc(24px + env(safe-area-inset-bottom));
+  display: flex; flex-direction: column; gap: 12px; box-shadow: 0 -6px 24px rgba(0, 0, 0, .15);
 }
-.menu a { flex: 0 0 auto; padding: 10px 12px; color: var(--texte); text-decoration: none; border-radius: 10px; font-size: .9rem; }
-.menu a.actif { background: var(--accent); color: #fff; }
+.poignee { width: 40px; height: 5px; border-radius: 3px; background: var(--trait); margin: 0 auto 4px; }
+.feuille-titre { margin: 0; font-size: 1.15rem; }
+.ligne-reglage { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; border-bottom: 1px solid var(--trait); }
+.ligne-reglage:last-child { border-bottom: 0; }
+.choix-discret { border: 0; background: transparent; color: var(--accent); font-weight: 600; text-align: right; min-height: 44px; max-width: 60%; }
 
-/* Liens seuls dans un écran (ex. « Retour ») : zone touchable de 44 px sur iPhone */
-.ecran > a:not(.carte):not(.bouton) { display: inline-flex; align-items: center; min-height: 44px; }
-.menu a { min-height: 44px; display: inline-flex; align-items: center; }
+/* ---- Barre d'actions en bas d'un écran de lecture ---- */
+.barre-actions {
+  position: fixed; left: 0; right: 0; bottom: calc(var(--hauteur-menu) + env(safe-area-inset-bottom)); z-index: 9;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 640px; margin: 0 auto;
+  padding: 10px 16px; background: var(--carte); border-top: 1px solid var(--trait);
+}
+body.sans-menu .barre-actions { bottom: 0; padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
+.barre-actions .action { flex-direction: column; gap: 2px; min-height: 56px; padding: 6px; background: transparent; color: var(--texte); font-size: .8rem; border-radius: 14px; }
+.barre-actions .action.principale { background: var(--accent); color: #fff; }
+.barre-actions .action.actif { background: var(--accent-clair); color: var(--accent); }
+body.avec-barre { padding-bottom: calc(var(--hauteur-menu) + 96px + env(safe-area-inset-bottom)); }
 
-/* Boutons : même police que l'appli ; désactivés = grisés (vu en vérifiant X2) */
-button, select, input, textarea { font-family: inherit; }
-button:disabled { opacity: .45; cursor: default; }
-/* Écran du code d'accès */
+/* ---- Étapes de la séance ---- */
+.etapes { display: grid; gap: 8px; text-align: center; }
+.etapes-barre { display: flex; gap: 6px; justify-content: center; }
+.etapes-barre i { width: 40px; height: 6px; border-radius: 3px; background: var(--trait); }
+.etapes-barre i.fait { background: var(--accent); }
+.etapes-texte { margin: 0; font-size: 1.05rem; }
+
+/* ---- Page « Plus » ---- */
+.ligne-plus {
+  display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 12px 16px;
+  background: var(--carte); border-radius: 16px; color: var(--texte); text-decoration: none;
+}
+.ligne-plus .icone:first-child { color: var(--accent); flex: none; }
+.ligne-plus-texte { flex: 1; }
+.ligne-plus-texte small { display: block; color: var(--doux); font-size: .85rem; }
+.ligne-plus > .icone:last-child { color: var(--doux); }
+.ligne-plus.verrouillee { opacity: .55; }
+.pastille-nombre { background: var(--frequent); color: #fff; border-radius: 999px; padding: 2px 10px; font-weight: 700; font-size: .85rem; }
+
+/* ---- Écran du code d'accès ---- */
 body.verrouille > header, body.verrouille > main, body.verrouille > nav { display: none; }
-.ecran-code { display: grid; gap: 12px; max-width: 320px; margin: 20vh auto 0; padding: 0 16px; text-align: center; }
-.ecran-code input { min-height: 52px; font-size: 1.6rem; text-align: center; letter-spacing: .3em; border-radius: 12px; border: 1px solid rgba(0,0,0,.25); }
+body.verrouille { padding-bottom: 0; }
+.ecran-code { display: grid; gap: 14px; max-width: 320px; margin: 22vh auto 0; padding: 0 20px; text-align: center; }
+.ecran-code h1 { margin: 0 0 8px; }
+.ecran-code input { min-height: 56px; font-size: 1.6rem; text-align: center; letter-spacing: .3em; border-radius: 14px; border: 1px solid rgba(0, 0, 0, .2); background: var(--carte); }

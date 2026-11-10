@@ -2,6 +2,8 @@
 // LISTE FERMÉE : aucun récitateur ajouté sans l'accord de Zakou (PROJET.md §3). Pas de Mishary Al-Afasy.
 // Sons : everyayah.com, un fichier par verset. Tout en Hafs.
 
+import { NB_VERSETS } from './nb-versets.js';
+
 export const RIWAYAT = Object.freeze({
   hafs: Object.freeze({ nom: 'Hafs', actif: true }),
   warsh: Object.freeze({ nom: 'Warsh', actif: false }), // prévu pour plus tard, ÉTEINT
@@ -48,7 +50,8 @@ export function construireUrl(cle, recitateur) {
   if (!m) throw new Error(`Clé de verset invalide : ${cle}`);
   const s = Number(m[1]);
   const v = Number(m[2]);
-  if (s < 1 || s > 114 || v < 1 || v > 286) throw new Error(`Verset inexistant : ${cle}`);
+  // Le verset doit exister vraiment (ex. 112:5 n'existe pas : Al-Ikhlas a 4 versets).
+  if (s < 1 || s > 114 || v < 1 || v > NB_VERSETS[s - 1]) throw new Error(`Verset inexistant : ${cle}`);
   if (recitateur.riwaya !== RIWAYA_TEXTE) throw new Error('Riwaya du son différente du texte : refusé');
   return `${BASE_AUDIO}${recitateur.dossier}/${String(s).padStart(3, '0')}${String(v).padStart(3, '0')}.mp3`;
 }

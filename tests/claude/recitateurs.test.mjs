@@ -82,3 +82,12 @@ test('les autres sourates : le récitateur choisi joue normalement', () => {
   assert.equal(recitateurEffectif('husary_muallim', 93, {}), 'husary_muallim');
   assert.equal(etatVerification('dosari', 112, {}), 'sans-objet');
 });
+
+// ---- Défauts trouvés par Codex (10/11) ----
+import { NB_VERSETS } from '../../js/coran/nb-versets.js';
+
+test('un verset qui n\'existe pas est refusé (ex. 112:5, 112:286)', () => {
+  assert.deepEqual([...NB_VERSETS], manifeste.sourates.map((s) => s.nbVersets), 'nombres = manifeste');
+  for (const cle of ['112:5', '112:286', '1:8', '114:7']) assert.throws(() => construireUrl(cle, RECITATEURS[0]), /inexistant/, cle);
+  for (const cle of ['112:4', '2:286', '1:7', '114:6']) assert.doesNotThrow(() => construireUrl(cle, RECITATEURS[0]), cle);
+});

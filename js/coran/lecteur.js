@@ -77,6 +77,9 @@ export function fabriquerLecteur({ urlPour, recitateurPour }) {
     // cles : ['112:1', '112:2'] ; fois : 1, 3, 5 ou 10 ; repeteApresMoi : pause après chaque verset
     jouer(cles, { fois = 1, repeteApresMoi = false } = {}) {
       if (!Array.isArray(cles) || cles.length === 0) throw new Error('Rien à jouer');
+      // Nouvelle lecture : on oublie toute pause « répète après moi » en attente (défaut vu par Codex).
+      arreterMinuteur();
+      suiteEnAttente = null;
       file = [...cles];
       index = 0;
       options = { fois: Math.max(1, Math.floor(fois)), repeteApresMoi };
