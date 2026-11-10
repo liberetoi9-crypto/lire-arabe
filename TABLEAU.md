@@ -10,11 +10,12 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 | C2 | Script qui télécharge le Coran (Fatiha + Juz Amma) depuis quran.com + contrôle Tanzil → `data/coran/` | à vérifier (10/11) | claude/donnees-coran | 6236 versets = Tanzil, 0 différence. **À vérifier par Codex** |
 | C3 | `js/coran/api.js` : sourates, versets, contrôle des numéros + écran Coran + police | à vérifier (10/11) | claude/api-coran | Police officielle, contrôle des numéros, testé en taille iPhone. **À vérifier par Codex** |
 | C4 | Récitateurs (Husary mu'allim, Dosari) + menu + lecteur verset par verset + surlignage + « répète après moi » + `boucle(cle, 3/5/10)` | à vérifier (10/11) | claude/recitateurs | Testé : sons réels, surlignage, Dosari 3 fois. 7 tests sans Internet + 6 en ligne. **À vérifier par Codex** |
-| C5 | Petits mots fréquents (comptage sur le Coran complet) | à faire | claude/mots-frequents | |
+| C5 | Petits mots fréquents (comptage sur le Coran complet) | à vérifier (10/11) | claude/mots-frequents | 40 mots de 3 lettres max = 22,9 % du Coran. Couleur seulement (vérifié : 0 lettre changée sur 2, 78, 112). 15 tests OK. **À vérifier par Codex** |
 | C6 | Comprendre les mots : mot à mot (anglais), verset en français au choix Hamidullah (quran.com) / Rachid Maach (QuranEnc, 7 conditions), « Ajouter à mes mots », cartes | à faire | claude/mots | |
 | C7 | Écran « Séance du jour » (assemble Coran + Mes textes) | à faire | claude/seance | dépend de X1 |
 | C8 | Tests Claude (texte, audio, traductions, WebKit) — ajoutés au fur et à mesure | à faire | claude/tests | |
 | C9 | Mise en ligne (pour Zakou seul) | à faire | claude/mise-en-ligne | |
+| C12 | Sons de Dosari à vérifier par Zakou (11 sourates : 72, 76, 88, 92, 93, 94, 96, 102, 104, 107, 109) : Husary joue à la place tant que non vérifié + écran #/coran/verifier | à vérifier (10/11) | claude/recitateurs | 11 tests sans Internet OK |
 | C10 | Vérifier le travail de Codex | à faire | — | |
 | C11 | Les 114 sourates à lire et écouter (fonction 9) + `getListeSourates()`, `ordreParMots()`, `ordreMemorisation()` | à vérifier (10/11) | claude/api-coran | `ordreMemorisation()` prêt pour X11. **À vérifier par Codex** |
 
@@ -45,6 +46,10 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 
 - **10/11 — Claude → Codex** : C4 à vérifier (branche `claude/recitateurs`, contient C2, C3, C11). Le lecteur est prêt : `creerLecteur()` → `jouer(cles, { fois, repeteApresMoi })`, `boucle(cle, fois)`, `pause()`, `reprendre()`, `arreter()`, `vitesse('lent'|'normal')`. Événements : `verset:debut`, `verset:fin`, `lecteur:a-toi`, `lecteur:fin`, `lecteur:erreur`. Pour X5 : `urlAudio(cle)`. Pour X12 : `boucle`. Zakou demande **des tests automatiques pour chaque partie** (voir AGENTS.md point 5).
 
+- **10/11 — Claude → Codex** : ajout C12 sur `claude/recitateurs`. `urlAudio(cle)` sans récitateur donne maintenant le récitateur qui joue VRAIMENT sur la sourate (Husary si Dosari pas vérifié). Utilise toujours `urlAudio(cle)` sans 2e argument pour X5 et X12.
+
+- **10/11 — Claude → Codex** : C5 prêt sur `claude/mots-frequents` (contient tout mon travail). Pour X4 : `await chargerMotsFrequents()` UNE fois, puis `estMotFrequent(texteMot)` (vrai/faux).
+
 ## Demandes (quand on a besoin d'un changement chez l'autre)
 | De | Pour | Demande | État |
 |---|---|---|---|
@@ -59,5 +64,6 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 | 10/11 | Claude | Mémorisation : ordre ? | Fatiha d'abord, puis Juz Amma court → long, puis le reste court → long |
 | 10/11 | Claude | « Chrono de plus en plus rapide » ? | Oui si 5e lecture < 1re ET lu sans s'arrêter sur les mots (case à cocher) |
 | 10/11 | Claude | Morceaux ? | 5 versets par défaut + réglage pour changer |
+| 10/11 | Claude | Écouter Dosari sur les 11 sourates de l'écran « Sons à vérifier » et répondre « Vérifié » ou « Erreur » (sur l'iPhone, après la mise en ligne) | en attente |
 | 10/11 | Zakou | Hamidullah est-il sur QuranEnc ? | Oui (`french_hameedullah`, même texte) mais retiré de leur liste officielle, sans version → on garde quran.com |
 | 10/11 | Claude | Comment garder l'appli pour Zakou seul ? | B : GitHub public + GitHub Pages + code d'accès (oui, 10/11) |
