@@ -60,7 +60,7 @@ Ce fichier est la consigne unique pour **Claude Code** et **Codex**. Les deux le
 8. **Comprendre les mots**
    - Toucher un mot du Coran → sens mot à mot depuis quran.com (**en anglais** : quran.com n'a pas de mot à mot en français, vérifié le 10/11/2026).
    - Traduction française du verset entier, au choix (menu) :
-     - **Hamidullah** : depuis quran.com (traduction n° 31). Hamidullah n'existe PAS sur QuranEnc.
+     - **Hamidullah** : depuis quran.com (traduction n° 31), avec ses notes. Vérifié le 10/11 : QuranEnc a aussi `french_hameedullah` (même texte), mais il est **retiré de sa liste officielle** (pas de numéro de version, plus suivi). On garde donc quran.com, la source suivie.
      - **Rachid Maach** : depuis l'API QuranEnc.com (clé `french_rashid`), prise en direct.
    - Conditions QuranEnc à respecter (lues le 10/11/2026) :
      1. rien changer, ajouter ni enlever : traduction affichée telle quelle, **avec ses notes** (bouton « Notes ») ;
@@ -74,8 +74,8 @@ Ce fichier est la consigne unique pour **Claude Code** et **Codex**. Les deux le
 9. **Choisir n'importe quelle sourate** (ajout du 10/11)
    - En plus du Juz Amma, on peut ouvrir n'importe laquelle des **114 sourates** pour la lire et l'écouter.
 10. **Parcours de mémorisation** (ajout du 10/11 — tâche Codex)
-   - **Déblocage** : verrouillé au début. Se débloque quand la phase lecture est finie : toutes les sourates du Juz Amma lues au moins 5 fois chacune (lecture répétée), avec un chrono de plus en plus rapide. Ou bouton « Je suis prêt ».
-   - **Ordre** : de la plus courte à la plus longue, en comptant les mots du texte officiel (`ordreParMots()` du module Coran, pas de liste inventée). La sourate suivante se débloque seulement quand la précédente est VALIDÉE. Les longues sourates sont coupées en morceaux de quelques versets ; chaque morceau est validé avant le suivant.
+   - **Déblocage** : verrouillé au début. Se débloque quand la phase lecture est finie : toutes les sourates du Juz Amma lues au moins 5 fois chacune (lecture répétée), avec un chrono de plus en plus rapide = **la 5e lecture est plus rapide que la 1re ET l'élève coche « j'ai lu sans m'arrêter sur les mots »** (réponse de Zakou, 10/11). Ou bouton « Je suis prêt ».
+   - **Ordre** (réponse de Zakou, 10/11) : **la Fatiha en premier**, puis **le Juz Amma** de la plus courte à la plus longue, puis **le reste des sourates** de la plus courte à la plus longue. Mots comptés dans le texte officiel : `ordreMemorisation()` du module Coran (pas de liste inventée). La sourate suivante se débloque seulement quand la précédente est VALIDÉE. Les longues sourates sont coupées en morceaux de **5 versets par défaut**, avec un **réglage** pour changer ce nombre (ex. longs versets d'Al-Baqara) ; chaque morceau est validé avant le suivant.
    - **Apprendre** : écouter un verset en boucle avec le récitateur (3, 5 ou 10 fois, au choix). Le texte se cache petit à petit : d'abord la fin du verset, puis tout le verset. Enchaîner : verset 1, puis 1+2, puis 1+2+3, etc.
    - **Valider vraiment** : test du jour = réciter toute la sourate de mémoire, texte caché, en s'enregistrant. Ensuite l'appli montre le texte et fait réécouter l'enregistrement à côté du récitateur. L'élève coche chaque verset : « parfait » ou « erreur / hésitation ». Il faut réussir le test **sans aucune erreur 3 jours différents** (ex. jour 1, jour 3, jour 7). Une erreur = compteur à zéro. Bouton facultatif « Validé par quelqu'un » (une personne a écouté sans erreur).
    - **Aucune correction automatique de la récitation par intelligence artificielle** (règle zéro erreur) : c'est l'élève qui coche.
@@ -130,7 +130,7 @@ Le résultat des tests + la liste de ce qui a été vérifié par Claude Code ET
 1. **Écrans** : chaque module appelle `enregistrerEcran(nom, { titre, afficher(conteneur, params) })` (`js/core/routeur.js`). Adresses : `#/memorisation`, `#/seance`, `#/coran`, `#/coran/112`, `#/mots`, `#/textes`, `#/exercices`, `#/progression`, `#/reglages`.
 2. **Fonctions publiques** : chaque module expose ses fonctions dans son `api.js`. On importe **seulement** l'`api.js` d'un autre module, jamais ses fichiers internes.
    - `js/coran/api.js` (Claude) : `getSourate(n)`, `getVerset(cle)`, `ordreJuzAmma()`, `getTraduction(cle)`, `getSensMots(cle)`, `getRecitateurs()`, `getRecitateurActif()`, `setRecitateurActif(id)`, `urlAudio(cle, id?)`, `creerLecteur()`, `estMotFrequent(texteMot)`.
-   - Ajouts Coran (10/11) : `getListeSourates()` (les 114 : numéro, nb de versets, nb de mots), `ordreParMots()` (les 114, de la plus courte à la plus longue), `JUZ_AMMA`, et dans le lecteur `boucle(cle, fois)` pour écouter un verset 3, 5 ou 10 fois.
+   - Ajouts Coran (10/11) : `getListeSourates()` (les 114 : numéro, nb de versets, nb de mots), `ordreParMots()` (les 114, de la plus courte à la plus longue), `ordreMemorisation()` (Fatiha, puis Juz Amma court → long, puis le reste court → long), `JUZ_AMMA`, et dans le lecteur `boucle(cle, fois)` pour écouter un verset 3, 5 ou 10 fois.
    - `js/textes/api.js` (Codex) : `getTextes()`, `getTexte(id)`, `getTexteDuJour()`.
    - `js/progression/api.js` (Codex) : `noterSeance({ secondes, type })`, `noterTemps({ id, secondes })`.
    - `js/exercices/api.js` (Codex) : `afficherVoyellesProgressives(conteneur, { mots, niveau })`, `lectureRepetee(conteneur, { objectif })`.
