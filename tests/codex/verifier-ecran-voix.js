@@ -37,7 +37,7 @@ export async function verifierEcranVoix() {
     const avantArret = annulations;
     cliquer('arreter');
     verifier(annulations > avantArret, 'Arrêter annule la voix');
-    verifier([...racine.querySelectorAll('button, select')].every(b => b.getBoundingClientRect().height >= 44), 'Boutons et sélecteur hauts de 44 px minimum');
+    verifier([...racine.querySelectorAll('button, select')].filter(b => b.getClientRects().length).every(b => b.getBoundingClientRect().height >= 44), 'Boutons et sélecteur hauts de 44 px minimum');
     verifier(document.documentElement.scrollWidth <= innerWidth, 'Pas de débordement horizontal à 390 px');
     voix = []; synthese.dispatchEvent(new Event('voiceschanged'));
     cliquer('ecouter');

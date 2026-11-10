@@ -74,3 +74,11 @@ contrôles X1 et les 15 contrôles X2 dans des contextes WebKit vides.
 
 `deploiement.test.mjs` contrôle les ressources C9 de la copie `CORAN_REVUE`.
 Le résultat détaillé de la vérification complète est dans `VERIFICATION.md`.
+
+X16 : `mise-en-page.ecran.mjs` vérifie les six entrées de Plus (dont celles de
+Claude), le verrou de mémorisation, l'onglet actif, les tailles touchables,
+l'ajout intact d'un texte, une seule action principale et la vitesse dans la
+feuille ⚙️. Le serveur et les contextes isolés utilisent `support-navigateur.mjs`.
+La progression est signalée comme bientôt disponible et la mémorisation reste
+verrouillée jusqu'à X10. Les réglages de taille/thème viendront avec X18/X7 ;
+la page Réglages mène pour l'instant aux réglages de lecture du Coran.

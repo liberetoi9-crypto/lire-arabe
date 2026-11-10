@@ -31,7 +31,7 @@ export async function verifierEcranTextes(arabe) {
   verifier(!traduction.hidden && bouton.getAttribute('aria-expanded') === 'true', 'Bouton ouvre la traduction avec sa source');
   bouton.click();
   verifier(traduction.hidden, 'Bouton cache la traduction');
-  verifier([...conteneur.querySelectorAll('button')].every(b => b.getBoundingClientRect().height >= 44), 'Boutons de lecture de 44 px minimum');
+  verifier([...conteneur.querySelectorAll('button')].filter(b => b.getClientRects().length).every(b => b.getBoundingClientRect().height >= 44), 'Boutons de lecture de 44 px minimum');
   verifier(document.documentElement.scrollWidth <= innerWidth, 'Lecture sans débordement horizontal');
   [...conteneur.querySelectorAll('button')].find(b => b.textContent === 'Signaler une erreur').click();
   verifier(!conteneur.querySelector('.arabe') && api.getTexte(texte.id) === null, 'Signalement retire immédiatement le texte');

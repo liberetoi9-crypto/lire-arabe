@@ -4,12 +4,14 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { EMPREINTE } from '../../js/core/acces.js';
 
 const { webkit, devices } = process.env.PLAYWRIGHT_ROOT
   ? await import(pathToFileURL(join(process.env.PLAYWRIGHT_ROOT, 'index.mjs')))
   : await import('playwright');
 const racine = new URL('../../', import.meta.url);
 const revue = process.env.CORAN_REVUE ? pathToFileURL(process.env.CORAN_REVUE.replaceAll('\\', '/') + '/') : null;
+const donneesCoran = revue ?? racine;
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json' };
 let serveur, navigateur, page, adresse;
 before(async () => {
@@ -24,6 +26,7 @@ before(async () => {
   adresse = `http://127.0.0.1:${serveur.address().port}/`;
   navigateur = await webkit.launch();
   const contexte = await navigateur.newContext({ ...devices['iPhone 13'] });
+  await contexte.addInitScript(e => { localStorage.setItem('la:acces', e); localStorage.setItem('la:accueil.bienvenueVue', 'true'); }, EMPREINTE);
   page = await contexte.newPage();
   await page.goto(adresse + '#/exercices');
   await page.waitForSelector('#ecran h2');
@@ -73,10 +76,10 @@ test('WebKit : texte personnel intact, annulation et signalement sans validation
   assert.equal(await page.evaluate(async id => (await import('/js/exercices/api.js')).getLectures(`texte:${id}`).length, id), 0);
 });
 
-test('WebKit : sourate exacte, zones de 44 px, aucun débordement et retrait après signalement', { skip: !revue }, async () => {
+test('WebKit : sourate exacte, zones de 44 px, aucun débordement et retrait après signalement', async () => {
   await page.evaluate(() => { location.hash = '#/exercices/coran/112'; });
   await page.waitForSelector('#ecran .arabe.coran');
-  const s = JSON.parse(await readFile(new URL('data/coran/sourates/112.json', revue), 'utf8'));
+  const s = JSON.parse(await readFile(new URL('data/coran/sourates/112.json', donneesCoran), 'utf8'));
   assert.deepEqual(await page.$$eval('#ecran .arabe.coran', ls => ls.map(l => l.textContent)), s.versets.map(v => v.texte));
   assert.equal(await page.evaluate(() => innerWidth), 390);
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
@@ -90,6 +93,7 @@ test('WebKit : sourate exacte, zones de 44 px, aucun débordement et retrait apr
 
 test('WebKit : les 13 contrôles Mes textes dans un téléphone de test vide', async () => {
   const contexte = await navigateur.newContext({ ...devices['iPhone 13'] });
+  await contexte.addInitScript(e => { localStorage.setItem('la:acces', e); localStorage.setItem('la:accueil.bienvenueVue', 'true'); }, EMPREINTE);
   try {
     const p = await contexte.newPage();
     await p.goto(adresse + '#/textes');
@@ -104,6 +108,7 @@ test('WebKit : les 13 contrôles Mes textes dans un téléphone de test vide', a
 
 test('WebKit : les 15 contrôles voix simulée dans un téléphone de test vide', async () => {
   const contexte = await navigateur.newContext({ ...devices['iPhone 13'] });
+  await contexte.addInitScript(e => { localStorage.setItem('la:acces', e); localStorage.setItem('la:accueil.bienvenueVue', 'true'); }, EMPREINTE);
   try {
     const p = await contexte.newPage();
     await p.goto(adresse + '#/textes');

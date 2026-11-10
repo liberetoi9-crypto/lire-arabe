@@ -1,15 +1,17 @@
 import { creerVoixTexte, morceauxTexte } from './voix.js';
 import { on, emit } from '../core/bus.js';
+import { grosBouton, boutonSecondaire, ligneChoix, ouvrirFeuille } from '../core/ui.js';
 
 export function ajouterCommandesVoix(carte, arabe, texte) {
   const zone = document.createElement('section');
   zone.setAttribute('aria-label', 'Écouter mon texte');
   const statut = document.createElement('p');
+  statut.className = 'message-doux';
   statut.setAttribute('role', 'status');
   statut.setAttribute('aria-live', 'polite');
   statut.textContent = 'Écoute le texte ou touche un mot. Voix réservée à l’arabe normal.';
   const actions = document.createElement('div');
-  Object.assign(actions.style, { display: 'flex', flexWrap: 'wrap', gap: '8px' });
+  Object.assign(actions.style, { display: 'grid', gap: '12px' });
   const boutons = {};
   const executer = action => {
     try { action(); } catch (e) { lecteur.arreter(); statut.textContent = e.message; }
@@ -19,6 +21,10 @@ export function ajouterCommandesVoix(carte, arabe, texte) {
     boutons.suivante.disabled = !suite;
     boutons.reecouter.disabled = !repetition;
     boutons.arreter.disabled = !enLecture && !repetition;
+    boutons.suivante.hidden = !repetition;
+    boutons.reecouter.hidden = !repetition;
+    boutons.arreter.hidden = !enLecture && !repetition;
+    for (const b of Object.values(boutons)) b.style.display = b.hidden ? 'none' : '';
   } });
   for (const [nom, titre, action] of [
     ['ecouter', 'Écouter le texte', () => lecteur.ecouter()],
@@ -27,23 +33,19 @@ export function ajouterCommandesVoix(carte, arabe, texte) {
     ['suivante', 'Phrase suivante', () => lecteur.suivante()],
     ['arreter', 'Arrêter', () => lecteur.arreter()],
   ]) {
-    const b = document.createElement('button');
-    b.type = 'button'; b.textContent = titre;
+    const b = nom === 'ecouter'
+      ? grosBouton(titre, () => executer(action), { icone: 'ecouter' })
+      : boutonSecondaire(titre, () => executer(action));
     b.dataset.voix = nom;
     b.disabled = ['reecouter', 'suivante', 'arreter'].includes(nom);
-    b.addEventListener('click', () => executer(action));
+    b.hidden = ['reecouter', 'suivante', 'arreter'].includes(nom);
+    b.style.display = b.hidden ? 'none' : '';
     boutons[nom] = b; actions.append(b);
   }
-  const label = document.createElement('label');
-  label.textContent = 'Vitesse : ';
-  const choix = document.createElement('select');
-  Object.assign(choix.style, { minHeight: '44px', fontSize: '1rem' });
-  for (const [valeur, titre] of [['normal', 'Normale'], ['lent', 'Lente']]) {
-    const option = document.createElement('option');
-    option.value = valeur; option.textContent = titre; choix.append(option);
-  }
-  choix.addEventListener('change', () => executer(() => lecteur.vitesse(choix.value)));
-  label.append(choix); zone.append(label, statut, actions);
+  const label = ligneChoix('Vitesse', [['normal', 'Normale'], ['lent', 'Lente']], 'normal', valeur => executer(() => lecteur.vitesse(valeur)));
+  label.hidden = true;
+  label.style.display = 'none';
+  zone.append(statut, actions, label);
   // Les séparateurs sont des nœuds texte inchangés : mots + séparateurs = source exacte.
   arabe.replaceChildren();
   let position = 0;
@@ -79,5 +81,11 @@ export function ajouterCommandesVoix(carte, arabe, texte) {
     desabonner();
   }
   voixChargees();
-  return () => { lecteur.arreter(); detruire(); };
+  const nettoyer = () => { lecteur.arreter(); detruire(); };
+  nettoyer.ouvrirReglages = () => {
+    label.hidden = false;
+    label.style.display = '';
+    return ouvrirFeuille({ titre: 'Réglages', contenu: [label], surFermeture: () => { label.hidden = true; label.style.display = 'none'; zone.append(label); } });
+  };
+  return nettoyer;
 }
