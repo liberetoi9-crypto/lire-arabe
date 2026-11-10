@@ -1,4 +1,4 @@
-// Diagnostic manuel, hors suite normale : reproductions à transmettre à Claude.
+// Contrôle manuel des corrections C4, hors suite normale.
 import { pathToFileURL } from 'node:url';
 import assert from 'node:assert/strict';
 if (!process.env.CORAN_REVUE) throw new Error('Définir CORAN_REVUE avec la copie de claude/mots.');
@@ -14,7 +14,8 @@ globalThis.Audio = class {
   pause() {}
 };
 const api = await import(new URL('js/coran/api.js', base));
-console.log('C4 : clé inexistante 112:286 acceptée :', api.urlAudio('112:286'));
+assert.throws(() => api.urlAudio('112:286'), /inexistant/);
+console.log('C4 : le verset inexistant 112:286 est refusé.');
 const lecteur = api.creerLecteur();
 const ancienSet = globalThis.setTimeout, ancienClear = globalThis.clearTimeout;
 try {
@@ -26,7 +27,8 @@ try {
   assert.equal(lecteur.cleCourante, '113:1');
   audios[0].currentTime = 2;
   lecteur.pause(); lecteur.reprendre();
-  console.log('C4 : nouvelle lecture puis pause/reprise, attendu temps 2 s, reçu :', audios[0].currentTime);
+  assert.equal(audios[0].currentTime, 2);
+  console.log('C4 : la reprise reste à 2 s.');
 } finally {
   lecteur.arreter(); globalThis.setTimeout = ancienSet; globalThis.clearTimeout = ancienClear;
 }
