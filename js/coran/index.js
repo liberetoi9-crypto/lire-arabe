@@ -28,14 +28,15 @@ const noterDerniere = (sourate, verset) => ecrire('coran.derniere', { sourate, v
 
 // ---- Un seul lecteur ; il s'arrête quand on change d'écran ----
 let lecteur = null;
-let lecteurForce = null;
+let lecteurForce = null;        // récitateur imposé par l'écran (« Sons à vérifier » : Dosari) ; null = normal
+let recitateurDuLecteur = null;  // récitateur pour lequel le lecteur actuel a été créé (défaut vu par Zakou le 10/11)
 let modeRepeter = false;
 window.addEventListener('hashchange', () => lecteur?.arreter());
 
 function jouer(cles, { recitateur = null, repeter = false } = {}) {
-  if (lecteur && lecteurForce !== recitateur) { lecteur.arreter(); lecteur = null; }
-  lecteurForce = recitateur;
-  lecteur ??= creerLecteur({ recitateur });
+  // Un lecteur ne sert que pour le récitateur demandé : sinon on en crée un nouveau.
+  if (lecteur && recitateurDuLecteur !== recitateur) { lecteur.arreter(); lecteur = null; }
+  if (!lecteur) { lecteur = creerLecteur({ recitateur }); recitateurDuLecteur = recitateur; }
   const r = getEcoute();
   lecteur.vitesse(r.lent ? 'lent' : 'normal');
   modeRepeter = repeter;
@@ -246,8 +247,9 @@ function clesAJouer() {
 }
 
 function basculerEcoute(recitateur = lecteurForce) {
-  if (lecteur?.enLecture && !modeRepeter) lecteur.pause();
-  else if (lecteur?.cleCourante && !modeRepeter) lecteur.reprendre();
+  const memeLecteur = lecteur && recitateurDuLecteur === recitateur;
+  if (memeLecteur && lecteur.enLecture && !modeRepeter) lecteur.pause();
+  else if (memeLecteur && lecteur.cleCourante && !modeRepeter) lecteur.reprendre();
   else jouer(clesAJouer(), { recitateur });
   majBarre();
 }

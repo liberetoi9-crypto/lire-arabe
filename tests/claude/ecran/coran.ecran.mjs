@@ -30,6 +30,12 @@ before(async () => {
     if (!localStorage.getItem('la:acces')) localStorage.setItem('la:acces', e);
     if (!localStorage.getItem('la:accueil.bienvenueVue')) localStorage.setItem('la:accueil.bienvenueVue', 'true');
   }, EMPREINTE);
+  // On note chaque son vraiment lancé (fichier everyayah) pour vérifier le bon récitateur.
+  await contexte.addInitScript(() => {
+    window.__joues = [];
+    const jouer = HTMLMediaElement.prototype.play;
+    HTMLMediaElement.prototype.play = function () { window.__joues.push(this.src.split('/data/')[1]); return jouer.call(this); };
+  });
   page = await contexte.newPage();
   await page.goto(adresse + '#/coran/112');
   await page.waitForSelector('.verset');
@@ -216,4 +222,26 @@ test("code d'accès : sans le code, rien de l'appli n'est visible ; un faux code
     await p.waitForSelector('.verset');
   }
   await autre.close();
+});
+
+// Défaut vu par Zakou le 10/11 : après avoir écouté une autre sourate, « Sons à vérifier » jouait Husary.
+test('« Sons à vérifier » joue TOUJOURS Dosari, même après une autre sourate ; la lecture normale reste sur Husary', async () => {
+  await vider();
+  const ecouter = async () => {
+    await page.evaluate(() => { window.__joues = []; });
+    await page.click('#action-ecouter');
+    await page.waitForFunction(() => window.__joues.length > 0);
+    return page.evaluate(() => window.__joues[0]);
+  };
+  await aller('#/coran/112', '.verset');
+  assert.equal(await ecouter(), 'Husary_Muallim_128kbps/112001.mp3');
+  for (const n of [93, 72, 109]) {
+    await aller(`#/coran/verifier/${n}`, `.verset[data-cle="${n}:1"]`);
+    assert.equal(await ecouter(), `Yasser_Ad-Dussary_128kbps/${String(n).padStart(3, '0')}001.mp3`, `sourate ${n}`);
+  }
+  // Retour à la lecture normale d'une sourate pas encore vérifiée (Dosari choisi) : Husary.
+  await page.evaluate(() => localStorage.setItem('la:coran.recitateur', JSON.stringify('dosari')));
+  await aller('#/coran/93', '.verset[data-cle="93:1"]');
+  assert.equal(await ecouter(), 'Husary_Muallim_128kbps/093001.mp3');
+  await vider();
 });
