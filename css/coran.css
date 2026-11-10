@@ -56,3 +56,4 @@ button.danger { background: #b03a2e; }
 .retour { display: inline-block; margin: 4px 0; color: var(--accent); min-height: 32px; }
 .etat-actuel { font-weight: 600; }
 .reponse-verif { display: grid; gap: 10px; }
+body.sans-frequents .mot.frequent { color: inherit; }

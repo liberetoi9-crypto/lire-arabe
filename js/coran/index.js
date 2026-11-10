@@ -4,7 +4,8 @@ import { emit, on } from '../core/bus.js';
 import { boutonSignaler, estSignale } from '../core/signalement.js';
 import { getSourate, getVerset, getListeSourates, ordreJuzAmma, SOURCE_TEXTE,
   getRecitateurs, getRecitateurActif, setRecitateurActif, creerLecteur,
-  recitateurPourSourate, getSonsAVerifier, noterVerificationSon } from './api.js';
+  recitateurPourSourate, getSonsAVerifier, noterVerificationSon,
+  chargerMotsFrequents, estMotFrequent, getColorerFrequents, setColorerFrequents } from './api.js';
 
 const el = (tag, props = {}, ...enfants) => {
   const e = Object.assign(document.createElement(tag), props);
@@ -83,6 +84,8 @@ async function listeSourates(numeros) {
 
 async function afficherSourate(conteneur, n) {
   const s = await getSourate(n);
+  await chargerMotsFrequents();
+  document.body.classList.toggle('sans-frequents', !getColorerFrequents());
   conteneur.append(el('h2', { className: 'titre-sourate', textContent: `${n}. ${s.nom}${s.nomFr ? ' — ' + s.nomFr : ''}` }));
 
   // Basmala (sauf sourates 1 et 9) : texte pris dans la source (verset 1:1), jamais écrit à la main.
@@ -109,7 +112,8 @@ function ligneVerset(v, n) {
   const ligne = el('p', { className: 'arabe coran verset', lang: 'ar', dir: 'rtl' });
   ligne.dataset.cle = v.cle;
   v.mots.forEach((m, i) => {
-    const mot = el('span', { className: 'mot', textContent: m.texte });
+    // Couleur seulement : le texte du mot reste exactement celui de la source.
+    const mot = el('span', { className: estMotFrequent(m.texte) ? 'mot frequent' : 'mot', textContent: m.texte });
     mot.dataset.position = m.position;
     mot.addEventListener('click', () => emit('mot:touche', { source: 'coran', cle: v.cle, position: m.position, texte: m.texte }));
     ligne.append(mot, i < v.mots.length - 1 ? ' ' : '');
@@ -144,6 +148,7 @@ async function afficherVerificationSourate(conteneur, n) {
   const x = getSonsAVerifier().find((y) => y.sourate === n);
   if (!x) throw new Error(`Rien à vérifier sur la sourate ${n}`);
   const s = await getSourate(n);
+  await chargerMotsFrequents();
   conteneur.append(
     el('a', { href: '#/coran/verifier', className: 'retour', textContent: '← Sons à vérifier' }),
     el('h2', { className: 'titre-sourate', textContent: `${n}. ${s.nom} — ${x.nom}` }),
@@ -211,6 +216,8 @@ function barreLecture(s) {
 
   const caseRepete = el('input', { type: 'checkbox', checked: reglages.repeteApresMoi });
   caseRepete.addEventListener('change', () => { reglages.repeteApresMoi = caseRepete.checked; });
+  const caseFrequents = el('input', { type: 'checkbox', checked: getColorerFrequents() });
+  caseFrequents.addEventListener('change', () => { setColorerFrequents(caseFrequents.checked); document.body.classList.toggle('sans-frequents', !caseFrequents.checked); });
   const caseLent = el('input', { type: 'checkbox', checked: reglages.lent });
   caseLent.addEventListener('change', () => { reglages.lent = caseLent.checked; lecteur?.vitesse(reglages.lent ? 'lent' : 'normal'); });
 
@@ -231,6 +238,7 @@ function barreLecture(s) {
       choixFois,
       el('label', { className: 'ligne-case' }, caseRepete, ' Répète après moi (une pause après chaque verset)'),
       el('label', { className: 'ligne-case' }, caseLent, ' Lent'),
+      el('label', { className: 'ligne-case' }, caseFrequents, ' Colorer les petits mots fréquents'),
     ),
     note,
     el('div', { className: 'barre-lecture' },

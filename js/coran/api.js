@@ -5,6 +5,7 @@ import { recitateursDisponibles, trouverRecitateur, construireUrl,
   SOURATES_A_VERIFIER, etatVerification, recitateurEffectif } from './recitateurs.js';
 import { fabriquerLecteur } from './lecteur.js';
 import { lire, ecrire } from '../core/stockage.js';
+import { squelette } from './frequents.js';
 
 const pasEncore = () => { throw new Error('pas encore fait'); };
 
@@ -131,7 +132,32 @@ export function creerLecteur({ recitateur = null } = {}) {
     recitateurPour: (cle) => recitateur ?? recitateurPourSourate(sourateDe(cle)),
   });
 }
-export const estMotFrequent = pasEncore;    // (texteMot) => boolean (C5)
+// ---- Petits mots fréquents (C5) ----
+// Liste COMPTÉE dans le texte officiel (data/coran/frequents.json). Le texte n'est jamais modifié :
+// l'appli ajoute seulement une couleur aux mots dont le squelette est dans la liste.
+let formesFrequentes = null;
+let infosFrequents = null;
+
+// () => Promise<{ regle, couverture, mots: [{ forme, nombre }] }> — à appeler une fois avant estMotFrequent.
+export async function chargerMotsFrequents() {
+  if (!infosFrequents) {
+    const r = await fetch(new URL('../../data/coran/frequents.json', import.meta.url));
+    if (!r.ok) throw new Error('Liste des mots fréquents introuvable');
+    infosFrequents = await r.json();
+    formesFrequentes = new Set(infosFrequents.mots.map((m) => m.forme));
+  }
+  return infosFrequents;
+}
+
+// (texteMot) => boolean. Appeler d'abord await chargerMotsFrequents().
+export function estMotFrequent(texteMot) {
+  if (!formesFrequentes) throw new Error('Appeler chargerMotsFrequents() avant estMotFrequent()');
+  return formesFrequentes.has(squelette(texteMot));
+}
+
+// Réglage d'affichage : colorer ou non (oui par défaut).
+export const getColorerFrequents = () => lire('coran.colorerFrequents', true);
+export const setColorerFrequents = (oui) => ecrire('coran.colorerFrequents', Boolean(oui));
 
 function gelerProfond(o) {
   if (o && typeof o === 'object' && !Object.isFrozen(o)) {
