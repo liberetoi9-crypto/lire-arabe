@@ -95,6 +95,8 @@ Ce fichier est la consigne unique pour **Claude Code** et **Codex**. Les deux le
 - Zakou fait lui-même le test final sur son iPhone.
 
 ## 7. Vérification avant de finir
+- **Chaque nouvelle partie arrive avec ses propres tests automatiques** (demande de Zakou, 10/11). Pour les sons : test que chaque audio = bon verset et bon récitateur.
+- `npm test` : tests sans Internet. `npm run test:en-ligne` : tests avec Internet (vrais sons, sources). `TOUT=1 npm run test:en-ligne` : les 114 sourates.
 Tests automatiques (`npm test`) :
 - texte du Coran stocké = texte de la source officielle (re-téléchargé et comparé caractère par caractère) ;
 - chaque audio pointe vers le bon verset et le bon récitateur, et le fichier existe ;

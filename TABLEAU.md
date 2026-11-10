@@ -9,11 +9,11 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 | C1 | PROJET.md, TABLEAU.md, structure du code | fini (10/11) | main | |
 | C2 | Script qui télécharge le Coran (Fatiha + Juz Amma) depuis quran.com + contrôle Tanzil → `data/coran/` | à vérifier (10/11) | claude/donnees-coran | 6236 versets = Tanzil, 0 différence. **À vérifier par Codex** |
 | C3 | `js/coran/api.js` : sourates, versets, contrôle des numéros + écran Coran + police | à vérifier (10/11) | claude/api-coran | Police officielle, contrôle des numéros, testé en taille iPhone. **À vérifier par Codex** |
-| C4 | Récitateurs (Husary mu'allim, Dosari) + menu + lecteur verset par verset + surlignage + « répète après moi » + `boucle(cle, 3/5/10)` | à faire | claude/recitateurs | |
+| C4 | Récitateurs (Husary mu'allim, Dosari) + menu + lecteur verset par verset + surlignage + « répète après moi » + `boucle(cle, 3/5/10)` | à vérifier (10/11) | claude/recitateurs | Testé : sons réels, surlignage, Dosari 3 fois. 7 tests sans Internet + 6 en ligne. **À vérifier par Codex** |
 | C5 | Petits mots fréquents (comptage sur le Coran complet) | à faire | claude/mots-frequents | |
 | C6 | Comprendre les mots : mot à mot (anglais), verset en français au choix Hamidullah (quran.com) / Rachid Maach (QuranEnc, 7 conditions), « Ajouter à mes mots », cartes | à faire | claude/mots | |
 | C7 | Écran « Séance du jour » (assemble Coran + Mes textes) | à faire | claude/seance | dépend de X1 |
-| C8 | Tests Claude (texte, audio, traductions, WebKit) | à faire | claude/tests | |
+| C8 | Tests Claude (texte, audio, traductions, WebKit) — ajoutés au fur et à mesure | à faire | claude/tests | |
 | C9 | Mise en ligne (pour Zakou seul) | à faire | claude/mise-en-ligne | |
 | C10 | Vérifier le travail de Codex | à faire | — | |
 | C11 | Les 114 sourates à lire et écouter (fonction 9) + `getListeSourates()`, `ordreParMots()`, `ordreMemorisation()` | à vérifier (10/11) | claude/api-coran | `ordreMemorisation()` prêt pour X11. **À vérifier par Codex** |
@@ -42,6 +42,8 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 - **10/11 — Claude → Codex** : Zakou a répondu aux 3 questions de mémorisation (voir « Questions pour Zakou » et PROJET.md §4 point 10) : ordre, chrono, morceaux de 5 versets + réglage. Refais `git merge main`. Tu peux aussi vérifier C2 (branche `claude/donnees-coran`, lancer `npm test`). PROJET.md et TABLEAU.md : seulement sur `main`.
 
 - **10/11 — Claude → Codex** : C3 et C11 à vérifier (branche `claude/api-coran`, qui contient aussi C2). `getListeSourates()`, `ordreParMots()` et `ordreMemorisation()` sont prêts dans `js/coran/api.js`.
+
+- **10/11 — Claude → Codex** : C4 à vérifier (branche `claude/recitateurs`, contient C2, C3, C11). Le lecteur est prêt : `creerLecteur()` → `jouer(cles, { fois, repeteApresMoi })`, `boucle(cle, fois)`, `pause()`, `reprendre()`, `arreter()`, `vitesse('lent'|'normal')`. Événements : `verset:debut`, `verset:fin`, `lecteur:a-toi`, `lecteur:fin`, `lecteur:erreur`. Pour X5 : `urlAudio(cle)`. Pour X12 : `boucle`. Zakou demande **des tests automatiques pour chaque partie** (voir AGENTS.md point 5).
 
 ## Demandes (quand on a besoin d'un changement chez l'autre)
 | De | Pour | Demande | État |
