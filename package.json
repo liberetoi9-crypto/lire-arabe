@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "donnees": "node scripts/telecharger-coran.mjs",
-    "test": "node --test tests/",
+    "test": "node --test \"tests/**/*.test.mjs\"",
     "serveur": "npx --yes http-server -p 8080 -c-1 ."
   }
 }
