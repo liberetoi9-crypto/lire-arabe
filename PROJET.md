@@ -58,17 +58,29 @@ Ce fichier est la consigne unique pour **Claude Code** et **Codex**. Les deux le
 7. **Progression** : calendrier des jours faits (série de jours d'affilée), graphique des temps de lecture. Tout sur le téléphone, sans compte.
 8. **Comprendre les mots**
    - Toucher un mot du Coran → sens mot à mot depuis quran.com (**en anglais** : quran.com n'a pas de mot à mot en français, vérifié le 10/11/2026).
-   - Traduction française du verset : **Hamidullah** (quran.com, traduction n° 31).
+   - Traduction française du verset entier, au choix (menu) :
+     - **Hamidullah** : depuis quran.com (traduction n° 31). Hamidullah n'existe PAS sur QuranEnc.
+     - **Rachid Maach** : depuis l'API QuranEnc.com (clé `french_rashid`), prise en direct.
+   - Conditions QuranEnc à respecter (lues le 10/11/2026) :
+     1. rien changer, ajouter ni enlever : traduction affichée telle quelle, **avec ses notes** (bouton « Notes ») ;
+     2. écrire « Rachid Maach — QuranEnc.com » sous le verset ;
+     3. afficher le numéro de version (donné par `/api/v1/translations/list/fr`) ;
+     4. garder les infos du traducteur (« Traduit par Rachid Maach ») ;
+     5. lien « Prévenir QuranEnc » à côté de « Signaler une erreur » (c'est Zakou qui leur écrit) ;
+     6. toujours la dernière version : prise en direct + un test vérifie la version ;
+     7. aucune publicité.
    - Bouton « Ajouter à mes mots » + révision en mode cartes.
 
-## 5. Affichage
+## 5. Affichage — FACILE À LIRE (demande de Zakou)
+- Tout doit être facile à lire : gros texte par défaut, bon contraste, de l'espace entre les mots et les lignes, peu de choses par écran, phrases françaises très simples.
 - Arabe de droite à gauche (`dir="rtl"`, `lang="ar"`), grande police lisible, taille réglable.
 - Coran : police uthmani officielle (KFGQPC Uthmanic Script HAFS).
 - Mode clair et mode sombre.
 - Pensé d'abord pour l'iPhone (boutons ≥ 44 px, rien qui dépend du survol).
 
 ## 6. Mise en ligne
-- GitHub Pages, gratuit, code public, **aucune donnée perso** dedans.
+- L'appli est **pour Zakou seul**, pas pour tout le monde. Façon de la protéger : décision en attente (voir TABLEAU.md, « Questions pour Zakou »).
+- Aucune donnée perso dans le dépôt.
 - Zakou fait lui-même le test final sur son iPhone.
 
 ## 7. Vérification avant de finir

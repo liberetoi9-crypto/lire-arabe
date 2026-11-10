@@ -11,10 +11,10 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 | C3 | `js/coran/api.js` : sourates, versets, contrôle des numéros | à faire | claude/api-coran | |
 | C4 | Récitateurs (Husary mu'allim, Dosari) + menu + lecteur verset par verset + surlignage + « répète après moi » (Coran) | à faire | claude/recitateurs | |
 | C5 | Petits mots fréquents (comptage sur le Coran complet) | à faire | claude/mots-frequents | |
-| C6 | Comprendre les mots : mot à mot (anglais), Hamidullah, « Ajouter à mes mots », cartes | à faire | claude/mots | |
+| C6 | Comprendre les mots : mot à mot (anglais), verset en français au choix Hamidullah (quran.com) / Rachid Maach (QuranEnc, 7 conditions), « Ajouter à mes mots », cartes | à faire | claude/mots | |
 | C7 | Écran « Séance du jour » (assemble Coran + Mes textes) | à faire | claude/seance | dépend de X1 |
 | C8 | Tests Claude (texte, audio, traductions, WebKit) | à faire | claude/tests | |
-| C9 | Mise en ligne GitHub Pages | à faire | claude/mise-en-ligne | |
+| C9 | Mise en ligne (pour Zakou seul) | à faire | claude/mise-en-ligne | |
 | C10 | Vérifier le travail de Codex | à faire | — | |
 
 ## Codex
@@ -37,3 +37,5 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 ## Questions pour Zakou (on s'arrête et on attend)
 | Date | Qui | Question | Réponse |
 |---|---|---|---|
+| 10/11 | Claude | Mot à mot en français ? | Non : anglais (quran.com) + verset en FR au choix Hamidullah / Rachid Maach |
+| 10/11 | Claude | Comment garder l'appli pour Zakou seul ? | en attente |
