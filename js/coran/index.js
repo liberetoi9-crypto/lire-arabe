@@ -5,7 +5,9 @@ import { boutonSignaler, estSignale } from '../core/signalement.js';
 import { getSourate, getVerset, getListeSourates, ordreJuzAmma, SOURCE_TEXTE,
   getRecitateurs, getRecitateurActif, setRecitateurActif, creerLecteur,
   recitateurPourSourate, getSonsAVerifier, noterVerificationSon,
-  chargerMotsFrequents, estMotFrequent, getColorerFrequents, setColorerFrequents } from './api.js';
+  chargerMotsFrequents, estMotFrequent, getColorerFrequents, setColorerFrequents,
+  getTraduction, getTraductions, getTraductionActive, setTraductionActive, getNoteHamidullah, getSensMots } from './api.js';
+import { ajouterMot, estDansMesMots } from '../mots/api.js';
 
 const el = (tag, props = {}, ...enfants) => {
   const e = Object.assign(document.createElement(tag), props);
@@ -42,9 +44,9 @@ function message(texte) {
 
 enregistrerEcran('coran', {
   titre: 'Coran',
-  async afficher(conteneur, [numero, sous]) {
+  async afficher(conteneur, [numero, sous, pos]) {
     if (numero === 'verifier') return sous ? afficherVerificationSourate(conteneur, Number(sous)) : afficherVerifications(conteneur);
-    if (numero) return afficherSourate(conteneur, Number(numero));
+    if (numero) return afficherSourate(conteneur, Number(numero), Number(sous) || null, Number(pos) || null);
     return afficherListe(conteneur);
   },
 });
@@ -82,7 +84,7 @@ async function listeSourates(numeros) {
   return liste;
 }
 
-async function afficherSourate(conteneur, n) {
+async function afficherSourate(conteneur, n, versetCible = null, motCible = null) {
   const s = await getSourate(n);
   await chargerMotsFrequents();
   document.body.classList.toggle('sans-frequents', !getColorerFrequents());
@@ -97,13 +99,106 @@ async function afficherSourate(conteneur, n) {
   conteneur.append(barreLecture(s));
 
   for (const v of s.versets) {
+    const zoneTraduction = el('div', { className: 'traduction', hidden: true });
+    const boutonTraduction = el('button', { className: 'secondaire', textContent: 'Traduction' });
+    boutonTraduction.addEventListener('click', () => basculerTraduction(v.cle, zoneTraduction, boutonTraduction));
     const bloc = el('div', { className: 'bloc-verset' + (estSignale('coran', v.cle) ? ' signale' : '') }, ligneVerset(v, n),
       el('div', { className: 'actions-verset' },
         el('button', { className: 'secondaire', textContent: '▶ Écouter', onclick: () => jouer([v.cle]) }),
-        boutonSignaler('coran', v.cle)));
+        boutonTraduction,
+        boutonSignaler('coran', v.cle)),
+      zoneTraduction);
     conteneur.append(bloc);
   }
   conteneur.append(credit());
+
+  // Arrivée depuis « Mes mots » : #/coran/112/3/2 → aller au verset 3 et montrer le mot n° 2.
+  if (versetCible) {
+    const ligne = conteneur.querySelector(`.verset[data-cle="${n}:${versetCible}"]`);
+    if (!ligne) throw new Error(`Verset ${n}:${versetCible} inexistant`);
+    ligne.closest('.bloc-verset').classList.add('cible');
+    if (motCible) ligne.querySelector(`.mot[data-position="${motCible}"]`)?.classList.add('mot-cible');
+    requestAnimationFrame(() => ligne.scrollIntoView({ block: 'center' }));
+  }
+}
+
+// ---- Traduction française du verset (Hamidullah / Rachid Maach) ----
+async function basculerTraduction(cle, zone, bouton) {
+  if (!zone.hidden) { zone.hidden = true; bouton.textContent = 'Traduction'; return; }
+  zone.hidden = false;
+  bouton.textContent = 'Cacher la traduction';
+  zone.replaceChildren(el('p', { className: 'aide', textContent: 'Chargement…' }));
+  try {
+    const t = await getTraduction(cle);
+    const texte = el('p', { className: 'texte-traduction', lang: 'fr' });
+    const notes = el('div', { className: 'notes', hidden: true });
+    for (const m of t.morceaux) {
+      if (m.texte !== undefined) texte.append(m.texte);
+      else {
+        // Appel de note Hamidullah : on l'affiche en petit ; toucher = lire la note (quran.com).
+        const sup = el('sup', { className: 'appel-note', textContent: m.numero });
+        sup.addEventListener('click', async () => {
+          notes.hidden = false;
+          notes.append(el('p', { textContent: `[${m.numero}] ${await getNoteHamidullah(m.note)}` }));
+        }, { once: true });
+        texte.append(sup);
+      }
+    }
+    const infos = el('p', { className: 'credit' }, t.credit);
+    if (t.version) infos.append(` — version ${t.version}`);
+    if (t.traducteur) infos.append(el('br'), t.traducteur);
+    zone.replaceChildren(texte, notes, infos);
+    if (t.notes) {
+      // Notes de Rachid Maach : affichées telles quelles (condition QuranEnc n° 1).
+      notes.append(el('p', { className: 'notes-texte', textContent: t.notes }));
+      zone.append(el('button', { className: 'secondaire petit', textContent: 'Notes', onclick: () => { notes.hidden = !notes.hidden; } }));
+    }
+    if (t.lienSignaler) {
+      zone.append(el('a', { className: 'lien-discret', href: t.lienSignaler, target: '_blank', rel: 'noopener', textContent: 'Prévenir QuranEnc d\'une erreur de traduction' }));
+    }
+  } catch (e) {
+    zone.replaceChildren(el('p', { className: 'erreur', textContent: e.message }));
+  }
+}
+
+// ---- Toucher un mot : son sens (anglais, quran.com) + « Ajouter à mes mots » ----
+on('mot:touche', async ({ source, cle, position, texte }) => {
+  if (source !== 'coran') return;
+  const panneau = panneauMot();
+  const motArabe = el('p', { className: 'arabe coran mot-panneau', lang: 'ar', dir: 'rtl', textContent: texte });
+  const zoneSens = el('p', { className: 'sens', textContent: 'Chargement du sens…' });
+  const [s, v] = cle.split(':');
+  const boutonAjout = el('button', { textContent: estDansMesMots(cle, position) ? '✔ Dans mes mots' : '+ Ajouter à mes mots', disabled: estDansMesMots(cle, position) });
+  panneau.contenu.replaceChildren(motArabe, zoneSens,
+    el('p', { className: 'credit', textContent: `Sourate ${s}, verset ${v} — sens mot à mot en anglais (quran.com)` }),
+    el('div', { className: 'ligne-boutons' }, boutonAjout, el('button', { className: 'secondaire', textContent: 'Fermer', onclick: panneau.fermer })));
+  panneau.ouvrir();
+  let sens = null;
+  try {
+    sens = (await getSensMots(cle)).find((x) => x.position === position);
+    zoneSens.textContent = sens?.sens ?? 'Sens non disponible pour ce mot.';
+  } catch (e) {
+    zoneSens.textContent = e.message;
+  }
+  boutonAjout.addEventListener('click', () => {
+    ajouterMot({ cle, position, sens: sens?.sens ?? null, langue: sens?.langue ?? null, source: sens?.source ?? null });
+    boutonAjout.textContent = '✔ Dans mes mots';
+    boutonAjout.disabled = true;
+  });
+});
+
+let panneauExistant = null;
+function panneauMot() {
+  if (panneauExistant) return panneauExistant;
+  const contenu = el('div', { className: 'panneau-contenu' });
+  const fond = el('div', { className: 'panneau-fond', hidden: true });
+  const boite = el('div', { className: 'panneau', hidden: true, role: 'dialog' }, contenu);
+  const fermer = () => { fond.hidden = true; boite.hidden = true; };
+  fond.addEventListener('click', fermer);
+  window.addEventListener('hashchange', fermer);
+  document.body.append(fond, boite);
+  panneauExistant = { contenu, fermer, ouvrir: () => { fond.hidden = false; boite.hidden = false; } };
+  return panneauExistant;
 }
 
 // Un verset : chaque mot est touchable. Contrôle automatique du numéro.
@@ -218,6 +313,13 @@ function barreLecture(s) {
   caseRepete.addEventListener('change', () => { reglages.repeteApresMoi = caseRepete.checked; });
   const caseFrequents = el('input', { type: 'checkbox', checked: getColorerFrequents() });
   caseFrequents.addEventListener('change', () => { setColorerFrequents(caseFrequents.checked); document.body.classList.toggle('sans-frequents', !caseFrequents.checked); });
+  const choixTraduction = el('select', { className: 'choix', 'aria-label': 'Traduction française' },
+    ...getTraductions().map((t) => el('option', { value: t.id, textContent: t.nom, selected: t.id === getTraductionActive() })));
+  choixTraduction.addEventListener('change', () => {
+    setTraductionActive(choixTraduction.value);
+    document.querySelectorAll('.traduction').forEach((z) => { z.hidden = true; });
+    document.querySelectorAll('.actions-verset button').forEach((b) => { if (b.textContent === 'Cacher la traduction') b.textContent = 'Traduction'; });
+  });
   const caseLent = el('input', { type: 'checkbox', checked: reglages.lent });
   caseLent.addEventListener('change', () => { reglages.lent = caseLent.checked; lecteur?.vitesse(reglages.lent ? 'lent' : 'normal'); });
 
@@ -233,12 +335,13 @@ function barreLecture(s) {
   const fragment = document.createDocumentFragment();
   fragment.append(
     el('details', { className: 'carte reglages-ecoute' },
-      el('summary', { textContent: "Réglages de l'écoute" }),
+      el('summary', { textContent: 'Réglages (récitateur, traduction…)' }),
       el('label', { className: 'ligne-reglage' }, 'Récitateur', choixRecitateur),
       choixFois,
       el('label', { className: 'ligne-case' }, caseRepete, ' Répète après moi (une pause après chaque verset)'),
       el('label', { className: 'ligne-case' }, caseLent, ' Lent'),
       el('label', { className: 'ligne-case' }, caseFrequents, ' Colorer les petits mots fréquents'),
+      el('label', { className: 'ligne-reglage' }, 'Traduction française du verset', choixTraduction),
     ),
     note,
     el('div', { className: 'barre-lecture' },

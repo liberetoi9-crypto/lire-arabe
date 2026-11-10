@@ -57,3 +57,34 @@ button.danger { background: #b03a2e; }
 .etat-actuel { font-weight: 600; }
 .reponse-verif { display: grid; gap: 10px; }
 body.sans-frequents .mot.frequent { color: inherit; }
+/* C6 : traductions, panneau du mot, Mes mots */
+.traduction { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,.08); }
+.texte-traduction { font-size: 1.1rem; line-height: 1.6; margin: 0 0 6px; }
+.appel-note { color: var(--accent); cursor: pointer; padding: 0 3px; }
+.notes p { font-size: .95rem; color: var(--doux); white-space: pre-line; }
+button.petit { min-height: 36px; font-size: .85rem; }
+.lien-discret { display: block; margin-top: 8px; font-size: .85rem; color: var(--doux); }
+.bloc-verset.cible { outline: 3px solid var(--accent); }
+.mot-cible { background: var(--surligne); border-radius: 6px; }
+.panneau-fond { position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 20; }
+.panneau {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 21;
+  background: var(--carte); border-radius: 18px 18px 0 0;
+  padding: 16px 16px calc(16px + env(safe-area-inset-bottom)); box-shadow: 0 -4px 20px rgba(0,0,0,.15);
+  max-width: 720px; margin: 0 auto;
+}
+.panneau[hidden], .panneau-fond[hidden] { display: none; }
+.mot-panneau { text-align: center; font-size: calc(var(--taille-arabe) * 1.4); margin: 0; }
+.sens { font-size: 1.15rem; font-weight: 600; text-align: center; margin: 6px 0; }
+.sens.grand { font-size: 1.4rem; }
+.bouton { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+.bouton.secondaire { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+.bouton-large { display: flex; width: 100%; margin: 8px 0; justify-content: center; }
+.mot-liste .arabe { text-align: center; margin: 0; }
+.mot-liste .sens { margin: 0; }
+.mot-liste .credit { text-align: center; margin: 4px 0 10px; }
+.mot-liste .ligne-boutons > * { flex: 1; }
+.carte-revision { text-align: center; }
+.mot-revision { text-align: center; font-size: calc(var(--taille-arabe) * 1.8); margin: 16px 0; }
+.dos-carte .verset { font-size: calc(var(--taille-arabe) * .85); }
+.dos-carte .ligne-boutons > * { flex: 1; }

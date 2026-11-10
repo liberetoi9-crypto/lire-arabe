@@ -6,6 +6,7 @@ import { recitateursDisponibles, trouverRecitateur, construireUrl,
 import { fabriquerLecteur } from './lecteur.js';
 import { lire, ecrire } from '../core/stockage.js';
 import { squelette } from './frequents.js';
+import { TRADUCTIONS, chargerQuranCom, chargerNoteQuranCom, chargerRachid, chargerVersionRachid } from './traductions.js';
 
 const pasEncore = () => { throw new Error('pas encore fait'); };
 
@@ -64,8 +65,44 @@ export const SOURCE_TEXTE = {
   lien: 'https://tanzil.net',
 };
 
-export const getTraduction = pasEncore;     // ('112:1') => Promise<{ texte, notes, source, version }> (C6)
-export const getSensMots = pasEncore;       // ('112:1') => Promise<[{ position, sens, langue: 'en', source }]> (C6)
+// ---- Comprendre les mots (C6) ----
+const cleValide = (cle) => { if (!/^\d{1,3}:\d{1,3}$/.test(String(cle))) throw new Error(`Clé invalide : ${cle}`); };
+
+// () => [{ id, nom, credit }] : les 2 traductions françaises du verset.
+export const getTraductions = () => Object.values(TRADUCTIONS).map(({ id, nom, credit }) => ({ id, nom, credit }));
+export const getTraductionActive = () => (lire('coran.traduction', 'hamidullah') in TRADUCTIONS ? lire('coran.traduction', 'hamidullah') : 'hamidullah');
+export function setTraductionActive(id) {
+  if (!(id in TRADUCTIONS)) throw new Error('Traduction inconnue');
+  ecrire('coran.traduction', id);
+}
+
+// ('112:1', id?) => Promise<{ id, credit, morceaux: [{ texte } | { note, numero }], notes?, version?, traducteur?, lienSignaler? }>
+// Texte tel que donné par la source (rien changé, rien ajouté, rien enlevé).
+export async function getTraduction(cle, id = getTraductionActive()) {
+  cleValide(cle);
+  const v = await getVerset(cle);
+  const s = await getSourate(v.sourate);
+  const t = TRADUCTIONS[id];
+  if (!t) throw new Error('Traduction inconnue');
+  if (id === 'hamidullah') {
+    const d = (await chargerQuranCom(s)).get(cle);
+    return { id, credit: t.credit, morceaux: d.hamidullah.morceaux };
+  }
+  const [d, version] = await Promise.all([chargerRachid(s), chargerVersionRachid()]);
+  const x = d.get(cle);
+  return { id, credit: t.credit, traducteur: t.traducteur, version, morceaux: [{ texte: x.texte }], notes: x.notes, lienSignaler: t.lienSignaler(v.sourate) };
+}
+
+// (idNote) => Promise<texte de la note Hamidullah (quran.com)>
+export const getNoteHamidullah = (idNote) => chargerNoteQuranCom(idNote);
+// ('112:1') => Promise<[{ position, sens, langue: 'en', source }]> — sens mot à mot de quran.com (anglais).
+// sens = null si quran.com n'a pas exactement le même mot à cette place (on n'affiche alors rien).
+export async function getSensMots(cle) {
+  cleValide(cle);
+  const v = await getVerset(cle);
+  const d = (await chargerQuranCom(await getSourate(v.sourate))).get(cle);
+  return d.sens.map((x) => ({ ...x, source: 'quran.com (mot à mot, anglais)' }));
+}
 // ---- Récitateurs et sons (C4) ----
 // () => [{ id, nom, riwaya, principal }] : seulement les récitateurs autorisés (liste fermée, Hafs).
 export function getRecitateurs() {
