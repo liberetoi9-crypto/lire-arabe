@@ -1,5 +1,18 @@
 # Vérification complète — 10 novembre 2026
 
+Actualisation : les quatre défauts listés plus bas concernent l'ancienne copie
+`23825b5`. Ils sont corrigés dans `ddfab7b` (`claude/mise-en-page`) : refus du
+verset inexistant et reprise à 2 s contrôlés à nouveau, file audio filtrée,
+source du sens présente en liste et en cartes lorsque le sens a été chargé.
+Cette nouvelle copie passe 44 tests locaux (2 ignorés). Ici, 10 tests WebKit sur
+12 passent ; les deux autres dépendent du chargement des sens/traductions qui
+échoue dans l'environnement. Le rendu visuel des voyelles sur le vrai iPhone
+reste à confirmer par Zakou. X16 et X17 sont maintenant livrés sur leurs branches
+pour relecture par Claude ; C7 et X18 restent à faire.
+
+Le bilan historique de `23825b5` ci-dessous n'est donc pas une liste de défauts
+encore présents dans la nouvelle mise en page.
+
 L'application n'est pas encore entièrement terminée ni entièrement validée.
 Cette vérification porte sur les parties présentes, sans fusion dans main.
 

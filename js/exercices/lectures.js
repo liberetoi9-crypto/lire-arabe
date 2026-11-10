@@ -9,9 +9,10 @@ export function getLectures(id) {
     && Number.isFinite(Date.parse(l.date)) && (id === undefined || l.id === id)).map(l => ({ ...l }));
 }
 
-export function creerLectureRepetee({ id, objectif = 5, horloge = () => performance.now(), date = () => new Date().toISOString() }) {
+export function creerLectureRepetee({ id, objectif = 5, session, etape, horloge = () => performance.now(), date = () => new Date().toISOString() }) {
   if (!idValide(id)) throw new Error('Choisis un texte à lire.');
   if (!Number.isInteger(objectif) || objectif < 1) throw new Error('Objectif de lecture invalide.');
+  for (const valeur of [session, etape]) if (valeur !== undefined && !idValide(valeur)) throw new Error('Identifiant de séance invalide.');
   let etat = 'attente', cumule = 0, depart = 0, cle = null;
   const secondes = () => Math.max(0, cumule + (etat === 'lecture' ? horloge() - depart : 0)) / 1000;
   return {
@@ -37,6 +38,8 @@ export function creerLectureRepetee({ id, objectif = 5, horloge = () => performa
       const duree = secondes();
       if (duree <= 0) throw new Error('Le chronomètre doit avoir avancé.');
       const lecture = { id, cle, secondes: Math.max(0.001, Math.round(duree * 1000) / 1000), sansArret: sansArret === true, date: date() };
+      if (session !== undefined) lecture.session = session;
+      if (etape !== undefined) lecture.etape = etape;
       const toutes = getLectures();
       if (!toutes.some(l => l.cle === cle) && !ecrire(CLE, [...toutes, lecture])) {
         throw new Error('Le téléphone ne peut pas garder ce temps. Ne ferme pas cette page et réessaie.');

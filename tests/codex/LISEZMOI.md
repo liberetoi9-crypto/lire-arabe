@@ -82,3 +82,38 @@ feuille ⚙️. Le serveur et les contextes isolés utilisent `support-navigateu
 La progression est signalée comme bientôt disponible et la mémorisation reste
 verrouillée jusqu'à X10. Les réglages de taille/thème viendront avec X18/X7 ;
 la page Réglages mène pour l'instant aux réglages de lecture du Coran.
+
+X17 expose deux composants dans `js/exercices/api.js` :
+
+```js
+const etape2 = etapeLectureCinqFois(zone, {
+  id: 'coran:112', session: identifiantDeLaSeance,
+  surTermine: ({ lectures, session }) => activerSuivant(),
+});
+const etape3 = etapeChrono(zone, {
+  id: 'coran:112', session: identifiantDeLaSeance,
+  surTermine: ({ lecture, record, session }) => activerSuivant(),
+});
+// Avant de retirer chaque composant : etape2.detruire() / etape3.detruire().
+```
+
+C7 affiche lui-même le texte officiel et sa progression d'étapes ; ces composants
+ne reçoivent, ne génèrent et ne modifient aucun texte arabe. Ils ont chacun une
+seule action principale. `surTermine` de l'étape 2 est appelé une fois les cinq
+lectures gardées (ou à la reprise d'une étape déjà complète). Celui du chrono
+est appelé après chaque temps réellement sauvegardé.
+
+Le paramètre `session` est stable pour reprendre la même séance. Il doit changer
+pour « Refaire une séance ». Sans ce paramètre, la date locale sert d'identifiant.
+Les lectures portent `etape: 'lecture-cinq'` ou `'chrono'`, avec `session` dans
+le même stockage `exercices.lectures`. Le record (`getRecordChrono(id)`) concerne
+uniquement les essais Chrono de cette source, jamais les cinq lectures.
+Le temps caché est exclu : reprise automatique du comptage actif des cinq
+lectures ; bouton « Reprendre » pour le chrono. Un signalement arrête l'étape
+sans valider la lecture courante. Un échec de stockage conserve la durée pour
+un nouvel essai et ne remplit aucun rond.
+
+Tests X17 : 7 tests dans `etapes-seance.test.mjs`, 5 tests WebKit dans
+`etapes-seance.ecran.mjs` (cinq lectures, temps exacts, callback, chrono/record,
+arrière-plan, quota et signalement). Commande :
+`node --test tests/codex/etapes-seance.test.mjs tests/codex/etapes-seance.ecran.mjs`.

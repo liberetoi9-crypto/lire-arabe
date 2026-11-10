@@ -20,5 +20,7 @@ test('C9 : chemins GitHub Pages, icônes PNG aux bonnes tailles et absence d’i
   assert.match(html, /rel="manifest" href="manifest.json"/);
   assert.match(html, /rel="apple-touch-icon" href="icones\/icone-180.png"/);
   const main = await readFile(new URL('js/main.js', base), 'utf8');
-  assert.ok(main.indexOf('await demanderAcces()') < main.indexOf("demarrer('seance')"));
+  const acces = main.indexOf('await demanderAcces()');
+  const demarrage = /\bdemarrer\(['"](?:accueil|seance)['"]\)/.exec(main)?.index ?? -1;
+  assert.ok(acces >= 0 && demarrage > acces, 'le code d’accès précède le démarrage (Accueil ou Séance)');
 });
