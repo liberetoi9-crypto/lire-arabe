@@ -14,7 +14,7 @@ enregistrerEcran('accueil', {
     if (etat.faiteAujourdhui) {
       centre.append(
         el('div', { className: 'bravo' }, icone('ok', 40), el('p', { textContent: 'Séance finie. À demain !' })),
-        el('a', { className: 'lien-discret', href: '#/seance', textContent: 'Refaire une séance' }));
+        el('a', { className: 'lien-discret', href: '#/seance/1', textContent: 'Refaire une séance' }));
     } else {
       centre.append(grosBouton('Commencer ma séance du jour', () => { location.hash = '#/seance'; }, { icone: 'ecouter', id: 'commencer' }));
     }

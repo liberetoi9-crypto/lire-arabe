@@ -13,15 +13,13 @@ import { getSourate, getVerset, getListeSourates, ordreJuzAmma, SOURCE_TEXTE,
   chargerMotsFrequents, estMotFrequent, getColorerFrequents, setColorerFrequents,
   getTraduction, getTraductions, getTraductionActive, setTraductionActive, getNoteHamidullah, getSensMots } from './api.js';
 import { ajouterMot, estDansMesMots } from '../mots/api.js';
+import { getEcoute, ouvrirReglagesEcoute } from './reglages.js';
 
 // Numéro de verset en chiffres arabes (généré par le navigateur, pas écrit à la main).
 const chiffres = (n) => n.toLocaleString('ar-EG');
 const estNombre = (x) => /^\d+$/.test(x ?? '');
 
 // ---- Réglages de l'écoute (gardés dans le téléphone) ----
-const ECOUTE_DEFAUT = { fois: 1, lent: false };
-const getEcoute = () => ({ ...ECOUTE_DEFAUT, ...lire('coran.ecoute', {}) });
-const setEcoute = (x) => ecrire('coran.ecoute', { ...getEcoute(), ...x });
 const getVoirTraduction = () => lire('coran.voirTraduction', false);
 
 // « Continuer : sourate, verset » (écran Coran)
@@ -186,6 +184,7 @@ async function afficherSourate(conteneur, n, versetCible = null, motCible = null
 function blocVerset(v, n) {
   if (v.cle !== `${n}:${v.verset}`) throw new Error(`Contrôle : verset ${v.cle} au mauvais endroit`);
   const ligne = el('p', { className: 'arabe coran verset', lang: 'ar', dir: 'rtl', 'data-cle': v.cle });
+  let dernier = null;
   v.mots.forEach((m, i) => {
     // Couleur seulement : le texte du mot reste exactement celui de la source.
     const mot = el('span', { className: estMotFrequent(m.texte) ? 'mot frequent' : 'mot', textContent: m.texte, 'data-position': m.position });
@@ -193,11 +192,13 @@ function blocVerset(v, n) {
       if (appuiLongFait) return;
       emit('mot:touche', { source: 'coran', cle: v.cle, position: m.position, texte: m.texte });
     });
-    ligne.append(mot, i < v.mots.length - 1 ? ' ' : '');
+    if (i < v.mots.length - 1) ligne.append(mot, ' ');
+    else dernier = mot;
   });
   const num = el('button', { type: 'button', className: 'num-verset', textContent: chiffres(v.verset), 'aria-label': `Choisir le verset ${v.verset}` });
   num.addEventListener('click', () => choisirVerset(v.cle));
-  ligne.append(' ', num);
+  // Le dernier mot et le numéro restent ensemble (le numéro n'est jamais seul sur une ligne).
+  ligne.append(el('span', { className: 'fin-verset' }, dernier, ' ', num));
   const bloc = el('div', { className: 'bloc-verset', 'data-cle': v.cle }, ligne, el('div', { className: 'traduction', hidden: true }));
   appuiLong(bloc, () => menuVerset(v.cle));
   return bloc;
@@ -357,31 +358,16 @@ function creditTexte() {
     el('a', { href: SOURCE_TEXTE.lien, target: '_blank', rel: 'noopener', textContent: 'tanzil.net' }));
 }
 
-// ---- ⚙️ Réglages (cachés, feuille du bas) ----
-async function ouvrirReglages() {
-  const e = getEcoute();
-  const contenu = [
-    ligneChoix('Récitateur', getRecitateurs().map((r) => [r.id, r.nom.replace(/^Mahmoud Khalil /, '')]), getRecitateurActif(), (v) => { lecteur?.arreter(); setRecitateurActif(v); rafraichir(); }),
-    ligneChoix('Vitesse', [['normal', 'Normale'], ['lent', 'Lente']], e.lent ? 'lent' : 'normal', (v) => { setEcoute({ lent: v === 'lent' }); lecteur?.vitesse(v); }),
-    ligneChoix('Répéter chaque verset', [1, 3, 5, 10].map((x) => [String(x), x === 1 ? '1 fois' : `${x} fois`]), String(e.fois), (v) => setEcoute({ fois: Number(v) })),
-    ligneChoix('Traduction', getTraductions().map((t) => [t.id, t.nom.replace('Muhammad ', '')]), getTraductionActive(), (v) => {
-      setTraductionActive(v);
-      document.querySelectorAll('.traduction').forEach((z) => { delete z.dataset.traduction; });
-      if (getVoirTraduction()) afficherTraductions();
-    }),
-    ligneChoix('Petits mots en couleur', [['oui', 'Oui'], ['non', 'Non']], getColorerFrequents() ? 'oui' : 'non', (v) => {
-      setColorerFrequents(v === 'oui');
-      document.body.classList.toggle('sans-frequents', v !== 'oui');
-    }),
-  ];
-  // Taille du texte : réglage de Codex (X18), affiché seulement quand il est prêt.
-  try {
-    const affichage = await import('../affichage/api.js');
-    const taille = affichage.getTaille();
-    contenu.push(ligneChoix('Taille du texte', [['petit', 'Petite'], ['normal', 'Normale'], ['grand', 'Grande']], taille, (v) => affichage.setTaille(v)));
-  } catch { /* pas encore prêt */ }
-  ouvrirFeuille({ titre: 'Réglages', contenu });
-}
+// ---- ⚙️ Réglages : feuille partagée avec la séance (reglages.js) ----
+const ouvrirReglages = () => ouvrirReglagesEcoute();
+on('coran:reglage', ({ nom, valeur }) => {
+  if (nom === 'recitateur') { lecteur?.arreter(); if (sourateAffichee && location.hash.startsWith('#/coran/')) rafraichir(); }
+  if (nom === 'vitesse') lecteur?.vitesse(valeur);
+  if (nom === 'traduction') {
+    document.querySelectorAll('.traduction').forEach((z) => { delete z.dataset.traduction; });
+    if (getVoirTraduction() && document.querySelector('.bloc-verset .traduction')) afficherTraductions();
+  }
+});
 
 // ---- Toucher un mot : son sens + « Ajouter à mes mots » (une seule action) ----
 on('mot:touche', async ({ source, cle, position, texte }) => {

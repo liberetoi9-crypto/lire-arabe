@@ -203,3 +203,9 @@ function gelerProfond(o) {
   }
   return o;
 }
+
+// ---- Pour la séance guidée (C7) ----
+// texteSourate(s) : le texte d'une sourate (lecture simple, mots touchables) ; ouvrirReglagesEcoute() : feuille ⚙️ ;
+// getEcoute() : { fois, lent }.
+export { texteSourate } from './vue.js';
+export { ouvrirReglagesEcoute, getEcoute } from './reglages.js';
