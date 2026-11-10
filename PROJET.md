@@ -137,7 +137,7 @@ Le résultat des tests + la liste de ce qui a été vérifié par Claude Code ET
 |---|---|
 | `PROJET.md`, `AGENTS.md`, `index.html`, `package.json` | Claude Code |
 | `js/core/` (bus, stockage, routeur, signalement, arabe), `js/main.js`, `css/base.css` | Claude Code |
-| `js/coran/`, `js/mots/`, `js/seance/`, `css/coran.css`, `fonts/` | Claude Code |
+| `js/coran/`, `js/mots/`, `js/seance/`, `js/accueil/`, `js/core/ui.js`, `css/coran.css`, `fonts/`, `icones/` | Claude Code |
 | `data/`, `scripts/`, `tests/claude/`, `.github/` | Claude Code |
 | `js/textes/`, `js/exercices/`, `js/enregistrement/`, `js/progression/`, `js/affichage/`, `js/memorisation/` | Codex |
 | `css/affichage.css`, `tests/codex/` | Codex |
