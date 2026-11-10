@@ -1,0 +1,171 @@
+{
+ "source": "Compté dans data/coran (texte officiel quran.com = Tanzil), les 114 sourates",
+ "regle": {
+  "nombre": 40,
+  "lettresMax": 3
+ },
+ "totalMots": 77429,
+ "couverture": 22.9,
+ "mots": [
+  {
+   "forme": "من",
+   "nombre": 2763
+  },
+  {
+   "forme": "فى",
+   "nombre": 1185
+  },
+  {
+   "forme": "ما",
+   "nombre": 1010
+  },
+  {
+   "forme": "إن",
+   "nombre": 966
+  },
+  {
+   "forme": "لا",
+   "nombre": 812
+  },
+  {
+   "forme": "على",
+   "nombre": 686
+  },
+  {
+   "forme": "إلا",
+   "nombre": 664
+  },
+  {
+   "forme": "ولا",
+   "nombre": 658
+  },
+  {
+   "forme": "وما",
+   "nombre": 646
+  },
+  {
+   "forme": "أن",
+   "nombre": 638
+  },
+  {
+   "forme": "إلى",
+   "nombre": 430
+  },
+  {
+   "forme": "قال",
+   "nombre": 412
+  },
+  {
+   "forme": "لهم",
+   "nombre": 373
+  },
+  {
+   "forme": "ومن",
+   "nombre": 342
+  },
+  {
+   "forme": "ثم",
+   "nombre": 340
+  },
+  {
+   "forme": "لكم",
+   "nombre": 337
+  },
+  {
+   "forme": "به",
+   "nombre": 327
+  },
+  {
+   "forme": "كان",
+   "nombre": 323
+  },
+  {
+   "forme": "قل",
+   "nombre": 298
+  },
+  {
+   "forme": "بما",
+   "nombre": 296
+  },
+  {
+   "forme": "أو",
+   "nombre": 280
+  },
+  {
+   "forme": "ذلك",
+   "nombre": 280
+  },
+  {
+   "forme": "له",
+   "nombre": 275
+  },
+  {
+   "forme": "هو",
+   "nombre": 265
+  },
+  {
+   "forme": "هم",
+   "nombre": 261
+  },
+  {
+   "forme": "وإن",
+   "nombre": 254
+  },
+  {
+   "forme": "كل",
+   "nombre": 245
+  },
+  {
+   "forme": "عن",
+   "nombre": 223
+  },
+  {
+   "forme": "إذا",
+   "nombre": 221
+  },
+  {
+   "forme": "ربك",
+   "nombre": 220
+  },
+  {
+   "forme": "يوم",
+   "nombre": 217
+  },
+  {
+   "forme": "شىء",
+   "nombre": 190
+  },
+  {
+   "forme": "هذا",
+   "nombre": 190
+  },
+  {
+   "forme": "لم",
+   "nombre": 178
+  },
+  {
+   "forme": "وهو",
+   "nombre": 171
+  },
+  {
+   "forme": "فإن",
+   "nombre": 168
+  },
+  {
+   "forme": "إذ",
+   "nombre": 165
+  },
+  {
+   "forme": "إنا",
+   "nombre": 156
+  },
+  {
+   "forme": "فلا",
+   "nombre": 156
+  },
+  {
+   "forme": "إنه",
+   "nombre": 147
+  }
+ ]
+}

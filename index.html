@@ -3,8 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#f7f4ec">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Lire l'arabe">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icones/icone-180.png">
+  <link rel="icon" type="image/png" href="icones/icone-192.png">
+  <meta name="theme-color" content="#f6f3ec">
   <title>Lire l'arabe</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/coran.css">
@@ -12,17 +19,16 @@
 </head>
 <body>
   <header class="entete">
+    <a id="bouton-retour" class="bouton-rond" href="#" aria-label="Retour" data-icone="retour" hidden></a>
     <h1 id="titre-ecran">Lire l'arabe</h1>
+    <button id="bouton-reglages" class="bouton-rond" type="button" aria-label="Réglages" data-icone="reglages" hidden></button>
   </header>
   <main id="ecran" class="ecran"></main>
   <nav class="menu" aria-label="Menu">
-    <a href="#/seance">Séance</a>
-    <a href="#/coran">Coran</a>
-    <a href="#/textes">Mes textes</a>
-    <a href="#/exercices">Exercices</a>
-    <a href="#/mots">Mes mots</a>
-    <a href="#/progression">Progrès</a>
-    <a href="#/reglages">Réglages</a>
+    <a href="#/accueil" data-onglet="accueil" data-icone="accueil">Accueil</a>
+    <a href="#/coran" data-onglet="coran" data-icone="coran">Coran</a>
+    <a href="#/mots" data-onglet="mots" data-icone="mots">Mes mots</a>
+    <a href="#/plus" data-onglet="plus" data-icone="plus">Plus</a>
   </nav>
   <script type="module" src="js/main.js"></script>
 </body>

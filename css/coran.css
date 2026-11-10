@@ -1,2 +1,96 @@
-/* Propriétaire : Claude Code. Police uthmani officielle ajoutée à la tâche C3. */
+/* Propriétaire : Claude Code. Écrans du Coran (nouvelle mise en page C14).
+   Police officielle KFGQPC Uthmanic Script HAFS v18 (servie par quran.com). */
+@font-face {
+  font-family: "UthmanicHafs";
+  src: url("https://verses.quran.foundation/fonts/quran/hafs/uthmanic_hafs/UthmanicHafs1Ver18.woff2") format("woff2");
+  font-display: swap;
+}
 .coran { font-family: "UthmanicHafs", "Geeza Pro", serif; }
+body.sans-frequents .mot.frequent { color: inherit; }
+
+/* ---- Listes de sourates ---- */
+.sous-titre { margin: 8px 0 -4px; color: var(--doux); font-size: .95rem; }
+.liste-sourates { display: grid; gap: 8px; }
+.ligne-sourate {
+  display: grid; grid-template-columns: 2.4em 1fr auto; align-items: center; gap: 10px;
+  min-height: 64px; padding: 8px 16px; background: var(--carte); border-radius: 16px;
+  color: var(--texte); text-decoration: none;
+}
+.ligne-sourate .num { font-weight: 700; color: var(--accent); text-align: center; }
+.ligne-sourate .nom { font-weight: 600; }
+.ligne-sourate .nom small { display: block; font-weight: 400; color: var(--doux); font-size: .85rem; }
+.ligne-sourate .nom-arabe { font-size: 1.5rem; line-height: 1.3; }
+.pastille { font-size: .8rem; padding: 4px 10px; border-radius: 999px; background: #fbe9d2; color: #8a5312; }
+.etat-ok .pastille { background: #d9efe2; color: #1d6b40; }
+.etat-erreur .pastille { background: #f8dcd6; color: #8a2a1e; }
+
+/* ---- Lecture : le texte prend tout l'écran ---- */
+.texte-sourate { display: flex; flex-direction: column; gap: 4px; }
+.basmala { text-align: center; margin: 4px 0 8px; }
+.bloc-verset { padding: 2px 4px; border-radius: 12px; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+.bloc-verset.choisi { background: var(--accent-clair); }
+.verset { margin: 0; line-height: 2.3; word-spacing: .12em; padding: 0 4px; }
+.num-verset {
+  display: inline-flex; align-items: center; justify-content: center; vertical-align: middle;
+  min-width: 44px; min-height: 44px; padding: 0; margin: 0 2px;
+  border: 0; border-radius: 50%; background: transparent; color: var(--accent);
+  font-family: -apple-system, sans-serif; font-size: .55em;
+  box-shadow: inset 0 0 0 1.5px var(--accent);
+}
+.bloc-verset.choisi .num-verset { background: var(--accent); color: #fff; }
+.mot-cible { background: var(--surligne); border-radius: 6px; }
+.traduction { padding: 0 6px 10px; }
+.texte-traduction { margin: 0; font-size: 1.05rem; line-height: 1.6; color: #3d3a33; }
+.appel-note {
+  min-width: 32px; min-height: 32px; padding: 0 4px; margin: 0 2px; vertical-align: super;
+  background: var(--accent-clair); color: var(--accent); border-radius: 8px; font-size: .75rem;
+}
+.texte-note { margin: 0; white-space: pre-line; line-height: 1.6; }
+.avis-mis-de-cote { display: grid; gap: 10px; padding: 14px; margin: 6px 0; border-radius: 14px; background: #fbeee9; }
+.avis-mis-de-cote p { margin: 0; color: #7a3a2e; }
+.avis-doux { margin: 0; padding: 12px 14px; border-radius: 14px; background: #fbf0dc; color: #7a5512; font-size: .95rem; }
+.credit { color: var(--doux); font-size: .8rem; margin: 8px 0 0; }
+.credit a { display: inline-flex; align-items: center; min-height: 44px; }
+.centre { text-align: center; }
+.bandeau-lecture {
+  position: fixed; left: 16px; right: 16px; z-index: 9; margin: 0 auto; max-width: 600px;
+  bottom: calc(var(--hauteur-menu) + 92px + env(safe-area-inset-bottom));
+  padding: 10px 14px; border-radius: 14px; background: var(--texte); color: #fff; text-align: center; font-weight: 600;
+}
+.bandeau-lecture[hidden] { display: none; }
+body.sans-menu .bandeau-lecture { bottom: calc(92px + env(safe-area-inset-bottom)); }
+.barre-actions.une-action { grid-template-columns: 1fr; }
+.reponse-verif { display: grid; gap: 10px; margin-top: 12px; }
+
+/* ---- Mot touché ---- */
+.mot-panneau { text-align: center; font-size: calc(var(--taille-arabe) * 1.4); margin: 0; line-height: 1.8; }
+.sens { font-size: 1.35rem; font-weight: 700; text-align: center; margin: 0; }
+
+/* ---- Accueil, explication, Mes mots (C14) ---- */
+.accueil { min-height: 62vh; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 18px; }
+.accueil .gros-bouton { min-height: 120px; font-size: 1.4rem; border-radius: 28px; flex-direction: column; gap: 8px; }
+.serie { margin: 0; font-size: 1.1rem; color: var(--texte); }
+.ou-j-en-suis { margin: 0; color: var(--doux); text-align: center; }
+.bravo { display: grid; justify-items: center; gap: 6px; color: var(--accent); font-size: 1.3rem; font-weight: 700; }
+.bravo p { margin: 0; }
+.lien-discret { color: var(--doux); display: inline-flex; align-items: center; min-height: 44px; }
+.bienvenue { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 18px; text-align: center; padding-top: 20px; }
+.bienvenue h2 { margin: 0; font-size: 1.6rem; }
+.bienvenue p { margin: 0; font-size: 1.15rem; line-height: 1.55; max-width: 26em; }
+.bienvenue-icone { color: var(--accent); }
+.passer { position: absolute; top: calc(12px + env(safe-area-inset-top)); right: 16px; background: transparent; color: var(--doux); }
+.points { display: flex; gap: 8px; }
+.points i { width: 9px; height: 9px; border-radius: 50%; background: var(--trait); }
+.points i.actif { background: var(--accent); }
+.vide { display: grid; gap: 14px; text-align: center; padding-top: 12vh; }
+.vide > p:first-child { font-size: 1.3rem; font-weight: 700; margin: 0; }
+.ligne-mot { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 72px; padding: 8px 16px; background: var(--carte); border-radius: 16px; color: var(--texte); text-decoration: none; -webkit-touch-callout: none; user-select: none; }
+.ligne-mot-texte b { display: block; }
+.ligne-mot-texte small { color: var(--doux); }
+.ligne-mot .arabe { font-size: 1.7rem; line-height: 1.6; }
+.zone-revision { display: grid; gap: 16px; }
+.carte-revision { text-align: center; }
+.mot-revision { text-align: center; font-size: calc(var(--taille-arabe) * 1.8); margin: 12px 0; }
+.dos-carte { display: grid; gap: 14px; }
+.dos-carte .verset { font-size: calc(var(--taille-arabe) * .85); }
+.deux-boutons { display: grid; gap: 10px; }

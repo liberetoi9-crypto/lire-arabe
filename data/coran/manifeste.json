@@ -1,0 +1,1148 @@
+{
+ "source": "API quran.com v4 (text_uthmani, Hafs)",
+ "controle": "Tanzil.net, Uthmani 1.1 (CC BY 3.0, https://tanzil.net) — comparé verset par verset",
+ "date": "2026-11-10T09:32:32.205Z",
+ "sourates": [
+  {
+   "numero": 1,
+   "nomArabe": "الفاتحة",
+   "nom": "Al-Fatihah",
+   "nomFr": "L'ouverture",
+   "fichier": "sourates/001.json",
+   "nbVersets": 7,
+   "nbMots": 29,
+   "sha256": "764754ca99f300224e3bef9536cf19a2e9812e04ee2079354487e4167d6aaee4"
+  },
+  {
+   "numero": 2,
+   "nomArabe": "البقرة",
+   "nom": "Al-Baqarah",
+   "nomFr": "La vache",
+   "fichier": "sourates/002.json",
+   "nbVersets": 286,
+   "nbMots": 6116,
+   "sha256": "577c1c732173c188b62855a666091281cfa7dd1f463349678aba84aa1e79d8b7"
+  },
+  {
+   "numero": 3,
+   "nomArabe": "آل عمران",
+   "nom": "Ali 'Imran",
+   "nomFr": "La famille de 'imran",
+   "fichier": "sourates/003.json",
+   "nbVersets": 200,
+   "nbMots": 3481,
+   "sha256": "fe0196dad3229b2d7bc5ad358db5780d18b55a0a9315330dec9de5ac6c950c0f"
+  },
+  {
+   "numero": 4,
+   "nomArabe": "النساء",
+   "nom": "An-Nisa",
+   "nomFr": "Les femmes",
+   "fichier": "sourates/004.json",
+   "nbVersets": 176,
+   "nbMots": 3747,
+   "sha256": "86a9f91e29fe20086da855ba744e680d19aafd652d0ae3a7e488e2d991d83d43"
+  },
+  {
+   "numero": 5,
+   "nomArabe": "المائدة",
+   "nom": "Al-Ma'idah",
+   "nomFr": "La table servie",
+   "fichier": "sourates/005.json",
+   "nbVersets": 120,
+   "nbMots": 2804,
+   "sha256": "cc6e767fb6dccb46cf855812390742b67633df8c19b249a4de23ee50a34844cf"
+  },
+  {
+   "numero": 6,
+   "nomArabe": "الأنعام",
+   "nom": "Al-An'am",
+   "nomFr": "Les bestiaux",
+   "fichier": "sourates/006.json",
+   "nbVersets": 165,
+   "nbMots": 3050,
+   "sha256": "74f7d697fb4c7e7fda41ea6eab1427920bba04091c39b38df393a78c28060a77"
+  },
+  {
+   "numero": 7,
+   "nomArabe": "الأعراف",
+   "nom": "Al-A'raf",
+   "nomFr": "Al-A'raf",
+   "fichier": "sourates/007.json",
+   "nbVersets": 206,
+   "nbMots": 3320,
+   "sha256": "74853f5653fdf0f8122a9de85b9f1a6d6a0a54cf91b950366709ccd68efc39ff"
+  },
+  {
+   "numero": 8,
+   "nomArabe": "الأنفال",
+   "nom": "Al-Anfal",
+   "nomFr": "Le butin",
+   "fichier": "sourates/008.json",
+   "nbVersets": 75,
+   "nbMots": 1233,
+   "sha256": "5e22841baee9cfd23d178b60d7346726627638197c083b2af11f373a6d6623b0"
+  },
+  {
+   "numero": 9,
+   "nomArabe": "التوبة",
+   "nom": "At-Tawbah",
+   "nomFr": "Le repentir",
+   "fichier": "sourates/009.json",
+   "nbVersets": 129,
+   "nbMots": 2498,
+   "sha256": "a462719fa1c9f25f49b319e163b6c4eb002ac5613c10f8a56fb2ddc64e059a0d"
+  },
+  {
+   "numero": 10,
+   "nomArabe": "يونس",
+   "nom": "Yunus",
+   "nomFr": "Jonas",
+   "fichier": "sourates/010.json",
+   "nbVersets": 109,
+   "nbMots": 1833,
+   "sha256": "07c8f9bd64758cdd01e58ddd146a68dac37058d2698e06e0f51cf0c8285ad885"
+  },
+  {
+   "numero": 11,
+   "nomArabe": "هود",
+   "nom": "Hud",
+   "nomFr": "Houd",
+   "fichier": "sourates/011.json",
+   "nbVersets": 123,
+   "nbMots": 1917,
+   "sha256": "f0329aa665ba460e30baf9425925f9557d11320b8819c224aab035d71f17ea8d"
+  },
+  {
+   "numero": 12,
+   "nomArabe": "يوسف",
+   "nom": "Yusuf",
+   "nomFr": "Joseph",
+   "fichier": "sourates/012.json",
+   "nbVersets": 111,
+   "nbMots": 1777,
+   "sha256": "394be6de5bd184e44f63280d58f96cde50727f7d79d75b29760ae4eaf6085754"
+  },
+  {
+   "numero": 13,
+   "nomArabe": "الرعد",
+   "nom": "Ar-Ra'd",
+   "nomFr": "Le tonnerre",
+   "fichier": "sourates/013.json",
+   "nbVersets": 43,
+   "nbMots": 853,
+   "sha256": "fad2022340d33107aa6403d916de44165e7849559f8c29a9e509b8439889b63a"
+  },
+  {
+   "numero": 14,
+   "nomArabe": "ابراهيم",
+   "nom": "Ibrahim",
+   "nomFr": "Abraham",
+   "fichier": "sourates/014.json",
+   "nbVersets": 52,
+   "nbMots": 830,
+   "sha256": "8abbb10521bee715266a1df7ecb77c54c26831bc8aac1a4aa582cab17dd880fd"
+  },
+  {
+   "numero": 15,
+   "nomArabe": "الحجر",
+   "nom": "Al-Hijr",
+   "nomFr": "Al-Hijr",
+   "fichier": "sourates/015.json",
+   "nbVersets": 99,
+   "nbMots": 655,
+   "sha256": "ce344e13c3b67cb39852801ee6e8b2cbab63e6ce3d054376d11e9944f898e97c"
+  },
+  {
+   "numero": 16,
+   "nomArabe": "النحل",
+   "nom": "An-Nahl",
+   "nomFr": "Les abeilles",
+   "fichier": "sourates/016.json",
+   "nbVersets": 128,
+   "nbMots": 1844,
+   "sha256": "1b801fabc56d2601190fa5b2745575700c4033a5ab46d45e19cf3a5184a7f97a"
+  },
+  {
+   "numero": 17,
+   "nomArabe": "الإسراء",
+   "nom": "Al-Isra",
+   "nomFr": "Le voyage nocturne",
+   "fichier": "sourates/017.json",
+   "nbVersets": 111,
+   "nbMots": 1556,
+   "sha256": "804d22a9fbd1cb32c94eebc278948c5f1605fec4cf4b2eb84dafba196d556bbc"
+  },
+  {
+   "numero": 18,
+   "nomArabe": "الكهف",
+   "nom": "Al-Kahf",
+   "nomFr": "La caverne",
+   "fichier": "sourates/018.json",
+   "nbVersets": 110,
+   "nbMots": 1579,
+   "sha256": "2ed3d1f2fe11b08c3aa7889f80f0cf072fb41b28aa631ce22bc8163af4c35d7f"
+  },
+  {
+   "numero": 19,
+   "nomArabe": "مريم",
+   "nom": "Maryam",
+   "nomFr": "Marie",
+   "fichier": "sourates/019.json",
+   "nbVersets": 98,
+   "nbMots": 961,
+   "sha256": "67b9b1c9596d9ab823da58f7a108eb142f2307fb7f2d17e562188345365a63eb"
+  },
+  {
+   "numero": 20,
+   "nomArabe": "طه",
+   "nom": "Taha",
+   "nomFr": "Ta-Ha",
+   "fichier": "sourates/020.json",
+   "nbVersets": 135,
+   "nbMots": 1335,
+   "sha256": "f2f2bcbc4e1f718df56baa319e4f27a9c7fa674bf194f98c124f32f2665cbf55"
+  },
+  {
+   "numero": 21,
+   "nomArabe": "الأنبياء",
+   "nom": "Al-Anbya",
+   "nomFr": "Les prophètes",
+   "fichier": "sourates/021.json",
+   "nbVersets": 112,
+   "nbMots": 1169,
+   "sha256": "0e159cf6fb915475efa32cf093209c871ecf789d114b726264e65e75dc178faa"
+  },
+  {
+   "numero": 22,
+   "nomArabe": "الحج",
+   "nom": "Al-Hajj",
+   "nomFr": "Le pèlerinage",
+   "fichier": "sourates/022.json",
+   "nbVersets": 78,
+   "nbMots": 1274,
+   "sha256": "70e19fdd29c87b6986e5ed436d49077d7a93b873ee0e5758d899a7edd6f30cc7"
+  },
+  {
+   "numero": 23,
+   "nomArabe": "المؤمنون",
+   "nom": "Al-Mu'minun",
+   "nomFr": "Les croyants",
+   "fichier": "sourates/023.json",
+   "nbVersets": 118,
+   "nbMots": 1050,
+   "sha256": "bb47189b5583be16bb3f8344b6c6950282db3004e975172644a1261e89764b47"
+  },
+  {
+   "numero": 24,
+   "nomArabe": "النور",
+   "nom": "An-Nur",
+   "nomFr": "La lumière",
+   "fichier": "sourates/024.json",
+   "nbVersets": 64,
+   "nbMots": 1316,
+   "sha256": "5711899ced178a2b214827a9515b78d5a48bd014745cc3d6bd7c5ac491e98c3c"
+  },
+  {
+   "numero": 25,
+   "nomArabe": "الفرقان",
+   "nom": "Al-Furqan",
+   "nomFr": "Le discernement",
+   "fichier": "sourates/025.json",
+   "nbVersets": 77,
+   "nbMots": 893,
+   "sha256": "de6869bca84eb8cfa63c0205d98d522816ce22225faf86bc0339eceb986a37b5"
+  },
+  {
+   "numero": 26,
+   "nomArabe": "الشعراء",
+   "nom": "Ash-Shu'ara",
+   "nomFr": "Les poètes",
+   "fichier": "sourates/026.json",
+   "nbVersets": 227,
+   "nbMots": 1318,
+   "sha256": "19e832e2d1c538d16a46b78992451920d2c4a30ff4115b09a50803f4f02365c7"
+  },
+  {
+   "numero": 27,
+   "nomArabe": "النمل",
+   "nom": "An-Naml",
+   "nomFr": "Les fourmis",
+   "fichier": "sourates/027.json",
+   "nbVersets": 93,
+   "nbMots": 1151,
+   "sha256": "6f9b14b1de5dedcbb7c434ac699d5f20987dc520ff8cb78dea43b24d63bea06a"
+  },
+  {
+   "numero": 28,
+   "nomArabe": "القصص",
+   "nom": "Al-Qasas",
+   "nomFr": "Le récit",
+   "fichier": "sourates/028.json",
+   "nbVersets": 88,
+   "nbMots": 1430,
+   "sha256": "f7cb8cd726a171c65fd7dd745b227b7d07069c64ae775088dd0fa01ce4953d9e"
+  },
+  {
+   "numero": 29,
+   "nomArabe": "العنكبوت",
+   "nom": "Al-'Ankabut",
+   "nomFr": "L'araignée",
+   "fichier": "sourates/029.json",
+   "nbVersets": 69,
+   "nbMots": 976,
+   "sha256": "6f4dd95ceb67f00d3f2a402a0f372c21576dad2c8a8ad11ea56a11b554d4ac7b"
+  },
+  {
+   "numero": 30,
+   "nomArabe": "الروم",
+   "nom": "Ar-Rum",
+   "nomFr": "Les romains",
+   "fichier": "sourates/030.json",
+   "nbVersets": 60,
+   "nbMots": 817,
+   "sha256": "a88f97eab96f64d50d3c6b7949813ef7325610d0b57300e081dd3ff3129382f7"
+  },
+  {
+   "numero": 31,
+   "nomArabe": "لقمان",
+   "nom": "Luqman",
+   "nomFr": "Louqman",
+   "fichier": "sourates/031.json",
+   "nbVersets": 34,
+   "nbMots": 546,
+   "sha256": "5a3a0fe280fd090e56a34d5d3af4b2687f3f8142a005a5dd9cb7758d64439090"
+  },
+  {
+   "numero": 32,
+   "nomArabe": "السجدة",
+   "nom": "As-Sajdah",
+   "nomFr": "La prosternation",
+   "fichier": "sourates/032.json",
+   "nbVersets": 30,
+   "nbMots": 372,
+   "sha256": "78a108d9465bda4c28c4cfa8d553316be7e9ed6058eb8f51acb9fc3b7ef5a6c8"
+  },
+  {
+   "numero": 33,
+   "nomArabe": "الأحزاب",
+   "nom": "Al-Ahzab",
+   "nomFr": "Les coalisés",
+   "fichier": "sourates/033.json",
+   "nbVersets": 73,
+   "nbMots": 1287,
+   "sha256": "4e52e166ac7bdc527fa4731086bf7069e3417bc80f61058b767421555c2a16be"
+  },
+  {
+   "numero": 34,
+   "nomArabe": "سبإ",
+   "nom": "Saba",
+   "nomFr": "Saba'",
+   "fichier": "sourates/034.json",
+   "nbVersets": 54,
+   "nbMots": 883,
+   "sha256": "22040d69cf5bb6825135054c3f15d1af19f9a8484834a9dae7d3f009e343aa15"
+  },
+  {
+   "numero": 35,
+   "nomArabe": "فاطر",
+   "nom": "Fatir",
+   "nomFr": "Le Créateur",
+   "fichier": "sourates/035.json",
+   "nbVersets": 45,
+   "nbMots": 775,
+   "sha256": "898ed05fd6ca2ae6b0490e2198256bbb9fd12383ea14b6885e0fa0f48906dae3"
+  },
+  {
+   "numero": 36,
+   "nomArabe": "يس",
+   "nom": "Ya-Sin",
+   "nomFr": "Ya-Sin",
+   "fichier": "sourates/036.json",
+   "nbVersets": 83,
+   "nbMots": 725,
+   "sha256": "19023aaf893b9a3ab770c22af946946a583d737c71c73af60fb20ed4136fc349"
+  },
+  {
+   "numero": 37,
+   "nomArabe": "الصافات",
+   "nom": "As-Saffat",
+   "nomFr": "Les rangés",
+   "fichier": "sourates/037.json",
+   "nbVersets": 182,
+   "nbMots": 860,
+   "sha256": "9b275442ac3c6012ce42ff06d1f71b2dfb542e67515517142e79e70f64a7040b"
+  },
+  {
+   "numero": 38,
+   "nomArabe": "ص",
+   "nom": "Sad",
+   "nomFr": "Sad",
+   "fichier": "sourates/038.json",
+   "nbVersets": 88,
+   "nbMots": 733,
+   "sha256": "8d2a5a7d58d580a63bf43f15dd0f28c1dba139adba276e7ccfe94fb15a1aadbc"
+  },
+  {
+   "numero": 39,
+   "nomArabe": "الزمر",
+   "nom": "Az-Zumar",
+   "nomFr": "Les groupes",
+   "fichier": "sourates/039.json",
+   "nbVersets": 75,
+   "nbMots": 1172,
+   "sha256": "6b4fe7eccd2ca96732965e7bd2121fd04597e767e1b327307d1a4ada28990374"
+  },
+  {
+   "numero": 40,
+   "nomArabe": "غافر",
+   "nom": "Ghafir",
+   "nomFr": "Le Pardonneur",
+   "fichier": "sourates/040.json",
+   "nbVersets": 85,
+   "nbMots": 1219,
+   "sha256": "04fb64733d00cb92ecbc3a68d05e09acadd06ae6e18c99d4f617ac9a13c21bc6"
+  },
+  {
+   "numero": 41,
+   "nomArabe": "فصلت",
+   "nom": "Fussilat",
+   "nomFr": "Les versets explicites",
+   "fichier": "sourates/041.json",
+   "nbVersets": 54,
+   "nbMots": 794,
+   "sha256": "8466d6d5ab1456fe1f8f98e18a8665b55fd3a34d733f282889737a01b830261e"
+  },
+  {
+   "numero": 42,
+   "nomArabe": "الشورى",
+   "nom": "Ash-Shuraa",
+   "nomFr": "La concertation",
+   "fichier": "sourates/042.json",
+   "nbVersets": 53,
+   "nbMots": 860,
+   "sha256": "2ece983dc18f6c8935201277e6c380eba7d5b43507a9f3fdb15321713deabdee"
+  },
+  {
+   "numero": 43,
+   "nomArabe": "الزخرف",
+   "nom": "Az-Zukhruf",
+   "nomFr": "L'ornement",
+   "fichier": "sourates/043.json",
+   "nbVersets": 89,
+   "nbMots": 830,
+   "sha256": "f84503f30347cd9249a853bceeb0ff130e2dc9d29a60d28774465081303e8796"
+  },
+  {
+   "numero": 44,
+   "nomArabe": "الدخان",
+   "nom": "Ad-Dukhan",
+   "nomFr": "La fumée",
+   "fichier": "sourates/044.json",
+   "nbVersets": 59,
+   "nbMots": 346,
+   "sha256": "739d0a097aebe12936611e0ee7af7236477afe162771dc18b12e4453e25ae095"
+  },
+  {
+   "numero": 45,
+   "nomArabe": "الجاثية",
+   "nom": "Al-Jathiyah",
+   "nomFr": "L'agenouillée",
+   "fichier": "sourates/045.json",
+   "nbVersets": 37,
+   "nbMots": 488,
+   "sha256": "40baafbb7a9631b1733c9662554c81a2f70bb7930e64c682c2b82c38734b5b82"
+  },
+  {
+   "numero": 46,
+   "nomArabe": "الأحقاف",
+   "nom": "Al-Ahqaf",
+   "nomFr": "Al-Ahqaf",
+   "fichier": "sourates/046.json",
+   "nbVersets": 35,
+   "nbMots": 643,
+   "sha256": "360e8cd163e8d110121640537d759574b42c5380b8efb87dd008b6f26cac5120"
+  },
+  {
+   "numero": 47,
+   "nomArabe": "محمد",
+   "nom": "Muhammad",
+   "nomFr": "Mouhammad",
+   "fichier": "sourates/047.json",
+   "nbVersets": 38,
+   "nbMots": 539,
+   "sha256": "84e5dd77f907ca7c178be5a7c903bf99f48260a3f8b27ae12ead651c3d8392b8"
+  },
+  {
+   "numero": 48,
+   "nomArabe": "الفتح",
+   "nom": "Al-Fath",
+   "nomFr": "La victoire éclatante",
+   "fichier": "sourates/048.json",
+   "nbVersets": 29,
+   "nbMots": 560,
+   "sha256": "28901a0e56bc7ecac18bac4ced6fff446b96679b2ec458847fe067391c053aa3"
+  },
+  {
+   "numero": 49,
+   "nomArabe": "الحجرات",
+   "nom": "Al-Hujurat",
+   "nomFr": "Les appartements",
+   "fichier": "sourates/049.json",
+   "nbVersets": 18,
+   "nbMots": 347,
+   "sha256": "12929e4e4aa8d605711b7f5f4f0b6b38e44ffc963d928619ad64393ea9959aa9"
+  },
+  {
+   "numero": 50,
+   "nomArabe": "ق",
+   "nom": "Qaf",
+   "nomFr": "Qaf",
+   "fichier": "sourates/050.json",
+   "nbVersets": 45,
+   "nbMots": 373,
+   "sha256": "b74a172660199c315c74d56c2a893abeeb4bc8af6f81166dbeb539aa1157b5dc"
+  },
+  {
+   "numero": 51,
+   "nomArabe": "الذاريات",
+   "nom": "Adh-Dhariyat",
+   "nomFr": "Qui éparpillent",
+   "fichier": "sourates/051.json",
+   "nbVersets": 60,
+   "nbMots": 360,
+   "sha256": "069ba419c4c20578b56de9f04742d60eb63bfbcadeb4d1a2693be1c0c2f0130f"
+  },
+  {
+   "numero": 52,
+   "nomArabe": "الطور",
+   "nom": "At-Tur",
+   "nomFr": "Le mont At-Tour",
+   "fichier": "sourates/052.json",
+   "nbVersets": 49,
+   "nbMots": 312,
+   "sha256": "af6300d27d642b0657ecde94e045ccaf40cf6e5edd6ed0afb6bf509d6ef9073d"
+  },
+  {
+   "numero": 53,
+   "nomArabe": "النجم",
+   "nom": "An-Najm",
+   "nomFr": "L'étoile",
+   "fichier": "sourates/053.json",
+   "nbVersets": 62,
+   "nbMots": 360,
+   "sha256": "073b11d33e051034e3a073b2a493428cb807bc6d6f06b31595b1d695b42624c5"
+  },
+  {
+   "numero": 54,
+   "nomArabe": "القمر",
+   "nom": "Al-Qamar",
+   "nomFr": "La lune",
+   "fichier": "sourates/054.json",
+   "nbVersets": 55,
+   "nbMots": 342,
+   "sha256": "25b4d0764dd8d0169148c93ded4b9cc0b74387103bfd6871946bb071684c6169"
+  },
+  {
+   "numero": 55,
+   "nomArabe": "الرحمن",
+   "nom": "Ar-Rahman",
+   "nomFr": "Le Tout Miséricordieux",
+   "fichier": "sourates/055.json",
+   "nbVersets": 78,
+   "nbMots": 351,
+   "sha256": "9a3152db445c129b34c360af46357223f4032e64f13fb6aca0994413bc9711ca"
+  },
+  {
+   "numero": 56,
+   "nomArabe": "الواقعة",
+   "nom": "Al-Waqi'ah",
+   "nomFr": "L'inévitable",
+   "fichier": "sourates/056.json",
+   "nbVersets": 96,
+   "nbMots": 379,
+   "sha256": "1bcfdfec0b727460ae2ad933e21982914923e99e7f42d0d14f3ea83739768bc9"
+  },
+  {
+   "numero": 57,
+   "nomArabe": "الحديد",
+   "nom": "Al-Hadid",
+   "nomFr": "Le fer",
+   "fichier": "sourates/057.json",
+   "nbVersets": 29,
+   "nbMots": 574,
+   "sha256": "9294d1e57211cdd8ef9b2f993a5e8109c12f35f57421ebb5f974fba1092bd878"
+  },
+  {
+   "numero": 58,
+   "nomArabe": "المجادلة",
+   "nom": "Al-Mujadila",
+   "nomFr": "La discussion",
+   "fichier": "sourates/058.json",
+   "nbVersets": 22,
+   "nbMots": 472,
+   "sha256": "934796677c67cd858136c918d2e9b14d13a7f0eda9d66c5c43ba2d9d70ac79b2"
+  },
+  {
+   "numero": 59,
+   "nomArabe": "الحشر",
+   "nom": "Al-Hashr",
+   "nomFr": "L'exode",
+   "fichier": "sourates/059.json",
+   "nbVersets": 24,
+   "nbMots": 445,
+   "sha256": "8fbfcf147ab9d9f008da7830adbf6f279ce1bfa2b91271bafb2c22e2ad0ccc37"
+  },
+  {
+   "numero": 60,
+   "nomArabe": "الممتحنة",
+   "nom": "Al-Mumtahanah",
+   "nomFr": "L'éprouvée",
+   "fichier": "sourates/060.json",
+   "nbVersets": 13,
+   "nbMots": 348,
+   "sha256": "356aea0b4bf4f764fd273d2fe7fe44818f7c4215b66535f1d97514c54e61b4d3"
+  },
+  {
+   "numero": 61,
+   "nomArabe": "الصف",
+   "nom": "As-Saf",
+   "nomFr": "Le rang",
+   "fichier": "sourates/061.json",
+   "nbVersets": 14,
+   "nbMots": 221,
+   "sha256": "74fec96437e69bcf24d829e92d9b05eccbeff188d4441a973ec1288957c58ea9"
+  },
+  {
+   "numero": 62,
+   "nomArabe": "الجمعة",
+   "nom": "Al-Jumu'ah",
+   "nomFr": "Le vendredi",
+   "fichier": "sourates/062.json",
+   "nbVersets": 11,
+   "nbMots": 175,
+   "sha256": "b76713ca5a2af00d91daebb881c8661f44237905c10f429d16f829d56073326a"
+  },
+  {
+   "numero": 63,
+   "nomArabe": "المنافقون",
+   "nom": "Al-Munafiqun",
+   "nomFr": "Les hypocrites",
+   "fichier": "sourates/063.json",
+   "nbVersets": 11,
+   "nbMots": 180,
+   "sha256": "69e2a14b9c29588ce1c5e88f2b740515469ae26591af8e85877aa8a62a4200fa"
+  },
+  {
+   "numero": 64,
+   "nomArabe": "التغابن",
+   "nom": "At-Taghabun",
+   "nomFr": "La grande perte",
+   "fichier": "sourates/064.json",
+   "nbVersets": 18,
+   "nbMots": 241,
+   "sha256": "00a458f169f243b441134033d07bafa1247db8ff3f9aeb4c7b2cb687b2e64d07"
+  },
+  {
+   "numero": 65,
+   "nomArabe": "الطلاق",
+   "nom": "At-Talaq",
+   "nomFr": "Le divorce",
+   "fichier": "sourates/065.json",
+   "nbVersets": 12,
+   "nbMots": 287,
+   "sha256": "107b7c652c442372aba9a7570531499e8bc95d9a441216d5d567318dfeb586e3"
+  },
+  {
+   "numero": 66,
+   "nomArabe": "التحريم",
+   "nom": "At-Tahrim",
+   "nomFr": "L'interdiction",
+   "fichier": "sourates/066.json",
+   "nbVersets": 12,
+   "nbMots": 249,
+   "sha256": "72d4cef1f5833f80bd1acd9f7018e598b979e60366c75cd9e341a53f40e28c08"
+  },
+  {
+   "numero": 67,
+   "nomArabe": "الملك",
+   "nom": "Al-Mulk",
+   "nomFr": "La royauté",
+   "fichier": "sourates/067.json",
+   "nbVersets": 30,
+   "nbMots": 333,
+   "sha256": "45b6e6da738ae066a9b93ef229b00ae34b04fafdb9dcc456b630de27f50a2a65"
+  },
+  {
+   "numero": 68,
+   "nomArabe": "القلم",
+   "nom": "Al-Qalam",
+   "nomFr": "La plume",
+   "fichier": "sourates/068.json",
+   "nbVersets": 52,
+   "nbMots": 300,
+   "sha256": "46bf79845b338e4c01b8736b473e319360dab45fa029c1af8135c16bc62972cd"
+  },
+  {
+   "numero": 69,
+   "nomArabe": "الحاقة",
+   "nom": "Al-Haqqah",
+   "nomFr": "L'inéluctable",
+   "fichier": "sourates/069.json",
+   "nbVersets": 52,
+   "nbMots": 258,
+   "sha256": "39a6715e66f62328677a78c55aaf27f15593c6508796834089f50ec2f0482866"
+  },
+  {
+   "numero": 70,
+   "nomArabe": "المعارج",
+   "nom": "Al-Ma'arij",
+   "nomFr": "Les voies d'ascension",
+   "fichier": "sourates/070.json",
+   "nbVersets": 44,
+   "nbMots": 217,
+   "sha256": "16eb9823f7b994505d6191f076249626f31233da2de20789cb72a10a4c6face3"
+  },
+  {
+   "numero": 71,
+   "nomArabe": "نوح",
+   "nom": "Nuh",
+   "nomFr": "Noé",
+   "fichier": "sourates/071.json",
+   "nbVersets": 28,
+   "nbMots": 226,
+   "sha256": "3c4ea2bc6cf3283fd3d1264658ca27116f5dbc3d5d02962dc6f6169aff97825a"
+  },
+  {
+   "numero": 72,
+   "nomArabe": "الجن",
+   "nom": "Al-Jinn",
+   "nomFr": "Les djinns",
+   "fichier": "sourates/072.json",
+   "nbVersets": 28,
+   "nbMots": 285,
+   "sha256": "57300a54df65e679e058c65abf618ea158b88c81b6a42ed23fa1397fd101a478"
+  },
+  {
+   "numero": 73,
+   "nomArabe": "المزمل",
+   "nom": "Al-Muzzammil",
+   "nomFr": "L'enveloppé",
+   "fichier": "sourates/073.json",
+   "nbVersets": 20,
+   "nbMots": 199,
+   "sha256": "1f1565f5af81fceb56dae9b0d02f29258edf0cb774510439c92ae726ce725b3f"
+  },
+  {
+   "numero": 74,
+   "nomArabe": "المدثر",
+   "nom": "Al-Muddaththir",
+   "nomFr": "Celui qui se couvre",
+   "fichier": "sourates/074.json",
+   "nbVersets": 56,
+   "nbMots": 255,
+   "sha256": "a9d41afd3c64bd39c3244819428dac49f5607c03fbaeaf12017ab278118cd28a"
+  },
+  {
+   "numero": 75,
+   "nomArabe": "القيامة",
+   "nom": "Al-Qiyamah",
+   "nomFr": "La résurrection",
+   "fichier": "sourates/075.json",
+   "nbVersets": 40,
+   "nbMots": 164,
+   "sha256": "c1605610cd9e66ebda569417b5cac0bf941bd7be7e97ba7d0e7a0d27fccc7826"
+  },
+  {
+   "numero": 76,
+   "nomArabe": "الانسان",
+   "nom": "Al-Insan",
+   "nomFr": "L'homme",
+   "fichier": "sourates/076.json",
+   "nbVersets": 31,
+   "nbMots": 243,
+   "sha256": "55a5432f438f1a9d7d36aae31840268ea454702b3abec4ca6b638d57c3919bd1"
+  },
+  {
+   "numero": 77,
+   "nomArabe": "المرسلات",
+   "nom": "Al-Mursalat",
+   "nomFr": "Les envoyés",
+   "fichier": "sourates/077.json",
+   "nbVersets": 50,
+   "nbMots": 181,
+   "sha256": "7cfaf506f07f408fbf674c6ccc3c818c04c7b528c26849269052b256430fedc0"
+  },
+  {
+   "numero": 78,
+   "nomArabe": "النبإ",
+   "nom": "An-Naba",
+   "nomFr": "La nouvelle",
+   "fichier": "sourates/078.json",
+   "nbVersets": 40,
+   "nbMots": 173,
+   "sha256": "38bedd0503c6d39583d8db9eb44fd05af090e73729fc64788bf5012ea731ca3d"
+  },
+  {
+   "numero": 79,
+   "nomArabe": "النازعات",
+   "nom": "An-Nazi'at",
+   "nomFr": "Ceux qui arrachent",
+   "fichier": "sourates/079.json",
+   "nbVersets": 46,
+   "nbMots": 179,
+   "sha256": "dc1dfda00bbda17f3f422dc4d90878afd9b6c5defe1e1267b7e13532cc977ed6"
+  },
+  {
+   "numero": 80,
+   "nomArabe": "عبس",
+   "nom": "'Abasa",
+   "nomFr": "Il s'est renfrogné",
+   "fichier": "sourates/080.json",
+   "nbVersets": 42,
+   "nbMots": 133,
+   "sha256": "51414a010c6f4ae584861d0c03d21309db8502b0912fec747a95e698c67b3406"
+  },
+  {
+   "numero": 81,
+   "nomArabe": "التكوير",
+   "nom": "At-Takwir",
+   "nomFr": "L'obscurcissement",
+   "fichier": "sourates/081.json",
+   "nbVersets": 29,
+   "nbMots": 104,
+   "sha256": "98a20921884398590664b032749f34c7094c9e230d0c74b28a67473bfc0604c7"
+  },
+  {
+   "numero": 82,
+   "nomArabe": "الإنفطار",
+   "nom": "Al-Infitar",
+   "nomFr": "La rupture",
+   "fichier": "sourates/082.json",
+   "nbVersets": 19,
+   "nbMots": 80,
+   "sha256": "fec93a6b992e8b0bf6117a0cb53fc73651a3bb3d97528c2300c0910e3265c016"
+  },
+  {
+   "numero": 83,
+   "nomArabe": "المطففين",
+   "nom": "Al-Mutaffifin",
+   "nomFr": "Les fraudeurs",
+   "fichier": "sourates/083.json",
+   "nbVersets": 36,
+   "nbMots": 169,
+   "sha256": "b159295a54d54839a8ae11d069f63006eb6c458481989286476aa6d17ee6d181"
+  },
+  {
+   "numero": 84,
+   "nomArabe": "الإنشقاق",
+   "nom": "Al-Inshiqaq",
+   "nomFr": "La déchirure",
+   "fichier": "sourates/084.json",
+   "nbVersets": 25,
+   "nbMots": 107,
+   "sha256": "7e647e66d5db006f92b4faa6cfe19ddad3ad6eb5047d0339a05a1217771816cf"
+  },
+  {
+   "numero": 85,
+   "nomArabe": "البروج",
+   "nom": "Al-Buruj",
+   "nomFr": "Les constellations",
+   "fichier": "sourates/085.json",
+   "nbVersets": 22,
+   "nbMots": 109,
+   "sha256": "06ed1011e1d6b671e9d6d7389498e864bd590ebe20e86934e531fd7bd8484cfe"
+  },
+  {
+   "numero": 86,
+   "nomArabe": "الطارق",
+   "nom": "At-Tariq",
+   "nomFr": "L'astre nocturne",
+   "fichier": "sourates/086.json",
+   "nbVersets": 17,
+   "nbMots": 61,
+   "sha256": "04f3c5986f4cd1444dc9c6149213db788263e6330bd903c13c6acc47a9c7a822"
+  },
+  {
+   "numero": 87,
+   "nomArabe": "الأعلى",
+   "nom": "Al-A'la",
+   "nomFr": "Le Très-Haut",
+   "fichier": "sourates/087.json",
+   "nbVersets": 19,
+   "nbMots": 72,
+   "sha256": "f61a78f274d88dfa744406005753919b32ce8a1204f85685a78eef76239fdd8b"
+  },
+  {
+   "numero": 88,
+   "nomArabe": "الغاشية",
+   "nom": "Al-Ghashiyah",
+   "nomFr": "L'enveloppante",
+   "fichier": "sourates/088.json",
+   "nbVersets": 26,
+   "nbMots": 92,
+   "sha256": "9e5a8d621363bd4b925c3bb8b33a2a3a0d07c96cf41b7df409a53f9db82cbe40"
+  },
+  {
+   "numero": 89,
+   "nomArabe": "الفجر",
+   "nom": "Al-Fajr",
+   "nomFr": "L'aube",
+   "fichier": "sourates/089.json",
+   "nbVersets": 30,
+   "nbMots": 137,
+   "sha256": "149292db414dd9745389a11723b039b3cab5cbdf57052936f7417c26651fc8a8"
+  },
+  {
+   "numero": 90,
+   "nomArabe": "البلد",
+   "nom": "Al-Balad",
+   "nomFr": "La cité",
+   "fichier": "sourates/090.json",
+   "nbVersets": 20,
+   "nbMots": 82,
+   "sha256": "7d0388514a83fd662b42675c648238abd31404d85332be41f975f01f040adcb2"
+  },
+  {
+   "numero": 91,
+   "nomArabe": "الشمس",
+   "nom": "Ash-Shams",
+   "nomFr": "Le soleil",
+   "fichier": "sourates/091.json",
+   "nbVersets": 15,
+   "nbMots": 54,
+   "sha256": "c01d677108da4b4674d9e9e561bbec5c7e3e17f09be4f70702f026f130b2c83d"
+  },
+  {
+   "numero": 92,
+   "nomArabe": "الليل",
+   "nom": "Al-Layl",
+   "nomFr": "La nuit",
+   "fichier": "sourates/092.json",
+   "nbVersets": 21,
+   "nbMots": 71,
+   "sha256": "e1aaa3cd69279684657f842aeee33319c6e35f404b1206f4d0dc2e3843bf6663"
+  },
+  {
+   "numero": 93,
+   "nomArabe": "الضحى",
+   "nom": "Ad-Duhaa",
+   "nomFr": "Le jour montant",
+   "fichier": "sourates/093.json",
+   "nbVersets": 11,
+   "nbMots": 40,
+   "sha256": "1fb8600d2b2e4a091f85c441741937c6300dffcea79911b7ed06604e35078104"
+  },
+  {
+   "numero": 94,
+   "nomArabe": "الشرح",
+   "nom": "Ash-Sharh",
+   "nomFr": "L'ouverture",
+   "fichier": "sourates/094.json",
+   "nbVersets": 8,
+   "nbMots": 27,
+   "sha256": "c208dd12861fc17195f3efd6a458b76ef5c03d25e221fd53bf13ab1c8b1f5d01"
+  },
+  {
+   "numero": 95,
+   "nomArabe": "التين",
+   "nom": "At-Tin",
+   "nomFr": "Les figues",
+   "fichier": "sourates/095.json",
+   "nbVersets": 8,
+   "nbMots": 34,
+   "sha256": "896ce854499684566ce2ffc9efb419cf54f38bf5dca8415178c7745878eb4a1a"
+  },
+  {
+   "numero": 96,
+   "nomArabe": "العلق",
+   "nom": "Al-'Alaq",
+   "nomFr": "L'adhérence",
+   "fichier": "sourates/096.json",
+   "nbVersets": 19,
+   "nbMots": 72,
+   "sha256": "966c62295b232084c952b828154127cb4b440677840b1be892e290accd0a7e36"
+  },
+  {
+   "numero": 97,
+   "nomArabe": "القدر",
+   "nom": "Al-Qadr",
+   "nomFr": "La destinée",
+   "fichier": "sourates/097.json",
+   "nbVersets": 5,
+   "nbMots": 30,
+   "sha256": "691765005097a93d2848426d72c58bac0d34a3eb551655865842d5da65fcdc3a"
+  },
+  {
+   "numero": 98,
+   "nomArabe": "البينة",
+   "nom": "Al-Bayyinah",
+   "nomFr": "La preuve",
+   "fichier": "sourates/098.json",
+   "nbVersets": 8,
+   "nbMots": 94,
+   "sha256": "4f5be9dca68e88616dcda918ffd08a3edaad0de170929374bb72772e0bddc4f3"
+  },
+  {
+   "numero": 99,
+   "nomArabe": "الزلزلة",
+   "nom": "Az-Zalzalah",
+   "nomFr": "Le séisme",
+   "fichier": "sourates/099.json",
+   "nbVersets": 8,
+   "nbMots": 36,
+   "sha256": "1cf9f8a58a0361adb032f8512815d306e913599cbe6b12b30c944defe1c6a7db"
+  },
+  {
+   "numero": 100,
+   "nomArabe": "العاديات",
+   "nom": "Al-'Adiyat",
+   "nomFr": "Les coursiers",
+   "fichier": "sourates/100.json",
+   "nbVersets": 11,
+   "nbMots": 40,
+   "sha256": "a0ed9399bcf8e8a78da8db734a281068bb3c9bfefe0d879fe1b4e26c596b97c7"
+  },
+  {
+   "numero": 101,
+   "nomArabe": "القارعة",
+   "nom": "Al-Qari'ah",
+   "nomFr": "Le fracas",
+   "fichier": "sourates/101.json",
+   "nbVersets": 11,
+   "nbMots": 36,
+   "sha256": "56a9c137425d98bd8a957e67f261187601ae60ea40cacc9ebb2dca144667fac9"
+  },
+  {
+   "numero": 102,
+   "nomArabe": "التكاثر",
+   "nom": "At-Takathur",
+   "nomFr": "La course aux richesses",
+   "fichier": "sourates/102.json",
+   "nbVersets": 8,
+   "nbMots": 28,
+   "sha256": "e3ca33b9c05ab56c45c15e74333551daeb5156c8f6230e464fd70e1993f918dc"
+  },
+  {
+   "numero": 103,
+   "nomArabe": "العصر",
+   "nom": "Al-'Asr",
+   "nomFr": "Le temps",
+   "fichier": "sourates/103.json",
+   "nbVersets": 3,
+   "nbMots": 14,
+   "sha256": "2de369cb13251b7ec3f0d685a591ea43590aa72a23693dc9b42aa54a57debd18"
+  },
+  {
+   "numero": 104,
+   "nomArabe": "الهمزة",
+   "nom": "Al-Humazah",
+   "nomFr": "Les calomniateurs",
+   "fichier": "sourates/104.json",
+   "nbVersets": 9,
+   "nbMots": 33,
+   "sha256": "e29cc93fafe7cb03564e8c93eaf545cfb8447fc3f696aabb22a6abcfe759dc8c"
+  },
+  {
+   "numero": 105,
+   "nomArabe": "الفيل",
+   "nom": "Al-Fil",
+   "nomFr": "L'éléphant",
+   "fichier": "sourates/105.json",
+   "nbVersets": 5,
+   "nbMots": 23,
+   "sha256": "023b657b83647a3f2d350b60d8dd3968d5e16400713eb04ee4b6c7a2d9ef93f9"
+  },
+  {
+   "numero": 106,
+   "nomArabe": "قريش",
+   "nom": "Quraysh",
+   "nomFr": "Les Quraysh",
+   "fichier": "sourates/106.json",
+   "nbVersets": 4,
+   "nbMots": 17,
+   "sha256": "986e086f48d56efc70028507367b08b38f37b24941d483b6660bb07a375eddd6"
+  },
+  {
+   "numero": 107,
+   "nomArabe": "الماعون",
+   "nom": "Al-Ma'un",
+   "nomFr": "L'entraide",
+   "fichier": "sourates/107.json",
+   "nbVersets": 7,
+   "nbMots": 25,
+   "sha256": "9cab18226745859ad9c4d940a31ae151c46b4ed4d8fa9d8b0a7dd3760058a5a0"
+  },
+  {
+   "numero": 108,
+   "nomArabe": "الكوثر",
+   "nom": "Al-Kawthar",
+   "nomFr": "L'abondance",
+   "fichier": "sourates/108.json",
+   "nbVersets": 3,
+   "nbMots": 10,
+   "sha256": "749dddc26e86c2bae0261f544aa67c551c948e49c21e447b1cf7ba1f775249f1"
+  },
+  {
+   "numero": 109,
+   "nomArabe": "الكافرون",
+   "nom": "Al-Kafirun",
+   "nomFr": "Les mécréants",
+   "fichier": "sourates/109.json",
+   "nbVersets": 6,
+   "nbMots": 26,
+   "sha256": "3d37d7ea453a0057f815802d86bb7d25ac05ed17543d98ffe9ea3beecd7cf704"
+  },
+  {
+   "numero": 110,
+   "nomArabe": "النصر",
+   "nom": "An-Nasr",
+   "nomFr": "Le secours",
+   "fichier": "sourates/110.json",
+   "nbVersets": 3,
+   "nbMots": 19,
+   "sha256": "3a9e4fd2def1805b2eacd38619b7fc0b696db55d3b0c2993c18c7009ca5d425e"
+  },
+  {
+   "numero": 111,
+   "nomArabe": "المسد",
+   "nom": "Al-Masad",
+   "nomFr": "Les fibres",
+   "fichier": "sourates/111.json",
+   "nbVersets": 5,
+   "nbMots": 23,
+   "sha256": "26180a972e9d5cd292b7b9e99991c3f26f68debb08cb97fefb41df221269d6a3"
+  },
+  {
+   "numero": 112,
+   "nomArabe": "الإخلاص",
+   "nom": "Al-Ikhlas",
+   "nomFr": "La sincérité",
+   "fichier": "sourates/112.json",
+   "nbVersets": 4,
+   "nbMots": 15,
+   "sha256": "7fb499ec999fe6ebae246d7d0decab83244d4f7b232ea274f19ef73e60d812e5"
+  },
+  {
+   "numero": 113,
+   "nomArabe": "الفلق",
+   "nom": "Al-Falaq",
+   "nomFr": "L'aube naissante",
+   "fichier": "sourates/113.json",
+   "nbVersets": 5,
+   "nbMots": 23,
+   "sha256": "2bd713c6e15f4e51544c0442b2ad33e7537fdc81d500d1371c8315c8899d5429"
+  },
+  {
+   "numero": 114,
+   "nomArabe": "الناس",
+   "nom": "An-Nas",
+   "nomFr": "Les humains",
+   "fichier": "sourates/114.json",
+   "nbVersets": 6,
+   "nbMots": 20,
+   "sha256": "363ad64ce937ea78c9d6802a522a004a2a5e968f3c65b7b6e97da76c780efc56"
+  }
+ ],
+ "differencesTanzil": 0
+}
