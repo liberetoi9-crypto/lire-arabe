@@ -1,0 +1,4 @@
+* text=auto eol=lf
+*.json text eol=lf
+*.woff2 binary
+*.mp3 binary
