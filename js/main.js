@@ -1,5 +1,6 @@
 // Propriétaire : Claude Code. Charge chaque module (chacun enregistre ses écrans), puis démarre.
 import { demarrer } from './core/routeur.js';
+import { demanderAcces } from './core/acces.js';
 
 import './seance/index.js';
 import './coran/index.js';
@@ -10,4 +11,6 @@ import './enregistrement/index.js';
 import './progression/index.js';
 import './affichage/index.js';
 
+// Code d'accès d'abord (une fois par téléphone), puis l'appli.
+await demanderAcces();
 demarrer('seance');

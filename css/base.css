@@ -49,3 +49,11 @@ button.secondaire { background: transparent; color: var(--accent); border: 1px s
 /* Liens seuls dans un écran (ex. « Retour ») : zone touchable de 44 px sur iPhone */
 .ecran > a:not(.carte):not(.bouton) { display: inline-flex; align-items: center; min-height: 44px; }
 .menu a { min-height: 44px; display: inline-flex; align-items: center; }
+
+/* Boutons : même police que l'appli ; désactivés = grisés (vu en vérifiant X2) */
+button, select, input, textarea { font-family: inherit; }
+button:disabled { opacity: .45; cursor: default; }
+/* Écran du code d'accès */
+body.verrouille > header, body.verrouille > main, body.verrouille > nav { display: none; }
+.ecran-code { display: grid; gap: 12px; max-width: 320px; margin: 20vh auto 0; padding: 0 16px; text-align: center; }
+.ecran-code input { min-height: 52px; font-size: 1.6rem; text-align: center; letter-spacing: .3em; border-radius: 12px; border: 1px solid rgba(0,0,0,.25); }

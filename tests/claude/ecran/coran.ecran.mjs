@@ -6,6 +6,7 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname } from 'node:path';
 import { webkit, devices } from 'playwright';
+import { EMPREINTE } from '../../../js/core/acces.js';
 
 const racine = new URL('../../../', import.meta.url);
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.md': 'text/plain' };
@@ -23,12 +24,16 @@ before(async () => {
   adresse = `http://localhost:${serveur.address().port}/`;
   navigateur = await webkit.launch();
   const contexte = await navigateur.newContext({ ...devices['iPhone 13'] });
+  // Le téléphone de test a déjà ouvert le cadenas (le code lui-même n'est jamais écrit dans le dépôt).
+  await contexte.addInitScript((e) => { if (!localStorage.getItem('la:acces')) localStorage.setItem('la:acces', e); }, EMPREINTE);
   page = await contexte.newPage();
   await page.goto(adresse + '#/coran/112');
   await page.waitForSelector('.verset');
 });
 after(async () => { await navigateur?.close(); serveur?.close(); });
 
+// Efface les données de test, mais garde le cadenas ouvert.
+const vider = () => page.evaluate(() => { const a = localStorage.getItem('la:acces'); localStorage.clear(); if (a) localStorage.setItem('la:acces', a); });
 const source = async (n) => JSON.parse(await readFile(new URL(`data/coran/sourates/${String(n).padStart(3, '0')}.json`, racine), 'utf8'));
 async function aller(hash, selecteur) {
   await page.evaluate((h) => { location.hash = h; }, hash);
@@ -71,7 +76,7 @@ test('iPhone : tous les boutons et liens font au moins 44 px', async () => {
 });
 
 test('signaler un verset le met de côté tout de suite, et aux ouvertures suivantes', async () => {
-  await page.evaluate(() => localStorage.clear());
+  await vider();
   await aller('#/coran/112', '.verset[data-cle="112:2"]');
   const texte = (await source(112)).versets[1].texte;
   await page.click('.bloc-verset[data-cle="112:2"] button:has-text("Signaler une erreur")');
@@ -83,7 +88,7 @@ test('signaler un verset le met de côté tout de suite, et aux ouvertures suiva
   assert.ok(!(await page.textContent('#ecran')).includes(texte));
   await page.click('.avis-mis-de-cote button');
   await page.waitForSelector('.verset[data-cle="112:2"]');
-  await page.evaluate(() => localStorage.clear());
+  await vider();
 });
 
 test('signaler 1:1 retire aussi la basmala des autres sourates', async () => {
@@ -93,11 +98,11 @@ test('signaler 1:1 retire aussi la basmala des autres sourates', async () => {
   await aller('#/coran/1', '.avis-mis-de-cote');
   await aller('#/coran/113', '.verset');
   assert.equal(await page.$('.basmala'), null);
-  await page.evaluate(() => localStorage.clear());
+  await vider();
 });
 
 test('toucher un mot : sens (anglais, quran.com) puis « Ajouter à mes mots » garde sourate et verset', async () => {
-  await page.evaluate(() => localStorage.clear());
+  await vider();
   await aller('#/coran/112', '.verset[data-cle="112:1"]');
   await page.click('.verset[data-cle="112:1"] .mot[data-position="3"]');
   await page.waitForFunction(() => { const s = document.querySelector('.panneau .sens'); return s && !s.textContent.startsWith('Chargement'); });
@@ -114,11 +119,11 @@ test('toucher un mot : sens (anglais, quran.com) puis « Ajouter à mes mots » 
   await page.waitForSelector('.mot-cible');
   assert.equal(await page.getAttribute('.mot-cible', 'data-position'), '3');
   assert.equal(page.url().split('#')[1], '/coran/112/1/3');
-  await page.evaluate(() => localStorage.clear());
+  await vider();
 });
 
 test('traduction du verset : Hamidullah (quran.com) puis Rachid Maach (QuranEnc, avec version)', async () => {
-  await page.evaluate(() => localStorage.clear());
+  await vider();
   await aller('#/coran/112', '.verset[data-cle="112:1"]');
   await page.click('.bloc-verset[data-cle="112:1"] button:has-text("Traduction")');
   await page.waitForSelector('.bloc-verset[data-cle="112:1"] .texte-traduction');
@@ -131,5 +136,31 @@ test('traduction du verset : Hamidullah (quran.com) puis Rachid Maach (QuranEnc,
   assert.match(credit, /Rachid Maach — QuranEnc\.com — version \d+\.\d+\.\d+/);
   assert.match(credit, /Traduit par Rachid Maach/);
   assert.ok(await page.$('.bloc-verset[data-cle="112:1"] a:has-text("Prévenir QuranEnc")'));
-  await page.evaluate(() => localStorage.clear());
+  await vider();
+});
+
+test("code d'accès : sans le code, rien de l'appli n'est visible ; un faux code est refusé", async () => {
+  const autre = await navigateur.newContext({ ...devices['iPhone 13'] });
+  const p = await autre.newPage();
+  await p.goto(adresse + '#/coran/112');
+  await p.waitForSelector('.ecran-code input');
+  assert.equal(await p.$('.verset'), null, 'aucun verset avant le code');
+  assert.equal(await p.isVisible('nav.menu'), false);
+  await p.fill('.ecran-code input', '000000x');
+  await p.click('.ecran-code button');
+  await p.waitForSelector('.ecran-code .erreur:not([hidden])');
+  assert.equal(await p.$('.verset'), null);
+  // Avec l'empreinte du bon code déjà gardée dans le téléphone : l'appli s'ouvre directement.
+  await p.evaluate((e) => localStorage.setItem('la:acces', e), EMPREINTE);
+  await p.reload();
+  await p.waitForSelector('.verset');
+  assert.equal(await p.$('.ecran-code'), null);
+  if (process.env.CODE_ACCES) {
+    await p.evaluate(() => localStorage.clear());
+    await p.reload();
+    await p.fill('.ecran-code input', process.env.CODE_ACCES);
+    await p.click('.ecran-code button');
+    await p.waitForSelector('.verset');
+  }
+  await autre.close();
 });
