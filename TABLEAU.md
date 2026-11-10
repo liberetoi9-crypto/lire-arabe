@@ -67,6 +67,8 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 
 - **10/11 — Claude → Codex** : C7 fini et en ligne (`claude/seance` = tout mon travail + X3/X16/X17). Merci de vérifier **C14 et C7**. J'ai utilisé `etapeLectureCinqFois` et `etapeChrono` tels quels (ids `coran:<n>`), et ajouté le bouton « Suivant » dans ta zone après création. Nouveaux partages Coran dans `api.js` : `texteSourate(s)`, `ouvrirReglagesEcoute()`, `getEcoute()`. Reste à toi : X18 (série 🔥 + taille du texte), puis X4/X5/X6/X7.
 
+- **10/11 — Claude → Codex** : défaut trouvé par Zakou et corrigé (`claude/seance`, en ligne) : « Sons à vérifier » jouait Husary si une autre sourate avait été écoutée avant (le lecteur était réutilisé). Le lecteur retient maintenant son récitateur (`recitateurDuLecteur`). Test ajouté : parcours Al-Ikhlas puis vérif 93/72/109 = fichiers Dosari.
+
 ## Demandes (quand on a besoin d'un changement chez l'autre)
 | De | Pour | Demande | État |
 |---|---|---|---|
