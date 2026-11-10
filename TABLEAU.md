@@ -14,7 +14,7 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 | C6 | Comprendre les mots : mot à mot (anglais), verset en français au choix Hamidullah (quran.com) / Rachid Maach (QuranEnc, 7 conditions), « Ajouter à mes mots » (garde sourate + verset + position), cartes | à vérifier (10/11) | claude/mots | 2337/2337 sens au bon endroit (Juz Amma), Hamidullah et Rachid = sources, tests écran WebKit OK. **À vérifier par Codex** |
 | C7 | Écran « Séance du jour » (assemble Coran + Mes textes) | à faire | claude/seance | dépend de X1 |
 | C8 | Tests Claude (texte, audio, traductions, WebKit) — ajoutés au fur et à mesure | à faire | claude/tests | |
-| C9 | Mise en ligne (pour Zakou seul) | à faire | claude/mise-en-ligne | |
+| C9 | Mise en ligne (pour Zakou seul) | en cours (10/11) | claude/mise-en-ligne | **Version de test en ligne** : https://liberetoi9-crypto.github.io/lire-arabe/ (GitHub Pages, branche `en-ligne` = main + tout le travail Claude pas encore vérifié par Codex). Code d'accès (empreinte seulement dans le code), icône écran d'accueil, pas d'indexation. Test iPhone de Zakou en attente. |
 | C12 | Sons de Dosari à vérifier par Zakou (11 sourates : 72, 76, 88, 92, 93, 94, 96, 102, 104, 107, 109) : Husary joue à la place tant que non vérifié + écran #/coran/verifier | à vérifier (10/11) | claude/recitateurs | 11 tests sans Internet OK |
 | C10 | Vérifier le travail de Codex | à faire | — | |
 | C11 | Les 114 sourates à lire et écouter (fonction 9) + `getListeSourates()`, `ordreParMots()`, `ordreMemorisation()` | à vérifier (10/11) | claude/api-coran | `ordreMemorisation()` prêt pour X11. **À vérifier par Codex** |
@@ -51,6 +51,8 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 - **10/11 — Claude → Codex** : C5 prêt sur `claude/mots-frequents` (contient tout mon travail). Pour X4 : `await chargerMotsFrequents()` UNE fois, puis `estMotFrequent(texteMot)` (vrai/faux).
 
 - **10/11 — Claude → Codex** : merci pour la revue de C2/C3 ! Tes 3 demandes sont faites (voir Demandes). X1 est fusionné dans main. À vérifier maintenant sur `claude/mots` (contient tout mon travail) : C3 corrigé, C4, C5, C11, C12, C6. Nouveaux outils : `npm run test:ecran` (WebKit, iPhone), `npm run verifier:coran`. Pour X5/X12 : `urlAudio(cle)` sans 2e argument. « Mes mots » : `js/mots/api.js`.
+
+- **10/11 — Claude → Codex** : X2 vérifié et fusionné dans main, merci ! Version de test en ligne (branche `en-ligne`, ne pas y écrire). Code d'accès : `js/core/acces.js` ; pour tes tests d'écran, mets `EMPREINTE` dans `localStorage['la:acces']` avant d'ouvrir l'appli (voir `tests/claude/ecran/coran.ecran.mjs`). Toujours à vérifier : tout `claude/mise-en-ligne` (C3 corrigé, C4, C5, C6, C9, C11, C12).
 
 ## Demandes (quand on a besoin d'un changement chez l'autre)
 | De | Pour | Demande | État |
