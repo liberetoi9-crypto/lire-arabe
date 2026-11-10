@@ -54,7 +54,7 @@ Ce fichier est la consigne unique pour **Claude Code** et **Codex**. Les deux le
    - Niveau 2 : d'abord on enlève les voyelles des petits mots fréquents, ensuite une voyelle sur deux dans les autres mots.
    - Niveau 3 : aucune voyelle.
    - Toucher un mot → ses voyelles réapparaissent.
-5. **Petits mots fréquents** : l'appli compte elle-même les mots les plus fréquents dans le texte officiel complet du Coran et les surligne en couleur. Le texte n'est jamais modifié, seule la couleur change.
+5. **Petits mots fréquents** (règle actuelle : les 40 mots de 3 lettres ou moins les plus fréquents, = 22,9 % du Coran ; réglable) : l'appli compte elle-même les mots les plus fréquents dans le texte officiel complet du Coran et les surligne en couleur. Le texte n'est jamais modifié, seule la couleur change.
 6. **Enregistrement** : l'élève s'enregistre et se réécoute à côté de l'audio officiel.
 7. **Progression** : calendrier des jours faits (série de jours d'affilée), graphique des temps de lecture. Tout sur le téléphone, sans compte.
 8. **Comprendre les mots**
@@ -131,7 +131,7 @@ Le résultat des tests + la liste de ce qui a été vérifié par Claude Code ET
 ## Comment les parties se parlent
 1. **Écrans** : chaque module appelle `enregistrerEcran(nom, { titre, afficher(conteneur, params) })` (`js/core/routeur.js`). Adresses : `#/memorisation`, `#/seance`, `#/coran`, `#/coran/112`, `#/mots`, `#/textes`, `#/exercices`, `#/progression`, `#/reglages`.
 2. **Fonctions publiques** : chaque module expose ses fonctions dans son `api.js`. On importe **seulement** l'`api.js` d'un autre module, jamais ses fichiers internes.
-   - `js/coran/api.js` (Claude) : `getSourate(n)`, `getVerset(cle)`, `ordreJuzAmma()`, `getTraduction(cle)`, `getSensMots(cle)`, `getRecitateurs()`, `getRecitateurActif()`, `setRecitateurActif(id)`, `urlAudio(cle, id?)`, `creerLecteur()`, `estMotFrequent(texteMot)`.
+   - `js/coran/api.js` (Claude) : `getSourate(n)`, `getVerset(cle)`, `ordreJuzAmma()`, `getTraduction(cle)`, `getSensMots(cle)`, `getRecitateurs()`, `getRecitateurActif()`, `setRecitateurActif(id)`, `urlAudio(cle, id?)`, `creerLecteur()`, `chargerMotsFrequents()` (à appeler une fois) puis `estMotFrequent(texteMot)`.
    - Ajouts Coran (10/11) : `getListeSourates()` (les 114 : numéro, nb de versets, nb de mots), `ordreParMots()` (les 114, de la plus courte à la plus longue), `ordreMemorisation()` (Fatiha, puis Juz Amma court → long, puis le reste court → long), `JUZ_AMMA`, et dans le lecteur `boucle(cle, fois)` pour écouter un verset 3, 5 ou 10 fois.
    - `js/textes/api.js` (Codex) : `getTextes()`, `getTexte(id)`, `getTexteDuJour()`.
    - `js/progression/api.js` (Codex) : `noterSeance({ secondes, type })`, `noterTemps({ id, secondes })`.
