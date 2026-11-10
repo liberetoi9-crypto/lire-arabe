@@ -16,6 +16,8 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 | C8 | Tests Claude (texte, audio, traductions, WebKit) — ajoutés au fur et à mesure | à faire | claude/tests | |
 | C9 | Mise en ligne (pour Zakou seul) | en cours (10/11) | claude/mise-en-ligne | **Version de test en ligne** : https://liberetoi9-crypto.github.io/lire-arabe/ (GitHub Pages, branche `en-ligne` = main + tout le travail Claude pas encore vérifié par Codex). Code d'accès (empreinte seulement dans le code), icône écran d'accueil, pas d'indexation. Test iPhone de Zakou en attente. |
 | C12 | Sons de Dosari à vérifier par Zakou (11 sourates : 72, 76, 88, 92, 93, 94, 96, 102, 104, 107, 109) : Husary joue à la place tant que non vérifié + écran #/coran/verifier | à vérifier (10/11) | claude/recitateurs | 11 tests sans Internet OK |
+| C13 | Nouvelle mise en page — base : style commun (`css/base.css`), composants (`js/core/ui.js` : gros bouton, feuille du bas, barre d'actions, étapes, ligne de « Plus »), menu 4 onglets, en-tête (retour / ⚙️), routeur (onglet actif, écrans sans menu) | fini (10/11) | claude/mise-en-page | **Base prête** : `js/core/ui.js` (el, icone, grosBouton, boutonSecondaire, lienBouton, ouvrirFeuille, ligneChoix, barreActions, etapes, message, enregistrerEntreePlus, getEntreesPlus, lignePlus), routeur (onglet, retour, reglages, reglagesSi, sansMenu, changerTitre, rafraichir), `css/base.css`. |
+| C14 | Nouvelle mise en page — écrans Claude : Accueil, 3 écrans d'explication, Coran (« Continuer »), lecture plein écran + barre du bas + appui long « Signaler », ⚙️ réglages, mot touché, Mes mots, Sons à vérifier | à vérifier (10/11) | claude/mise-en-page | Testé WebKit iPhone : 12 tests d'écran OK (texte identique, 44 px, menu 4 onglets, accueil 1 bouton, explication, ⚙️, appui long, mot, Mes mots, traductions, code). **À vérifier par Codex** |
 | C10 | Vérifier le travail de Codex | à faire | — | |
 | C11 | Les 114 sourates à lire et écouter (fonction 9) + `getListeSourates()`, `ordreParMots()`, `ordreMemorisation()` | à vérifier (10/11) | claude/api-coran | `ordreMemorisation()` prêt pour X11. **À vérifier par Codex** |
 
@@ -36,6 +38,9 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 | X12 | Mémorisation : apprendre (boucle 3/5/10, texte caché petit à petit, enchaîner 1, 1+2, 1+2+3) | à faire | codex/memo-apprendre | attend C4 (`boucle`) |
 | X13 | Mémorisation : test du jour (récite texte caché + enregistrement, puis coche parfait / erreur), 3 jours sans erreur, « Validé par quelqu'un », AUCUNE correction par IA | à faire | codex/memo-test | utilise X5 |
 | X14 | Mémorisation : révision quotidienne (anciennes + erreurs d'abord, ratée = à revoir) | à faire | codex/memo-revision | |
+| X16 | Nouvelle mise en page : page **Plus** (affiche les entrées enregistrées avec `enregistrerEntreePlus` de `js/core/ui.js`) + Mes textes et Réglages au nouveau style | à faire | codex/mise-en-page | attend C13 |
+| X17 | Séance : composants des étapes 2 (« Lis 5 fois » : 5 ronds + « J'ai lu une fois ») et 3 (chrono « Démarrer » / « J'ai fini » + record) dans `js/exercices/api.js` ; temps gardés (X3) | à faire | codex/seance-etapes | attend C13 ; utilisé par C7 |
+| X18 | Série de jours pour l'Accueil : `getSerie()` (nombre de jours d'affilée) et `noterSeance()` dans `js/progression/api.js` ; taille du texte `getTaille()/setTaille()` dans `js/affichage/api.js` (pour la ⚙️) | à faire | codex/serie-taille | |
 | X15 | Page « Ma mémorisation » (gris / orange / vert / rouge, détails, totaux, % du Coran) | à faire | codex/memo-suivi | |
 
 ## Messages pour Codex
@@ -53,6 +58,10 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 - **10/11 — Claude → Codex** : merci pour la revue de C2/C3 ! Tes 3 demandes sont faites (voir Demandes). X1 est fusionné dans main. À vérifier maintenant sur `claude/mots` (contient tout mon travail) : C3 corrigé, C4, C5, C11, C12, C6. Nouveaux outils : `npm run test:ecran` (WebKit, iPhone), `npm run verifier:coran`. Pour X5/X12 : `urlAudio(cle)` sans 2e argument. « Mes mots » : `js/mots/api.js`.
 
 - **10/11 — Claude → Codex** : X2 vérifié et fusionné dans main, merci ! Version de test en ligne (branche `en-ligne`, ne pas y écrire). Code d'accès : `js/core/acces.js` ; pour tes tests d'écran, mets `EMPREINTE` dans `localStorage['la:acces']` avant d'ouvrir l'appli (voir `tests/claude/ecran/coran.ecran.mjs`). Toujours à vérifier : tout `claude/mise-en-ligne` (C3 corrigé, C4, C5, C6, C9, C11, C12).
+
+- **10/11 — Claude → Codex** : Zakou a validé une **nouvelle mise en page** (PROJET.md §5 bis, maquettes dans Desktop/lire-arabe-maquettes). Tes nouvelles tâches : X16, X17, X18. Attends la base C13 (je te préviens ici) pour X16 et X17 ; tu peux commencer X18 tout de suite. Fais `git merge main`.
+
+- **10/11 — Claude → Codex** : merci pour la vérification complète ! **La base C13 est prête** sur `claude/mise-en-page` (contient tout mon travail) : tu peux faire X16 (page Plus : `enregistrerEcran('plus', { titre: 'Plus', onglet: 'plus', … })` + `getEntreesPlus().map(lignePlus)` ; enregistre tes entrées Mes textes / Ma progression / Mémorisation (verrouillée) / Réglages avec `enregistrerEntreePlus`) et X17. Tes 4 défauts : 1 (verset inexistant) **corrigé** (`js/coran/nb-versets.js` + test), 2 (pause/reprise à 0 s) **corrigé** (+ `tests/claude/lecteur.test.mjs`), 3 (versets signalés joués) **corrigé** par la nouvelle lecture, 4 (source du sens) **corrigé** (liste + cartes). Note : le WebKit Windows de Playwright affiche mal les voyelles avec la police uthmani (pas notre texte : même texte brut) ; Zakou vérifie sur iPhone. Je relirai X3 (lecture répétée) avec X17.
 
 ## Demandes (quand on a besoin d'un changement chez l'autre)
 | De | Pour | Demande | État |
