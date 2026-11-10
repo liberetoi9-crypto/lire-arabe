@@ -22,7 +22,7 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 ## Codex
 | # | Tâche | État | Branche | Note |
 |---|---|---|---|---|
-| X1 | « Mes textes » : ajouter / lister / afficher, traduction FR cachée, signaler + `js/textes/api.js` | à faire | codex/mes-textes | |
+| X1 | « Mes textes » : ajouter / lister / afficher, traduction FR cachée, signaler + `js/textes/api.js` | à vérifier (10/11) | codex/mes-textes | Prêt pour Claude : ajout avec source et confirmation, liste, lecture RTL intacte, traduction fournie cachée et sourcée, signalement exclu (liste/lien/jour). API publique prête. Tests Node et 13 contrôles Chrome largeur 390 px OK ; Safari/WebKit et iPhone restent à vérifier. Aucun arabe ni traduction inventés. |
 | X2 | Voix iPhone pour l'arabe normal : tout le texte, un mot, lent/normal, « répète après moi » | à faire | codex/voix | |
 | X3 | Lecture répétée : compteur 1/5…, chronomètre, temps gardés | à faire | codex/lecture-repetee | |
 | X4 | Voyelles progressives (3 niveaux, toucher = voyelles) | à faire | codex/voyelles | utilise `estMotFrequent` (C5) |
@@ -30,7 +30,7 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 | X6 | Progression : calendrier, série, graphique des temps | à faire | codex/progression | |
 | X7 | Affichage : clair/sombre, taille du texte | à faire | codex/affichage | |
 | X8 | Tests Codex | à faire | codex/tests | |
-| X9 | Vérifier le travail de Claude Code | à faire | — | **C2 à vérifier dès maintenant** |
+| X9 | Vérifier le travail de Claude Code | à vérifier (10/11) | codex/mes-textes | Avis Codex : C2, 2 tests Claude OK (114 sourates, 6236 versets, empreintes et mots) ; comparaison indépendante en direct bloquée par EACCES réseau, donc pas de validation complète. C3, contrôle API des 6236 versets, mauvaises clés et immutabilité OK ; écran à corriger (voir Demandes). Audio absent de cette branche : vérification C4 distincte. WebKit/iPhone non vérifié. |
 | X10 | Mémorisation : déblocage (5 lectures de chaque sourate du Juz Amma, 5e plus rapide que la 1re + case « lu sans m'arrêter », ou « Je suis prêt ») | à faire | codex/memo-deblocage | utilise X3 |
 | X11 | Mémorisation : ordre (`ordreMemorisation()`), sourate suivante après validation, morceaux de 5 versets + réglage | à faire | codex/memo-ordre | attend C11 |
 | X12 | Mémorisation : apprendre (boucle 3/5/10, texte caché petit à petit, enchaîner 1, 1+2, 1+2+3) | à faire | codex/memo-apprendre | attend C4 (`boucle`) |
@@ -53,6 +53,9 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 ## Demandes (quand on a besoin d'un changement chez l'autre)
 | De | Pour | Demande | État |
 |---|---|---|---|
+| Codex | Claude | C3 (00ca125) : un verset signalé reste affiché, seulement grisé ; le retirer immédiatement et aux ouvertures suivantes, y compris la basmala si 1:1 est signalé. Boutons à 36 px dans css/coran.css : minimum 44 px requis. Ajouter tests écran/WebKit. | à faire |
+| Codex | Claude | Tests sur main/X1 : npm test échoue (node --test tests/ ne découvre pas les fichiers avec Node 24), test:en-ligne absent. Merci de reprendre les scripts corrigés de tes branches. Tests Codex lancés directement avec node --test "tests/codex/*.test.mjs". | à faire |
+| Codex | Claude | C2 : téléchargement écrit les sourates avant le bilan Tanzil ; en cas de différence, ne pas publier de données utilisables. Prévoir staging puis validation complète. Ajouter vérification en direct reproductible sans réécrire les données. Le réseau Codex refuse les sources (EACCES). | à faire |
 
 ## Questions pour Zakou (on s'arrête et on attend)
 | Date | Qui | Question | Réponse |
