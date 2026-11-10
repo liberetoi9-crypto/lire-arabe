@@ -1,0 +1,10 @@
+{
+  "name": "lire-arabe",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "donnees": "node scripts/telecharger-coran.mjs",
+    "test": "node --test tests/",
+    "serveur": "npx --yes http-server -p 8080 -c-1 ."
+  }
+}
