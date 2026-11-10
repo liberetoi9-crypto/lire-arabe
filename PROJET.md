@@ -89,6 +89,22 @@ Ce fichier est la consigne unique pour **Claude Code** et **Codex**. Les deux le
 - Mode clair et mode sombre.
 - Pensé d'abord pour l'iPhone (boutons ≥ 44 px, rien qui dépend du survol).
 
+## 5 bis. Organisation et mise en page (validée par Zakou le 10/11 — maquettes : Desktop/lire-arabe-maquettes)
+**Règle d'or : quelqu'un qui ouvre l'appli pour la première fois comprend tout de suite quoi faire, sans explication.**
+- **Accueil** : un seul gros bouton au centre « Commencer ma séance du jour ». En dessous, en petit : la série (« 🔥 5 jours d'affilée ») et où on en est (sourate du jour, phase lecture ou mémorisation). Rien d'autre.
+- **Menu du bas** : 4 onglets fixes, icône + mot : Accueil / Coran / Mes mots / Plus. Il ne défile pas. Tout le reste va dans **Plus** (Mes textes, Ma progression, Mémorisation 🔒 tant que pas débloquée, Sons à vérifier, Réglages, Revoir l'explication).
+- **Une chose à la fois** : chaque écran a UNE action principale, en gros bouton.
+- **Réglages cachés derrière ⚙️** (feuille qui monte du bas) : récitateur, vitesse, répétitions, pause pour répéter, traduction, petits mots en couleur, taille du texte.
+- **Lecture d'une sourate** : le texte arabe prend presque tout l'écran (pas de cadres ni de boutons entre les versets). Barre du bas : Écouter / Répéter / Traduction. Toucher un verset = le choisir. « Signaler une erreur » = appui long sur le verset (validé par Zakou).
+- **Mot touché** : son sens + un seul bouton « ⭐ Ajouter à mes mots ».
+- **Coran** : en haut « Continuer : <sourate>, verset N », puis le Juz Amma ; les 114 sourates derrière un bouton.
+- **Mes mots** : gros bouton « Réviser N mots », puis la liste ; toucher un mot = le revoir dans son verset.
+- **Séance guidée** (C7), étape par étape avec barre de progression et bouton « Suivant » : 1 Écoute la sourate → 2 Lis-la 5 fois → 3 Chrono → 4 Mon texte (Mes textes, s'il y en a — validé par Zakou).
+- **Première ouverture** : 3 petits écrans d'explication maximum, avec « Passer ».
+- **Mots** : français très simple, jamais de mots techniques.
+- **Style** : propre, calme, beaucoup d'espace, grands textes, couleurs douces, le MÊME style partout (variables et composants de `css/base.css` et `js/core/ui.js`, propriétaire Claude Code ; Codex les utilise, ne les recopie pas).
+- Aucun texte arabe ne change : seule la mise en page change. Tous les tests du Coran doivent toujours passer. Chaque écran est testé en taille iPhone (WebKit).
+
 ## 6. Mise en ligne
 - L'appli est **pour Zakou seul**. Choix de Zakou (10/11) : B = dépôt GitHub **public** + GitHub Pages (https://liberetoi9-crypto.github.io/lire-arabe/), plus un **code d'accès** à l'ouverture (oui de Zakou, 10/11, tâche C9). Ajout d'un code d'accès : à confirmer par Zakou.
 - Aucune donnée perso dans le dépôt.
