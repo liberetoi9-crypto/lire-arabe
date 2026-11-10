@@ -79,7 +79,7 @@ Ce fichier est la consigne unique pour **Claude Code** et **Codex**. Les deux le
 - Pensé d'abord pour l'iPhone (boutons ≥ 44 px, rien qui dépend du survol).
 
 ## 6. Mise en ligne
-- L'appli est **pour Zakou seul**, pas pour tout le monde. Façon de la protéger : décision en attente (voir TABLEAU.md, « Questions pour Zakou »).
+- L'appli est **pour Zakou seul**. Choix de Zakou (10/11) : B = dépôt GitHub **public** + GitHub Pages (https://liberetoi9-crypto.github.io/lire-arabe/). Ajout d'un code d'accès : à confirmer par Zakou.
 - Aucune donnée perso dans le dépôt.
 - Zakou fait lui-même le test final sur son iPhone.
 

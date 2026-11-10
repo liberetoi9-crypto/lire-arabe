@@ -7,7 +7,7 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 | # | Tâche | État | Branche | Note |
 |---|---|---|---|---|
 | C1 | PROJET.md, TABLEAU.md, structure du code | fini (10/11) | main | |
-| C2 | Script qui télécharge le Coran (Fatiha + Juz Amma) depuis quran.com + contrôle Tanzil → `data/coran/` | à faire | claude/donnees-coran | |
+| C2 | Script qui télécharge le Coran (Fatiha + Juz Amma) depuis quran.com + contrôle Tanzil → `data/coran/` | en cours (10/11) | claude/donnees-coran | |
 | C3 | `js/coran/api.js` : sourates, versets, contrôle des numéros | à faire | claude/api-coran | |
 | C4 | Récitateurs (Husary mu'allim, Dosari) + menu + lecteur verset par verset + surlignage + « répète après moi » (Coran) | à faire | claude/recitateurs | |
 | C5 | Petits mots fréquents (comptage sur le Coran complet) | à faire | claude/mots-frequents | |
@@ -38,4 +38,4 @@ Règle : chacun ne modifie que SES lignes. Mettre à jour à chaque tâche comme
 | Date | Qui | Question | Réponse |
 |---|---|---|---|
 | 10/11 | Claude | Mot à mot en français ? | Non : anglais (quran.com) + verset en FR au choix Hamidullah / Rachid Maach |
-| 10/11 | Claude | Comment garder l'appli pour Zakou seul ? | en attente |
+| 10/11 | Claude | Comment garder l'appli pour Zakou seul ? | B : GitHub public + GitHub Pages. Code d'accès en plus : à confirmer |
