@@ -1,6 +1,9 @@
 // Propriétaire : Codex (tâche X1).
 import { enregistrerEcran, aller } from '../core/routeur.js';
 import { ajouterTexte, getTextes, getTexte, signalerTexte } from './api.js';
+import { ajouterCommandesVoix } from './commandes-voix.js';
+
+let nettoyerVoix = () => {};
 
 const el = (tag, props = {}, ...enfants) => {
   const e = Object.assign(document.createElement(tag), props);
@@ -11,6 +14,7 @@ const el = (tag, props = {}, ...enfants) => {
 enregistrerEcran('textes', { titre: 'Mes textes', afficher: afficherTextes });
 
 export function afficherTextes(conteneur, params = []) {
+  nettoyerVoix(); nettoyerVoix = () => {};
   conteneur.replaceChildren();
   if (params[0] === 'ajouter') return afficherAjout(conteneur);
   if (params[0]) return afficherTexte(conteneur, params[0]);
@@ -73,6 +77,7 @@ function afficherTexte(conteneur, id) {
   Object.assign(arabe.style, { whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' });
   const carte = el('article', { className: 'carte' }, el('h2', { textContent: texte.titre }), arabe,
     el('p', { textContent: `Source : ${texte.source}` }));
+  nettoyerVoix = ajouterCommandesVoix(carte, arabe, texte);
   if (texte.traductionFr) {
     const traduction = el('div', { hidden: true, id: 'texte-traduction' },
       el('p', { textContent: texte.traductionFr }),
