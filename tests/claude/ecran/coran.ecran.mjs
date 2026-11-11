@@ -1,6 +1,6 @@
 // Propriétaire : Claude Code. Tests d'ÉCRAN dans WebKit (le moteur de Safari), taille iPhone.
 // Lancer : npm run test:ecran   (Internet nécessaire : police, sens des mots, traductions)
-// Nouvelle mise en page (C13/C14) : menu 4 onglets, ⚙️, barre du bas, feuilles qui montent du bas.
+// Nouvelle mise en page (C13/C14) : menu 5 onglets (Lire ajouté le 11/11), ⚙️, barre du bas, feuilles qui montent du bas.
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
@@ -81,10 +81,10 @@ test('Safari : la police uthmani officielle est chargée', async () => {
   assert.ok(ok);
 });
 
-test('menu du bas : 4 onglets (icône + mot), tous visibles, sans défilement', async () => {
+test('menu du bas : 5 onglets, « Lire » en premier (icône + mot), tous visibles, sans défilement', async () => {
   await aller('#/accueil', '.accueil');
   const onglets = await page.$$eval('.menu a', (as) => as.map((a) => [a.textContent.trim(), Boolean(a.querySelector('svg'))]));
-  assert.deepEqual(onglets, [['Accueil', true], ['Coran', true], ['Mes mots', true], ['Plus', true]]);
+  assert.deepEqual(onglets, [['Lire', true], ['Accueil', true], ['Coran', true], ['Mes mots', true], ['Plus', true]]);
   assert.ok(await page.$eval('.menu', (m) => m.scrollWidth <= m.clientWidth));
 });
 

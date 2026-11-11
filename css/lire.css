@@ -1,0 +1,32 @@
+/* Propriétaire : Claude Code. Partie « Lire » : exercices de fluidité. */
+.carte-exo { display: flex; align-items: center; gap: 12px; color: var(--texte); text-decoration: none; min-height: 44px; }
+.carte-exo .icone { color: var(--accent); flex: none; }
+.carte-exo-texte { flex: 1; display: grid; gap: 4px; }
+.carte-exo-texte strong { font-size: 1.15rem; color: var(--accent); }
+.carte-exo .progres { color: var(--doux); }
+
+.flash-compteur { text-align: center; color: var(--doux); margin: 4px 0; min-height: 1.4em; }
+.flash-cadre { min-height: 150px; display: grid; place-items: center; text-align: center; }
+.flash-mot { font-size: calc(var(--taille-arabe) * 1.6); margin: 0; text-align: center; }
+.flash-cache { color: var(--doux); margin: 0; }
+.flash-choix { display: grid; gap: 12px; margin-top: 12px; }
+.choix-mot { min-height: 76px; padding: 6px 10px 12px; font-size: calc(var(--taille-arabe) * 1.1); line-height: 2.1; text-align: center; background: var(--carte); color: var(--texte); border: 2px solid var(--trait); border-radius: 14px; }
+.choix-mot.juste { border-color: var(--accent); background: var(--accent-clair); }
+.choix-mot.faux { border-color: #c0392b; background: #fbe4e1; }
+
+.choix-rythme { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin: 4px 0 8px; }
+.puce { min-height: 44px; min-width: 56px; padding: 0 10px; border-radius: 22px; border: 2px solid var(--trait); background: var(--carte); color: var(--texte); font-size: 1rem; }
+.puce.actif { border-color: var(--accent); color: var(--accent); font-weight: 700; background: var(--accent-clair); }
+
+.texte-groupes { min-height: 140px; padding: 10px 8px; }
+.groupes-attente .mot { opacity: .28; transition: opacity .15s; }
+.groupes-attente .mot.allume { opacity: 1; background: var(--surligne); }
+.groupes-entier .mot { opacity: 1; }
+.groupes-entier { background: var(--accent-clair); border-radius: 10px; }
+
+.texte-karaoke .mot.allume { background: var(--surligne); box-shadow: 0 0 0 3px var(--surligne); }
+.texte-karaoke .verset.en-cours { background: var(--accent-clair); }
+.karaoke-fin { margin-bottom: 12px; }
+
+/* La barre d'actions reste au-dessus du menu du bas (ici le menu reste affiché, contrairement à la séance). */
+.actions-lire { bottom: calc(66px + env(safe-area-inset-bottom)); }

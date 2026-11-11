@@ -1,7 +1,7 @@
 // Propriétaire : Claude Code. Adresses du type #/coran/112 → écran 'coran', params ['112'].
 // Options d'un écran (C13, nouvelle mise en page) :
 //   titre        : texte en haut (ou fonction (params) => texte)
-//   onglet       : 'accueil' | 'coran' | 'mots' | 'plus' → onglet allumé dans le menu du bas
+//   onglet       : 'lire' | 'accueil' | 'coran' | 'mots' | 'plus' → onglet allumé dans le menu du bas
 //   retour       : adresse de la flèche ‹ (ou fonction (params) => adresse) ; absent = pas de flèche
 //   reglages     : fonction appelée par la roue ⚙️ ; absente = pas de roue
 //   reglagesSi   : (params) => booléen : roue seulement sur certaines adresses
