@@ -24,9 +24,20 @@
 .groupes-entier .mot { opacity: 1; }
 .groupes-entier { background: var(--accent-clair); border-radius: 10px; }
 
-.texte-karaoke .mot.allume { background: var(--surligne); box-shadow: 0 0 0 3px var(--surligne); }
-.texte-karaoke .verset.en-cours { background: var(--accent-clair); }
-.karaoke-fin { margin-bottom: 12px; }
+.texte-recitation .mot.allume { background: var(--surligne); box-shadow: 0 0 0 3px var(--surligne); }
+.texte-recitation .verset.en-cours { background: var(--accent-clair); }
+.recitation-fin { margin-bottom: 12px; }
 
 /* La barre d'actions reste au-dessus du menu du bas (ici le menu reste affiché, contrairement à la séance). */
 .actions-lire { bottom: calc(66px + env(safe-area-inset-bottom)); }
+
+/* Sens de chaque mot, sous le mot (anglais ou français selon ce qui est validé). */
+.avec-sens { line-height: 1.5; }
+.mot-bloc { display: inline-flex; flex-direction: column; align-items: center; vertical-align: top; margin: 0 4px 10px; word-spacing: normal; }
+.mot-bloc .mot { line-height: 1.9; }
+.sens-mot { font-family: system-ui, sans-serif; font-size: .8rem; line-height: 1.2; word-spacing: normal; letter-spacing: normal; color: var(--doux); max-width: 7.5em; text-align: center; margin-top: 2px; }
+.groupes-attente .mot:not(.allume) + .sens-mot { opacity: .28; }
+.sens-flash { font-size: 1.25rem; font-weight: 700; margin: 4px 0; }
+.traduction-lire { font-size: 1rem; line-height: 1.5; margin: 8px 4px 14px; color: var(--texte); }
+.traduction-lire .credit { color: var(--doux); }
+.mention-sens { text-align: center; color: var(--doux); font-size: .8rem; margin: 4px 0; }

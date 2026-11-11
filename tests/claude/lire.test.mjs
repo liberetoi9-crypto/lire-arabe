@@ -71,3 +71,22 @@ test('moments de Husary : un moment par mot pour chaque verset de la Fatiha et d
   }
   assert.equal(total, 571);
 });
+
+test('sens en français : un sens par mot, pour chaque verset du Juz Amma et d’Al-Fatiha, jamais vide', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const racine = new URL('../../', import.meta.url);
+  const fr = JSON.parse(await readFile(new URL('data/coran/sens-fr.json', racine), 'utf8'));
+  let n = 0;
+  for (const s of [1, ...Array.from({ length: 37 }, (_, i) => 78 + i)]) {
+    const src = JSON.parse(await readFile(new URL(`data/coran/sourates/${String(s).padStart(3, '0')}.json`, racine), 'utf8'));
+    for (const v of src.versets) {
+      const l = fr.versets[v.cle];
+      assert.ok(l, `${v.cle} manque`);
+      assert.equal(l.length, v.mots.length, `${v.cle} : ${l.length} sens pour ${v.mots.length} mots`);
+      assert.ok(l.every((x) => typeof x === 'string' && x.trim()), `${v.cle} : sens vide`);
+      n++;
+    }
+  }
+  assert.equal(n, 571);
+  assert.ok(!/[؀-ۿ]/.test(JSON.stringify(fr.versets)), 'aucun arabe dans les sens');
+});

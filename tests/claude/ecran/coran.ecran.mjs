@@ -163,7 +163,7 @@ test('signaler 1:1 retire aussi la basmala des autres sourates', async () => {
   await vider();
 });
 
-test('toucher un mot : sens (anglais, quran.com) puis « Ajouter à mes mots » ; Mes mots ramène au verset', async () => {
+test('toucher un mot : sens (français, traduit de quran.com) puis « Ajouter à mes mots » ; Mes mots ramène au verset', async () => {
   await vider();
   await aller('#/coran/112', '.verset[data-cle="112:1"]');
   await page.click('.verset[data-cle="112:1"] .mot[data-position="3"]');

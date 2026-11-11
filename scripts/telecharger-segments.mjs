@@ -1,7 +1,7 @@
 // Propriétaire : Claude Code. Moments où Husary (mu'allim) dit chaque mot, pris sur quran.com (API v4, récitation 12).
-// Servent SEULEMENT à allumer le mot pendant le karaoké : le son et le texte ne sont jamais coupés ni changés.
+// Servent SEULEMENT à allumer le mot pendant le « Suis la récitation » : le son et le texte ne sont jamais coupés ni changés.
 // Contrôles : même fichier son que l'appli, un moment par mot, positions 1..n dans l'ordre, temps croissants.
-// Un verset qui échoue à un contrôle n'est pas gardé (le karaoké allume alors le verset entier).
+// Un verset qui échoue à un contrôle n'est pas gardé (le « Suis la récitation » allume alors le verset entier).
 // Usage : node scripts/telecharger-segments.mjs
 import { readFile, writeFile } from 'node:fs/promises';
 

@@ -95,13 +95,21 @@ export async function getTraduction(cle, id = getTraductionActive()) {
 
 // (idNote) => Promise<texte de la note Hamidullah (quran.com)>
 export const getNoteHamidullah = (idNote) => chargerNoteQuranCom(idNote);
-// ('112:1') => Promise<[{ position, sens, langue: 'en', source }]> — sens mot à mot de quran.com (anglais).
+// ('112:1') => Promise<[{ position, sens, langue: 'fr'|'en', sensEn, source }]> — sens de chaque mot.
+// Français quand il existe (data/coran/sens-fr.json : anglais de quran.com traduit, Hamidullah en priorité), sinon anglais de quran.com.
 // sens = null si quran.com n'a pas exactement le même mot à cette place (on n'affiche alors rien).
+let sensFr = null;
+export const chargerSensFr = () => (sensFr ??= fetch(new URL('../../data/coran/sens-fr.json', import.meta.url)).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+export const MENTION_SENS_FR = 'Sens traduit de l’anglais (quran.com), vérifié avec Hamidullah';
 export async function getSensMots(cle) {
   cleValide(cle);
   const v = await getVerset(cle);
-  const d = (await chargerQuranCom(await getSourate(v.sourate))).get(cle);
-  return d.sens.map((x) => ({ ...x, source: 'quran.com (mot à mot, anglais)' }));
+  const [d, fr] = await Promise.all([chargerQuranCom(await getSourate(v.sourate)).then((m) => m.get(cle)), chargerSensFr()]);
+  const liste = fr?.versets?.[cle];
+  const okFr = liste && liste.length === d.sens.length;
+  return d.sens.map((x, i) => (okFr && x.sens
+    ? { ...x, sens: liste[i], sensEn: x.sens, langue: 'fr', source: MENTION_SENS_FR }
+    : { ...x, sensEn: x.sens, source: 'quran.com (mot à mot, anglais)' }));
 }
 // ---- Récitateurs et sons (C4) ----
 // () => [{ id, nom, riwaya, principal }] : seulement les récitateurs autorisés (liste fermée, Hafs).

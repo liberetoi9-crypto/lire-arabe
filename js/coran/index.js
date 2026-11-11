@@ -382,13 +382,14 @@ on('mot:touche', async ({ source, cle, position, texte }) => {
   ouvrirFeuille({ contenu: [
     el('p', { className: 'arabe coran mot-panneau', lang: 'ar', dir: 'rtl', textContent: texte }),
     sens,
-    el('p', { className: 'credit centre', textContent: `Sourate ${s}, verset ${v} · sens en anglais · quran.com` }),
+    el('p', { className: 'credit centre', textContent: `Sourate ${s}, verset ${v}` }),
     bouton,
   ] });
   let infos = null;
   try {
     infos = (await getSensMots(cle)).find((x) => x.position === position);
     sens.textContent = infos?.sens ? `« ${infos.sens} »` : 'Sens pas disponible pour ce mot.';
+    if (infos?.sens) sens.nextElementSibling.after(el('p', { className: 'credit centre', textContent: infos.langue === 'fr' ? infos.source : 'Sens en anglais · quran.com' }));
   } catch (e) { sens.textContent = e.message; }
   bouton.onclick = () => {
     ajouterMot({ cle, position, sens: infos?.sens ?? null, langue: infos?.langue ?? null, source: infos?.source ?? null });

@@ -61,9 +61,9 @@ export function groupes(mots) {
 // Rythme de la lecture par groupes (temps par groupe).
 export const RYTHMES = { lent: { nom: 'Lent', ms: 1800 }, moyen: { nom: 'Moyen', ms: 1200 }, rapide: { nom: 'Rapide', ms: 750 } };
 
-// Vitesses du karaoké : elle monte d'un cran à chaque sourate finie.
-export const VITESSES_KARAOKE = [0.75, 0.85, 1, 1.1, 1.25];
-export const vitesseSuivante = (v) => VITESSES_KARAOKE[Math.min(VITESSES_KARAOKE.indexOf(v) + 1, VITESSES_KARAOKE.length - 1)] ?? VITESSES_KARAOKE[0];
+// Vitesses du « Suis la récitation » : elle monte d'un cran à chaque sourate finie.
+export const VITESSES_RECITATION = [0.75, 0.85, 1, 1.1, 1.25];
+export const vitesseSuivante = (v) => VITESSES_RECITATION[Math.min(VITESSES_RECITATION.indexOf(v) + 1, VITESSES_RECITATION.length - 1)] ?? VITESSES_RECITATION[0];
 
 // Le mot dit à l'instant t (ms) : position (1..n). Entre deux mots, le mot d'avant reste allumé.
 // 0 avant le premier mot et après la fin du dernier.
