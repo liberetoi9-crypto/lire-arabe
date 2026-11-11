@@ -7,8 +7,15 @@ import { getRecitateurs, getRecitateurActif, setRecitateurActif } from './api.js
 import { getColorerFrequents, setColorerFrequents } from './api.js';
 import { getTraductions, getTraductionActive, setTraductionActive } from './api.js';
 
-const ECOUTE_DEFAUT = { fois: 1, lent: false };
-export const getEcoute = () => ({ ...ECOUTE_DEFAUT, ...lire('coran.ecoute', {}) });
+const ECOUTE_DEFAUT = { fois: 1, vitesse: 'normal' };
+const VITESSES = ['normal', 'un-peu-lent', 'lent'];
+// Ancien réglage { lent: true } (avant « Un peu lente ») : repris tel quel.
+export const getEcoute = () => {
+  const { lent, ...e } = { ...ECOUTE_DEFAUT, ...lire('coran.ecoute', {}) };
+  if (!lire('coran.ecoute', {}).vitesse && lent) e.vitesse = 'lent';
+  if (!VITESSES.includes(e.vitesse)) e.vitesse = 'normal';
+  return e;
+};
 export const setEcoute = (x) => ecrire('coran.ecoute', { ...getEcoute(), ...x });
 
 // Feuille ⚙️. Chaque changement est annoncé sur le bus : 'coran:reglage' { nom, valeur }.
@@ -17,7 +24,7 @@ export async function ouvrirReglagesEcoute({ traduction = true } = {}) {
   const annoncer = (nom, valeur) => emit('coran:reglage', { nom, valeur });
   const contenu = [
     ligneChoix('Récitateur', getRecitateurs().map((r) => [r.id, r.nom.replace(/^Mahmoud Khalil /, '')]), getRecitateurActif(), (v) => { setRecitateurActif(v); annoncer('recitateur', v); }),
-    ligneChoix('Vitesse', [['normal', 'Normale'], ['lent', 'Lente']], e.lent ? 'lent' : 'normal', (v) => { setEcoute({ lent: v === 'lent' }); annoncer('vitesse', v); }),
+    ligneChoix('Vitesse', [['normal', 'Normale'], ['un-peu-lent', 'Un peu lente'], ['lent', 'Lente']], e.vitesse, (v) => { setEcoute({ vitesse: v }); annoncer('vitesse', v); }),
     ligneChoix('Répéter chaque verset', [1, 3, 5, 10].map((x) => [String(x), x === 1 ? '1 fois' : `${x} fois`]), String(e.fois), (v) => { setEcoute({ fois: Number(v) }); annoncer('fois', Number(v)); }),
   ];
   if (traduction) {

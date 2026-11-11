@@ -2,7 +2,7 @@
 // Joue de VRAIES récitations verset par verset (jamais de voix de synthèse).
 import { emit } from '../core/bus.js';
 
-const VITESSES = { lent: 0.75, normal: 1 };
+const VITESSES = { lent: 0.75, 'un-peu-lent': 0.85, normal: 1 };
 
 // urlPour(cle) → URL du son ; recitateurPour() → id du récitateur (pour les événements).
 export function fabriquerLecteur({ urlPour, recitateurPour }) {
@@ -98,7 +98,7 @@ export function fabriquerLecteur({ urlPour, recitateurPour }) {
     },
     arreter() { actif = false; suiteEnAttente = null; audio.pause(); arreterMinuteur(); emit('lecteur:fin', {}); },
     vitesse(v) {
-      if (!(v in VITESSES)) throw new Error('Vitesse : lent ou normal');
+      if (!(v in VITESSES)) throw new Error('Vitesse : lent, un-peu-lent ou normal');
       vitesse = v;
       audio.playbackRate = VITESSES[v];
     },

@@ -79,7 +79,7 @@ async function etapeEcoute(conteneur, s, suivant) {
     else if (lecteur?.cleCourante) lecteur.reprendre();
     else {
       lecteur ??= creerLecteur();
-      lecteur.vitesse(getEcoute().lent ? 'lent' : 'normal');
+      lecteur.vitesse(getEcoute().vitesse);
       lecteur.jouer(s.versets.map((v) => v.cle).filter((k) => document.querySelector(`.verset[data-cle="${k}"]`)), { fois: getEcoute().fois });
     }
     majBoutonEcoute();

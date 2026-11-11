@@ -161,7 +161,7 @@ export function urlAudio(cle, id = null) {
 }
 
 // ({ recitateur? }) => lecteur : jouer(cles, { fois, repeteApresMoi }), boucle(cle, fois), pause(), reprendre(),
-//   arreter(), vitesse('lent'|'normal'). Émet verset:debut, verset:fin, lecteur:a-toi, lecteur:fin, lecteur:erreur.
+//   arreter(), vitesse('lent'|'un-peu-lent'|'normal'). Émet verset:debut, verset:fin, lecteur:a-toi, lecteur:fin, lecteur:erreur.
 //   recitateur : forcer un récitateur (écran de vérification). Sinon : celui qui joue vraiment sur la sourate.
 export function creerLecteur({ recitateur = null } = {}) {
   return fabriquerLecteur({
@@ -206,6 +206,6 @@ function gelerProfond(o) {
 
 // ---- Pour la séance guidée (C7) ----
 // texteSourate(s) : le texte d'une sourate (lecture simple, mots touchables) ; ouvrirReglagesEcoute() : feuille ⚙️ ;
-// getEcoute() : { fois, lent }.
+// getEcoute() : { fois, vitesse: 'normal'|'un-peu-lent'|'lent' }.
 export { texteSourate } from './vue.js';
 export { ouvrirReglagesEcoute, getEcoute } from './reglages.js';

@@ -38,7 +38,7 @@ function jouer(cles, { recitateur = null, repeter = false } = {}) {
   if (lecteur && recitateurDuLecteur !== recitateur) { lecteur.arreter(); lecteur = null; }
   if (!lecteur) { lecteur = creerLecteur({ recitateur }); recitateurDuLecteur = recitateur; }
   const r = getEcoute();
-  lecteur.vitesse(r.lent ? 'lent' : 'normal');
+  lecteur.vitesse(r.vitesse);
   modeRepeter = repeter;
   lecteur.jouer(cles, { fois: r.fois, repeteApresMoi: repeter });
   majBarre();
