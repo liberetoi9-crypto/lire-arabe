@@ -1,9 +1,10 @@
 // Propriétaire : Claude Code (C14). Écran d'Accueil + 3 écrans d'explication (première ouverture).
-// Accueil : UN seul gros bouton « Commencer ma séance du jour », la série en petit, où j'en suis. Rien d'autre.
+// Accueil : UN seul gros bouton « Commencer le jour N » (Mon programme), la série en petit, où j'en suis. Rien d'autre.
 import { enregistrerEcran } from '../core/routeur.js';
 import { lire, ecrire } from '../core/stockage.js';
 import { el, icone, grosBouton, enregistrerEntreePlus } from '../core/ui.js';
 import { getEtatSeance } from '../seance/api.js';
+import { getJour } from '../programme/api.js';
 
 enregistrerEcran('accueil', {
   titre: "Lire l'arabe",
@@ -11,12 +12,15 @@ enregistrerEcran('accueil', {
   async afficher(conteneur) {
     const etat = await getEtatSeance();
     const centre = el('div', { className: 'accueil' });
-    if (etat.faiteAujourdhui) {
+    const jour = getJour();
+    if (jour.fini) {
       centre.append(
-        el('div', { className: 'bravo' }, icone('ok', 40), el('p', { textContent: 'Séance finie. À demain !' })),
-        el('a', { className: 'lien-discret', href: '#/seance/1', textContent: 'Refaire une séance' }));
+        el('div', { className: 'bravo' }, icone('ok', 40), el('p', { textContent: `Jour ${jour.n} fini. À demain !` })),
+        el('a', { className: 'lien-discret', href: '#/programme', textContent: 'Revoir mon programme' }));
     } else {
-      centre.append(grosBouton('Commencer ma séance du jour', () => { location.hash = '#/seance'; }, { icone: 'ecouter', id: 'commencer' }));
+      const commence = Object.keys(jour.faites).length > 0;
+      centre.append(grosBouton(`${commence ? 'Continuer' : 'Commencer'} le jour ${jour.n}`, () => { location.hash = '#/programme'; },
+        { icone: 'ecouter', id: 'commencer', sousTexte: jour.revision ? 'Jour de révision' : 'Coran + arabe · 35 min' }));
     }
     const serie = await getSerie();
     if (serie) centre.append(el('p', { className: 'serie', textContent: `🔥 ${serie} jour${serie > 1 ? 's' : ''} d'affilée` }));
@@ -35,7 +39,7 @@ async function getSerie() {
 
 // ---- Première ouverture : 3 petits écrans, avec « Passer » ----
 const PAGES = [
-  { icone: 'coran', titre: 'Bienvenue !', texte: "Chaque jour, une petite séance de 20 minutes pour lire l'arabe et le Coran de plus en plus vite." },
+  { icone: 'coran', titre: 'Bienvenue !', texte: "Chaque jour, un programme de 35 minutes : le Coran et la langue arabe, étape par étape." },
   { icone: 'ecouter', titre: 'Écoute, lis, recommence', texte: "L'appli te guide : d'abord tu écoutes la sourate, ensuite tu la lis 5 fois, puis une dernière fois avec le chrono." },
   { icone: 'mots', titre: 'Touche un mot', texte: 'Touche un mot pour voir ce qu\'il veut dire, et garde-le dans « Mes mots » pour le réviser.' },
 ];

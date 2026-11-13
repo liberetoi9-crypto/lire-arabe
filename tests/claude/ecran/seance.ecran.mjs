@@ -38,8 +38,8 @@ const tropPetits = () => page.$$eval('button, a, select', (els) => els
   .map((e) => [e.textContent.trim().slice(0, 30), Math.round(e.getBoundingClientRect().height)])
   .filter(([, h]) => h < 44));
 
-test('séance complète : Accueil → 1 écoute → 2 lis 5 fois → 3 chrono → fin → Accueil « séance finie »', async () => {
-  await page.click('#commencer');
+test('séance complète : 1 écoute → 2 lis 5 fois → 3 chrono → fin → programme (lecture cochée)', async () => {
+  await page.evaluate(() => { location.hash = '#/seance'; });
   await page.waitForSelector('.etapes');
   assert.equal(page.url().split('#')[1], '/seance/1');
   assert.equal(await page.isVisible('nav.menu'), false, 'pas de menu pendant la séance');
@@ -79,8 +79,8 @@ test('séance complète : Accueil → 1 écoute → 2 lis 5 fois → 3 chrono �
   assert.match(await page.textContent('.demain'), /Sourate suivante : Al-Kawthar/);
   assert.deepEqual(await tropPetits(), [], 'fin : 44 px');
   await page.click('a.gros-bouton');
-  await page.waitForSelector('.accueil');
-  assert.match(await page.textContent('.accueil'), /Séance finie/);
+  await page.waitForSelector('.prog-etapes');
+  assert.ok(await page.$('[data-etape="lecture"].fait'), 'programme : lecture cochée');
 });
 
 test('fin de séance : « Encore la même » garde la sourate pour demain, « Sourate suivante » avance', async () => {

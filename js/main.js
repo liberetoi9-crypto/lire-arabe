@@ -6,6 +6,7 @@ import { bienvenueVue } from './accueil/index.js';
 import './accueil/index.js';
 import './lire/index.js';
 import './seance/index.js';
+import './programme/index.js';
 import './coran/index.js';
 import './mots/index.js';
 import './textes/index.js';

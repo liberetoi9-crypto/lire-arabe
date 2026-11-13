@@ -154,7 +154,7 @@ async function afficherFin(conteneur, s) {
     el('div', { className: 'bravo' }, icone('ok', 48), el('p', { textContent: 'Bravo, séance finie !' })),
     message(`${minutes} minute${minutes > 1 ? 's' : ''} aujourd'hui. À demain !`)),
   zoneDemain,
-  lienBouton("Retour à l'accueil", '#/accueil', { gros: true }));
+  lienBouton('Retour au programme', '#/programme', { gros: true }));
 }
 function choixDemain(texte, valeur, actuel, apres, desactive = false) {
   const b = el('button', { type: 'button', className: valeur === actuel ? 'choix-demain actif' : 'choix-demain', disabled: desactive }, valeur === actuel ? icone('ok', 20) : null, texte);

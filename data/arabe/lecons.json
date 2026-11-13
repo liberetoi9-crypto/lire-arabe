@@ -1,0 +1,30 @@
+{
+  "source": "Leçons écrites en français par Claude. Les phrases arabes n'apparaissent QUE si Claude et Codex, chacun sans voir l'autre, ont écrit exactement la même chose (lettres et voyelles).",
+  "verifie": false,
+  "lecons": [
+    { "titre": "« Ceci » (pour un objet masculin)", "explication": "Pour montrer une chose proche, on dit « hadha » (ceci). Il n'y a pas de verbe « être » : « ceci une maison » veut dire « ceci est une maison ».", "phrases": [
+      { "fr": "Ceci est une maison." }, { "fr": "Ceci est une mosquée." }, { "fr": "Ceci est un livre." }, { "fr": "Qu'est-ce que c'est ? C'est un stylo." } ] },
+    { "titre": "Poser une question : « est-ce que ? »", "explication": "On met « a » devant la phrase pour en faire une question. On répond « na'am » (oui) ou « la » (non).", "phrases": [
+      { "fr": "Est-ce que c'est une maison ?" }, { "fr": "Oui, c'est une maison." }, { "fr": "Est-ce que c'est une mosquée ?" }, { "fr": "Non, c'est une maison." } ] },
+    { "titre": "« Qui est-ce ? »", "explication": "Pour une personne, on demande « man hadha ? » (qui est-ce ?).", "phrases": [
+      { "fr": "Qui est-ce ?" }, { "fr": "C'est un professeur." }, { "fr": "C'est un élève." }, { "fr": "C'est un médecin." } ] },
+    { "titre": "« Cela » (pour une chose loin)", "explication": "Pour une chose loin, on dit « dhalika » (cela) au lieu de « hadha ».", "phrases": [
+      { "fr": "Cela est une étoile." }, { "fr": "Cela est une mosquée." }, { "fr": "Qu'est-ce que c'est que cela ? C'est une montagne." } ] },
+    { "titre": "« Le » : al-", "explication": "« Al » devant un mot veut dire « le » ou « la ». Le mot perd alors son « n » final (le tanwin).", "phrases": [
+      { "fr": "Le livre est neuf." }, { "fr": "La maison est grande." }, { "fr": "Le stylo est petit." }, { "fr": "La mosquée est propre." } ] },
+    { "titre": "« Sur » et « dans »", "explication": "« 'ala » veut dire « sur », « fi » veut dire « dans ». Le mot qui suit prend un « i » à la fin.", "phrases": [
+      { "fr": "Le livre est sur le bureau." }, { "fr": "L'élève est dans la classe." }, { "fr": "Le stylo est dans le sac." } ] },
+    { "titre": "« Où ? »", "explication": "« Ayna » veut dire « où ? ».", "phrases": [
+      { "fr": "Où est le professeur ?" }, { "fr": "Il est dans la mosquée." }, { "fr": "Où est le livre ?" }, { "fr": "Il est sur le bureau." } ] },
+    { "titre": "« De » : le livre de Mohammed", "explication": "Pour dire « le livre de Mohammed », on colle les deux mots : « kitabou Mohammadin ». Le premier mot n'a ni « al » ni tanwin.", "phrases": [
+      { "fr": "C'est le livre de Mohammed." }, { "fr": "La porte de la maison est grande." }, { "fr": "Où est la voiture du professeur ?" } ] },
+    { "titre": "« Ceci » (pour le féminin)", "explication": "Pour un mot féminin (souvent terminé par le « ta » rond), on dit « hadhihi » au lieu de « hadha ».", "phrases": [
+      { "fr": "Ceci est une voiture." }, { "fr": "Ceci est une fille." }, { "fr": "Cette fille est une élève." } ] },
+    { "titre": "Je, tu, il", "explication": "« Ana » = je, « anta » = tu (à un homme), « houwa » = il. Toujours sans verbe « être ».", "phrases": [
+      { "fr": "Je suis musulman." }, { "fr": "Tu es un élève." }, { "fr": "Il est professeur." }, { "fr": "Qui es-tu ? Je suis Ahmed." } ] },
+    { "titre": "Dire bonjour", "explication": "Le salut du musulman et sa réponse, puis « comment vas-tu ? ».", "phrases": [
+      { "fr": "Que la paix soit sur vous." }, { "fr": "Et sur vous la paix." }, { "fr": "Comment vas-tu ?" }, { "fr": "Bien, louange à Allah." } ] },
+    { "titre": "« D'où es-tu ? »", "explication": "« Min ayna » veut dire « d'où ? ». « Min » = de.", "phrases": [
+      { "fr": "D'où es-tu ?" }, { "fr": "Je suis de France." }, { "fr": "D'où est le professeur ?" }, { "fr": "Il est de Médine." } ] }
+  ]
+}

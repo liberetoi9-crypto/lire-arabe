@@ -1,0 +1,42 @@
+/* Propriétaire : Claude Code. « Mon programme ». */
+.prog-entete { text-align: center; }
+.prog-jour { font-size: 1.8rem; font-weight: 800; margin: 0; color: var(--accent); }
+.prog-titre { font-size: 1.05rem; margin: 18px 0 8px; }
+.prog-etapes { display: grid; gap: 10px; margin: 12px 0; }
+.prog-etape { display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 10px 14px; background: var(--carte); border-radius: var(--rayon); color: var(--texte); text-decoration: none; }
+.prog-etape.fait { opacity: .6; }
+.prog-coche { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--trait); color: #fff; }
+.prog-etape.fait .prog-coche { background: var(--accent); border-color: var(--accent); }
+.prog-texte { display: grid; gap: 2px; }
+.prog-texte small { color: var(--doux); }
+.prog-rappel { display: grid; gap: 6px; margin-bottom: 10px; }
+.prog-rappel p { margin: 0; line-height: 1.45; }
+.prog-rappel.important { border: 2px solid var(--accent); }
+.prog-rappel .credit, .credit { color: var(--doux); font-size: .8rem; }
+.prog-lecon { display: grid; gap: 6px; }
+.prog-lecon h2 { margin: 0; font-size: 1.2rem; }
+.prog-lecon p { margin: 0; line-height: 1.5; }
+.prog-son b { color: var(--accent); }
+.prog-exemples { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.prog-exemple { display: grid; justify-items: center; gap: 2px; padding: 8px 4px; background: var(--carte); border-radius: 14px; text-decoration: none; color: var(--texte); min-height: 44px; }
+.prog-exemple small { color: var(--doux); font-size: .75rem; }
+.prog-mot { text-align: center; }
+.surligne { color: #c2410c; }
+.prog-exo { display: grid; gap: 12px; margin-top: 16px; }
+.prog-consigne { font-weight: 700; text-align: center; margin: 0; }
+.prog-grille { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.prog-choix { min-height: 64px; border: 2px solid var(--trait); border-radius: 14px; background: var(--carte); color: var(--texte); cursor: pointer; }
+.prog-choix .arabe { text-align: center; display: block; }
+.prog-choix.choisi { border-color: var(--accent); background: var(--accent-clair); }
+.prog-choix.bon { border-color: #2f7a64; background: #e3efe9; color: #22201b; }
+.prog-choix.pas-bon { opacity: .55; }
+.prog-choix.erreur { outline: 3px solid #c2410c; outline-offset: -3px; opacity: 1; }
+.prog-fin { display: grid; gap: 10px; text-align: center; }
+.prog-score { font-size: 1.4rem; font-weight: 800; margin: 0; }
+.prog-liste-mots { display: grid; gap: 8px; }
+.prog-mot-sens { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; }
+.prog-mot-sens .arabe { grid-column: 2; grid-row: 1 / span 2; }
+.prog-mot-sens .sens { font-weight: 700; }
+.prog-phrases { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 6px; }
+.prog-attente { color: var(--doux); line-height: 1.5; }
+.centre { text-align: center; }

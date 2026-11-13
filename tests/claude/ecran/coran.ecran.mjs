@@ -88,11 +88,11 @@ test('menu du bas : 5 onglets, « Lire » en premier (icône + mot), tous visibl
   assert.ok(await page.$eval('.menu', (m) => m.scrollWidth <= m.clientWidth));
 });
 
-test('accueil : un seul gros bouton « Commencer ma séance du jour »', async () => {
+test('accueil : un seul gros bouton « Commencer le jour 1 » (mon programme)', async () => {
   await vider();
   await aller('#/accueil', '.accueil');
   assert.equal(await page.$$eval('#ecran .gros-bouton', (b) => b.length), 1);
-  assert.match(await page.textContent('#ecran .gros-bouton'), /Commencer ma séance du jour/);
+  assert.match(await page.textContent('#ecran .gros-bouton'), /Commencer le jour 1/);
   assert.equal(await page.$$eval('#ecran button, #ecran a', (b) => b.length), 1, 'rien d\'autre à toucher');
 });
 
