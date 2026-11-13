@@ -60,7 +60,10 @@ on('lecteur:a-toi', () => bandeau('À toi ! Répète le verset.'));
 on('lecteur:fin', () => {
   document.querySelectorAll('.verset.en-cours').forEach((e) => e.classList.remove('en-cours'));
   modeRepeter = false;
+  const fini = versetRepete; // fin normale de « Répéter » (pas un arrêt) : proposer la suite
+  versetRepete = null;
   bandeau('');
+  if (fini) finRepeter(fini);
   majBarre();
 });
 on('lecteur:erreur', () => bandeau('Le son ne se charge pas. Vérifie Internet.'));
@@ -240,8 +243,9 @@ function menuVerset(cle) {
 }
 
 // Clés à jouer : à partir du verset choisi (ou du début), versets signalés exclus.
-function clesAJouer() {
+function clesAJouer(toutes_ = false) {
   const toutes = sourateAffichee.versets.map((v) => v.cle).filter((k) => !estSignale('coran', k));
+  if (toutes_) return toutes;
   const i = versetChoisi ? toutes.indexOf(versetChoisi) : 0;
   return toutes.slice(Math.max(0, i));
 }
@@ -254,12 +258,34 @@ function basculerEcoute(recitateur = lecteurForce) {
   majBarre();
 }
 
-// « Répéter » = répète après moi : un verset, une pause pour le redire, puis le suivant.
-function lancerRepeter() {
-  if (modeRepeter && lecteur?.cleCourante) { lecteur.arreter(); return; }
+// « Répéter » (choix C, 13/11) : SEULEMENT le verset touché (sinon le 1er), 3 fois, un silence après chaque fois pour le redire,
+// puis on s'arrête et on propose « Verset suivant » ou « Encore ».
+const FOIS_REPETER = 3;
+let versetRepete = null;
+function lancerRepeter(cle = clesAJouer()[0]) {
+  if (!cle) return;
+  if (modeRepeter && lecteur?.cleCourante) { versetRepete = null; lecteur.arreter(); return; }
+  versetRepete = null;
   lecteur?.arreter();
-  jouer(clesAJouer(), { recitateur: lecteurForce, repeter: true });
-  bandeau('Écoute, puis répète pendant la pause.');
+  choisirVerset(cle);
+  if (lecteur && recitateurDuLecteur !== lecteurForce) { lecteur.arreter(); lecteur = null; }
+  if (!lecteur) { lecteur = creerLecteur({ recitateur: lecteurForce }); recitateurDuLecteur = lecteurForce; }
+  lecteur.vitesse(getEcoute().vitesse);
+  modeRepeter = true;
+  lecteur.jouer([cle], { fois: FOIS_REPETER, repeteApresMoi: true });
+  versetRepete = cle;
+  majBarre();
+  bandeau(`Écoute, puis répète pendant la pause (${FOIS_REPETER} fois).`);
+}
+function finRepeter(cle) {
+  const b = document.getElementById('bandeau-lecture');
+  if (!b) return;
+  const toutes = clesAJouer(true);
+  const suivante = toutes[toutes.indexOf(cle) + 1];
+  b.replaceChildren(el('span', { textContent: 'Bravo ! ' }),
+    el('button', { type: 'button', className: 'bouton-bandeau', id: 'repeter-encore', onclick: () => lancerRepeter(cle) }, 'Encore'),
+    suivante ? el('button', { type: 'button', className: 'bouton-bandeau principal', id: 'repeter-suivant', onclick: () => lancerRepeter(suivante) }, 'Verset suivant') : el('span', { textContent: 'Sourate finie.' }));
+  b.hidden = false;
 }
 
 function majBarre() {

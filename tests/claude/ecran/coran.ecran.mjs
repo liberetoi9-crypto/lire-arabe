@@ -245,3 +245,22 @@ test('« Sons à vérifier » joue TOUJOURS Dosari, même après une autre soura
   assert.equal(await ecouter(), 'Husary_Muallim_128kbps/093001.mp3');
   await vider();
 });
+
+test('« Répéter » : seulement le verset choisi, 3 fois, puis « Encore » / « Verset suivant »', async () => {
+  await aller('#/coran/112/2', '.verset');
+  await page.evaluate(() => {
+    window.joues = [];
+    window.suivi = setInterval(() => { const c = document.querySelector('.verset.en-cours')?.dataset.cle; if (c && window.joues.at(-1) !== c) window.joues.push(c); }, 100);
+  });
+  await page.click('#action-repeter');
+  await page.waitForSelector('#repeter-suivant', { timeout: 90_000 });
+  const joues = await page.evaluate(() => { clearInterval(window.suivi); return window.joues; });
+  assert.deepEqual([...new Set(joues)], ['112:2'], 'aucun autre verset joué');
+  assert.ok(await page.$('#repeter-encore'));
+  assert.deepEqual(await tropPetits(), [], 'boutons du bandeau : 44 px');
+  await page.click('#repeter-suivant');
+  await page.waitForSelector('.verset.en-cours[data-cle="112:3"]', { timeout: 30_000 });
+  await page.click('#action-repeter'); // re-toucher = arrêter
+  await page.waitForFunction(() => !document.querySelector('.verset.en-cours'));
+  assert.equal(await page.$('#repeter-suivant'), null, 'arrêt volontaire : pas de « Verset suivant »');
+});
